@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TagsCloudVisualization", "TagsCloudVisualization\TagsCloudVisualization.csproj", "{46D5CA67-42D6-4FDB-9B70-759F78F8E529}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TagsCloudVisualizationTests", "TagsCloudVisualizationTests\TagsCloudVisualizationTests.csproj", "{E4C7743C-6289-4C21-A04C-B9AEF1D6279F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TagsCloudDemonstration", "TagCloudDemonstration\TagsCloudDemonstration.csproj", "{F88CB70D-0421-42EC-BFE8-5BCD1FE0811F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{46D5CA67-42D6-4FDB-9B70-759F78F8E529}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46D5CA67-42D6-4FDB-9B70-759F78F8E529}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46D5CA67-42D6-4FDB-9B70-759F78F8E529}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46D5CA67-42D6-4FDB-9B70-759F78F8E529}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4C7743C-6289-4C21-A04C-B9AEF1D6279F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4C7743C-6289-4C21-A04C-B9AEF1D6279F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4C7743C-6289-4C21-A04C-B9AEF1D6279F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4C7743C-6289-4C21-A04C-B9AEF1D6279F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F88CB70D-0421-42EC-BFE8-5BCD1FE0811F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F88CB70D-0421-42EC-BFE8-5BCD1FE0811F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F88CB70D-0421-42EC-BFE8-5BCD1FE0811F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F88CB70D-0421-42EC-BFE8-5BCD1FE0811F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
