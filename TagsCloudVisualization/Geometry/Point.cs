@@ -58,23 +58,18 @@ namespace Geometry
 
         protected bool Equals(Point other)
         {
-            return x.Equals(other.x) && y.Equals(other.y);
+            return x.EqualTo(other.x) && y.EqualTo(other.y);
         }
 
+#pragma warning disable 659
+        // Can't generate .GetHashCode() because Equals complicated and non-transitive
         public override bool Equals(object obj)
+#pragma warning restore 659
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
             return Equals((Point)obj);
-        }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                return (x.GetHashCode() * 397) ^ y.GetHashCode();
-            }
         }
     }
 }

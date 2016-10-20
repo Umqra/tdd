@@ -15,6 +15,14 @@ namespace GeometryTests
     public class PointTests
     {
         [Test]
+        public void TestEqualsPoints()
+        {
+            var A = new Point(0, 2);
+            var B = new Point(-5e-10, 2 + 1e-10);
+            A.Should().Be(B);
+        }
+
+        [Test]
         public void TestAddition()
         {
             var A = new Point(1, 2);
