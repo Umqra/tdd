@@ -1,0 +1,80 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Geometry;
+using NUnit.Framework;
+using FluentAssertions;
+
+// ReSharper disable InconsistentNaming
+
+namespace GeometryTests
+{
+    [TestFixture]
+    public class PointTests
+    {
+        [Test]
+        public void TestAddition()
+        {
+            var A = new Point(1, 2);
+            var B = new Point(3, -1);
+            (A + B).Should().Be(new Point(4, 1));
+        }
+
+        [Test]
+        public void TestSubtraction()
+        {
+            var A = new Point(1, 2);
+            var B = new Point(3, -1);
+            (A - B).Should().Be(new Point(-2, 3));
+        }
+
+        [Test]
+        public void TestLength()
+        {
+            var A = new Point(1, 2);
+            A.Length.Should().BeApproximately(Math.Sqrt(5), 1e-9);
+        }
+
+        [Test]
+        public void TestDotProduct()
+        {
+            var A = new Point(1, 2);
+            var B = new Point(3, -1);
+            A.DotProduct(B).Should().Be(1);
+        }
+
+        [Test]
+        public void TestCrossProduct()
+        {
+            var A = new Point(1, 2);
+            var B = new Point(3, -1);
+            A.CrossProduct(B).Should().Be(-7);
+        }
+
+        [Test]
+        public void TestMultiplying()
+        {
+            var A = new Point(3, -1);
+            var k = -2;
+            (A * k).Should().Be(new Point(-6, 2));
+        }
+
+        [Test]
+        public void TestMultiplyingCommutativity()
+        {
+            var A = new Point(3, -1);
+            var k = -2;
+            (A * k).Should().Be(k * A);
+        }
+
+        [Test]
+        public void TestDivision()
+        {
+            var A = new Point(3, -1);
+            var k = -2;
+            (A / k).Should().Be(new Point(-1.5, 0.5));
+        }
+    }
+}
