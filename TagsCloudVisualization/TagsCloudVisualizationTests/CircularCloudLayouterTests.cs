@@ -11,7 +11,7 @@ using FluentAssertions;
 
 namespace TagsCloudVisualizationTests
 {
-    public class CircularCloudLayouter_Should
+    public class CircularCloudLayouterTests
     {
         public static TestCaseData[] FirstRectangleParameters = 
         {
@@ -19,7 +19,7 @@ namespace TagsCloudVisualizationTests
             new TestCaseData(new Point(10, 10), new Size(2, 2)),
         };
         [TestCaseSource(nameof(FirstRectangleParameters))]
-        public void PutFirstRectangle_WhichMustContainCenter(Point center, Size rectangleSize)
+        public void FirstRectangleMustContainCenter(Point center, Size rectangleSize)
         {
             var layouter = new CircularCloudLayouter(center);
             var rectangle = layouter.PutNextRectangle(rectangleSize);
@@ -34,7 +34,7 @@ namespace TagsCloudVisualizationTests
             new TestCaseData(new Size(2, 5), new Size(3, 4))
         };
         [TestCaseSource(nameof(TwoRectangleParameters))]
-        public void NotOverlapTwoRectangles(Size firstRectangleSize, Size secondRectangleSize)
+        public void TwoRectangleCanNotOverlap(Size firstRectangleSize, Size secondRectangleSize)
         {
             var layouter = new CircularCloudLayouter(new Point(0, 0));
             var firstRectangle = layouter.PutNextRectangle(firstRectangleSize);
@@ -44,7 +44,7 @@ namespace TagsCloudVisualizationTests
 
         [TestCase(5)]
         [TestCase(10)]
-        public void FillAllQuaters_WhenManyRectanglesProvided(int amount)
+        public void ManyRectanglesMustAppearsInAnyQuater(int amount)
         {
             var layouter = new CircularCloudLayouter(new Point(0, 0));
             Enumerable.Range(0, amount)
