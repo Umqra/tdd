@@ -23,22 +23,39 @@ namespace Geometry
 
         public bool ContainsPoint(Point P)
         {
-            throw new NotImplementedException();
+            return BaseLine.ContainsPoint(P) && (B - A).HasSameDirectionAs(P - A) && (A - B).HasSameDirectionAs(P - B);
         }
 
-        public bool IntersectsWith(Line line)
+        public Point IntersectsWith(Line line)
         {
-            throw new NotImplementedException();
+            Point P = line.IntersectsWith(BaseLine);
+            if (P != null && ContainsPoint(P))
+                return P;
+            return null;
         }
 
-        public bool IntersectsWith(Ray ray)
+        public Point IntersectsWith(Ray ray)
         {
-            throw new NotImplementedException();
+            Point P = ray.IntersectsWith(BaseLine);
+            if (P != null && ContainsPoint(P))
+                return P;
+            return null;
         }
 
-        public bool IntersectsWith(Segment otherSegment)
+        public Point IntersectsWith(Segment otherSegment)
         {
-            throw new NotImplementedException();
+            Point P = otherSegment.IntersectsWith(BaseLine);
+            if (P != null && ContainsPoint(P))
+                return P;
+            return null;
+        }
+
+        public double DistanceTo(Point P)
+        {
+            if ((P - A).DotProduct(B - A).GreaterThanOrEqualTo(0) &&
+                (P - B).DotProduct(A - B).GreaterThanOrEqualTo(0))
+                return BaseLine.DistanceTo(P);
+            return Math.Min(P.DistanceTo(A), P.DistanceTo(B));
         }
 
         protected bool Equals(Segment other)
