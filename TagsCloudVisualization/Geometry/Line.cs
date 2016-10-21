@@ -17,7 +17,7 @@ namespace Geometry
         public Line(Point A, Point B)
         {
             if (A.Equals(B))
-                throw new ArgumentException("Points can't coincide");
+                throw new ArgumentException("Pivot points can't coincide");
             this.A = A;
             this.B = B;
         }
@@ -27,12 +27,12 @@ namespace Geometry
             return Direction.CollinearTo(otherLine.Direction);
         }
 
-        public bool ContainPoint(Point P)
+        public bool ContainsPoint(Point P)
         {
             return (P - A).CollinearTo(Direction);
         }
 
-        public Point IntersectWith(Line otherLine)
+        public Point IntersectsWith(Line otherLine)
         {
             if (this.ParallelTo(otherLine))
                 return null;
@@ -42,7 +42,7 @@ namespace Geometry
 
         protected bool Equals(Line other)
         {
-            return Equals(A, other.A) && Equals(B, other.B);
+            return Direction.CollinearTo(other.Direction) && other.ContainsPoint(A);
         }
 
         public override bool Equals(object obj)

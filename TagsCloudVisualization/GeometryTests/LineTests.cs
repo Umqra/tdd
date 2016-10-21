@@ -22,54 +22,54 @@ namespace GeometryTests
             act.ShouldThrow<ArgumentException>();
         }
 
-        public static TestCaseData[] LinePairs =
+        public static TestCaseData[] ParallelCases =
         {
             new TestCaseData(
                 new Line(new Point(1, 1), new Point(2, 2)), 
-                new Line(new Point(-1, -1), new Point(-3, -3))
-                ).Returns(true), 
+                new Line(new Point(-1, -1), new Point(-3, -3)))
+                .Returns(true), 
             new TestCaseData(
                 new Line(new Point(0, 0), new Point(1, 0)),
-                new Line(new Point(0, 0), new Point(0, 1))
-                ).Returns(false), 
+                new Line(new Point(0, 0), new Point(0, 1)))
+                .Returns(false), 
         };
-        [TestCaseSource(nameof(LinePairs))]
+        [TestCaseSource(nameof(ParallelCases))]
         public bool TestParallel(Line first, Line second)
         {
             return first.ParallelTo(second);
         }
 
-        public static TestCaseData[] LinePointPairs =
+        public static TestCaseData[] ContainCases =
         {
             new TestCaseData(new Line(new Point(0, 0), new Point(1, 0)), new Point(2, 0)).Returns(true),
             new TestCaseData(new Line(new Point(0, 0), new Point(1, 1)), new Point(3, 4)).Returns(false),
             new TestCaseData(new Line(new Point(0, 0), new Point(1, 1)), new Point(0, 0)).Returns(true),
         };
-        [TestCaseSource(nameof(LinePointPairs))]
-        public bool TestContain(Line checkedLine, Point checkedPoint)
+        [TestCaseSource(nameof(ContainCases))]
+        public bool TestContain(Line targetLine, Point testedPoint)
         {
-            return checkedLine.ContainPoint(checkedPoint);
+            return targetLine.ContainsPoint(testedPoint);
         }
 
-        public static TestCaseData[] NonParallelLines =
+        public static TestCaseData[] NonParallelIntersectionCases =
         {
             new TestCaseData(
                 new Line(new Point(0, 0), new Point(1, 1)), 
-                new Line(new Point(0, 1), new Point(1, 0))
-                ).Returns(new Point(0.5, 0.5)),
+                new Line(new Point(0, 1), new Point(1, 0)))
+                .Returns(new Point(0.5, 0.5)),
             new TestCaseData(
                 new Line(new Point(0, 0), new Point(4, 1)), 
-                new Line(new Point(1, 0), new Point(1, 1))
-                ).Returns(new Point(1, 0.25)),
+                new Line(new Point(1, 0), new Point(1, 1)))
+                .Returns(new Point(1, 0.25)),
             new TestCaseData(
                 new Line(new Point(0, 0), new Point(4, 2)),
-                new Line(new Point(1, 0), new Point(3, 2))
-                ).Returns(new Point(2, 1)), 
+                new Line(new Point(1, 0), new Point(3, 2)))
+                .Returns(new Point(2, 1)), 
         };
-        [TestCaseSource(nameof(NonParallelLines))]
+        [TestCaseSource(nameof(NonParallelIntersectionCases))]
         public Point TestIntersectNonParallerlLines(Line first, Line second)
         {
-            return first.IntersectWith(second);
+            return first.IntersectsWith(second);
         }
 
         [Test]
@@ -79,7 +79,7 @@ namespace GeometryTests
             Point B = new Point(1, 0);
             Point C = new Point(-2, 0);
             Point D = new Point(4, 0);
-            new Line(A, B).IntersectWith(new Line(C, D)).Should().BeNull();
+            new Line(A, B).IntersectsWith(new Line(C, D)).Should().BeNull();
         }
 
         [Test]
@@ -89,7 +89,24 @@ namespace GeometryTests
             Point B = new Point(1, 0);
             Point C = new Point(-2, 1);
             Point D = new Point(4, 1);
-            new Line(A, B).IntersectWith(new Line(C, D)).Should().BeNull();
+            new Line(A, B).IntersectsWith(new Line(C, D)).Should().BeNull();
+        }
+
+        public static TestCaseData[] EqualsCases =
+        {
+            new TestCaseData(
+                new Line(new Point(0, 0), new Point(1, 1)), 
+                new Line(new Point(2, 2), new Point(3, 3)))
+                .Returns(true),
+            new TestCaseData(
+                new Line(new Point(1, 1), new Point(2, 2)), 
+                new Line(new Point(1, 0), new Point(2, 1)))
+                .Returns(false)
+        };
+        [TestCaseSource(nameof(EqualsCases))]
+        public bool TestEquals(Line first, Line second)
+        {
+            return first.Equals(second);
         }
     }
 }

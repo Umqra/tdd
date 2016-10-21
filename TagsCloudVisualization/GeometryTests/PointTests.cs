@@ -85,16 +85,30 @@ namespace GeometryTests
             (A / k).Should().Be(new Point(-1.5, 0.5));
         }
 
-        public static TestCaseData[] PointPairs =
+        public static TestCaseData[] CollinearCases =
         {
             new TestCaseData(new Point(0, 0), new Point(1, 1)).Returns(true),
             new TestCaseData(new Point(1, -1), new Point(-2, 2)).Returns(true),
             new TestCaseData(new Point(1, -1), new Point(1, 1)).Returns(false),
         };
-        [TestCaseSource(nameof(PointPairs))]
+        [TestCaseSource(nameof(CollinearCases))]
         public bool TestCollinear(Point first, Point second)
         {
             return first.CollinearTo(second);
+        }
+
+        public static TestCaseData[] TwoPointDirectionsCases =
+        {
+            new TestCaseData(new Point(0, 1), new Point(1, 1)).Returns(false),
+            new TestCaseData(new Point(0, 1), new Point(-1, 0)).Returns(false),
+            new TestCaseData(new Point(0, 1), new Point(0, 10)).Returns(true),
+            new TestCaseData(new Point(1, 0), new Point(0, 0)).Returns(true),
+            new TestCaseData(new Point(0, 0), new Point(0, 0)).Returns(true),
+        };
+        [TestCaseSource(nameof(TwoPointDirectionsCases))]
+        public bool TestTwoPointDirections(Point first, Point second)
+        {
+            return first.HasSameDirectionAs(second);
         }
     }
 }

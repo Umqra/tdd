@@ -27,7 +27,7 @@ namespace Geometry
 
         public static bool GreaterThanOrEqualTo(this double a, double b, double eps = DefaultEpsilon)
         {
-            return a < b || a.EqualTo(b, eps);
+            return a > b || a.EqualTo(b, eps);
         }
 
         public static bool GreaterThan(this double a, double b, double eps = DefaultEpsilon)

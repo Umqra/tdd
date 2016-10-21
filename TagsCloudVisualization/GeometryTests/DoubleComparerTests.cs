@@ -19,7 +19,6 @@ namespace GeometryTests
             return a.EqualTo(b, eps);
         }
 
-        [TestCase(0, 1, 2, ExpectedResult = false)]
         [TestCase(0, 0.0001, DoubleComparer.DefaultEpsilon, ExpectedResult = true)]
         [TestCase(0, 1e-10, DoubleComparer.DefaultEpsilon, ExpectedResult = false)]
         [TestCase(2, 1.99999, DoubleComparer.DefaultEpsilon, ExpectedResult = false)]
@@ -28,7 +27,7 @@ namespace GeometryTests
             return a.LessThan(b, eps);
         }
 
-        [TestCase(0, -0.5, 1, ExpectedResult = true)]
+        [TestCase(0, 0.0001, DoubleComparer.DefaultEpsilon, ExpectedResult = true)]
         [TestCase(0, 1e-10, DoubleComparer.DefaultEpsilon, ExpectedResult = true)]
         [TestCase(2, 1.99999, DoubleComparer.DefaultEpsilon, ExpectedResult = false)]
         public bool TestLessThanOrEqualTo(double a, double b, double eps)
@@ -36,7 +35,7 @@ namespace GeometryTests
             return a.LessThanOrEqualTo(b, eps);
         }
 
-        [TestCase(1.5, 1, 1, ExpectedResult = false)]
+        [TestCase(0, 0.0001, DoubleComparer.DefaultEpsilon, ExpectedResult = false)]
         [TestCase(0, 1e-10, DoubleComparer.DefaultEpsilon, ExpectedResult = false)]
         [TestCase(2, 1.99999, DoubleComparer.DefaultEpsilon, ExpectedResult = true)]
         public bool TestGreater(double a, double b, double eps)
@@ -44,8 +43,9 @@ namespace GeometryTests
             return a.GreaterThan(b, eps);
         }
 
-        [TestCase(1, 1.5, 1, ExpectedResult = true)]
-        [TestCase(1e-10, 0, DoubleComparer.DefaultEpsilon, ExpectedResult = true)]
+        [TestCase(0, 0.0001, DoubleComparer.DefaultEpsilon, ExpectedResult = false)]
+        [TestCase(0, 1e-10, DoubleComparer.DefaultEpsilon, ExpectedResult = true)]
+        [TestCase(2, 1.99999, DoubleComparer.DefaultEpsilon, ExpectedResult = true)]
         public bool TestGreaterThanOrEqualTo(double a, double b, double eps)
         {
             return a.GreaterThanOrEqualTo(b, eps);

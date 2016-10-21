@@ -63,6 +63,11 @@ namespace Geometry
             return this.CrossProduct(other).EqualTo(0);
         }
 
+        public bool HasSameDirectionAs(Point other)
+        {
+            return this.CollinearTo(other) && this.DotProduct(other).GreaterThanOrEqualTo(0);
+        }
+
         protected bool Equals(Point other)
         {
             return x.EqualTo(other.x) && y.EqualTo(other.y);
