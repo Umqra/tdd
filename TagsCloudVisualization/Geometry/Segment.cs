@@ -11,6 +11,8 @@ namespace Geometry
         public Point A { get; set; }
         public Point B { get; set; }
 
+        public Line BaseLine => new Line(A, B);
+
         public Segment(Point A, Point B)
         {
             if (A.Equals(B))

@@ -15,6 +15,7 @@ namespace Geometry
         public readonly double y;
         // ReSharper restore InconsistentNaming
 
+        public Point Orthogonal => new Point(-y, x);
         public double Length => Math.Sqrt(x * x + y * y);
 
         public Point(double x, double y)
@@ -66,6 +67,18 @@ namespace Geometry
         public bool HasSameDirectionAs(Point other)
         {
             return this.CollinearTo(other) && this.DotProduct(other).GreaterThanOrEqualTo(0);
+        }
+
+        public Point Rotate(double angleInRadians)
+        {
+            double cosAngle = Math.Cos(angleInRadians);
+            double sinAngle = Math.Sin(angleInRadians);
+            return new Point(x * cosAngle - y * sinAngle, x * sinAngle + y * cosAngle);
+        }
+
+        public double DistanceTo(Point point)
+        {
+            return (this - point).Length;
         }
 
         protected bool Equals(Point other)

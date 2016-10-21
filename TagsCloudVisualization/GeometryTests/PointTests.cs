@@ -110,5 +110,34 @@ namespace GeometryTests
         {
             return first.HasSameDirectionAs(second);
         }
+
+
+        public static TestCaseData[] RotationCases =
+        {
+            new TestCaseData(new Point(1, 0), Math.PI).Returns(new Point(-1, 0)),
+            new TestCaseData(new Point(1, 0), Math.PI / 2).Returns(new Point(0, 1)),
+            new TestCaseData(new Point(1, 1), -Math.PI / 2).Returns(new Point(1, -1)),
+            new TestCaseData(new Point(1, 0), 1).Returns(new Point(Math.Cos(1), Math.Sin(1)))   
+        };
+        [TestCaseSource(nameof(RotationCases))]
+        public Point TestRotation(Point target, double angle)
+        {
+            return target.Rotate(angle);
+        }
+
+        [Test]
+        public void TestOrthogonal()
+        {
+            Point v = new Point(1, 2);
+            v.Orthogonal.Should().Be(new Point(-2, 1));
+        }
+
+        [Test]
+        public void TestDistanceTo()
+        {
+            Point A = new Point(1, 2);
+            Point B = new Point(4, 5);
+            A.DistanceTo(B).Should().BeApproximately(3 * Math.Sqrt(2), DoubleComparer.DefaultEpsilon);
+        }
     }
 }

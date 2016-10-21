@@ -108,5 +108,29 @@ namespace GeometryTests
         {
             return first.Equals(second);
         }
+
+        public static TestCaseData[] DistanceCases =
+        {
+            new TestCaseData(new Line(new Point(0, 0), new Point(1, 0)), new Point(1, 1), 1),
+            new TestCaseData(new Line(new Point(0, 0), new Point(1, 0)), new Point(10, 0), 0),
+            new TestCaseData(new Line(new Point(0, 0), new Point(1, 1)), new Point(0, 1), Math.Sqrt(2) / 2),
+        };
+        [TestCaseSource(nameof(DistanceCases))]
+        public void TestDistance(Line target, Point checkedPoint, double expected)
+        {
+            target.DistanceTo(checkedPoint).Should().BeApproximately(expected, DoubleComparer.DefaultEpsilon);
+        }
+
+        public static TestCaseData[] PerpendicularCases =
+        {
+            new TestCaseData(new Line(new Point(0, 0), new Point(1, 0)), new Point(1, 1)).Returns(new Point(1, 0)),
+            new TestCaseData(new Line(new Point(0, 0), new Point(1, 0)), new Point(2, 0)).Returns(new Point(2, 0)),
+            new TestCaseData(new Line(new Point(0, 0), new Point(1, 1)), new Point(0, 1)).Returns(new Point(0.5, 0.5))
+        };
+        [TestCaseSource(nameof(PerpendicularCases))]
+        public Point TestPerpendicular(Line target, Point from)
+        {
+            return target.PerpendicularFrom(from);
+        }
     }
 }

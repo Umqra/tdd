@@ -40,6 +40,16 @@ namespace Geometry
             return otherLine.A + k * otherLine.Direction;
         }
 
+        public double DistanceTo(Point P)
+        {
+            return Math.Abs((B - A).CrossProduct(P - A)) / (B - A).Length;
+        }
+
+        public Point PerpendicularFrom(Point P)
+        {
+            return A + Direction * (P - A).DotProduct(Direction) / (Direction.DotProduct(Direction));
+        }
+
         protected bool Equals(Line other)
         {
             return Direction.CollinearTo(other.Direction) && other.ContainsPoint(A);

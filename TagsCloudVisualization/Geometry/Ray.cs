@@ -44,6 +44,13 @@ namespace Geometry
             return null;
         }
 
+        public double DistanceTo(Point P)
+        {
+            if ((P - From).DotProduct(Direction).GreaterThanOrEqualTo(0))
+                return BaseLine.DistanceTo(P);
+            return From.DistanceTo(P);
+        }
+
         protected bool Equals(Ray other)
         {
             return From.Equals(other.From) && Direction.HasSameDirectionAs(other.Direction);

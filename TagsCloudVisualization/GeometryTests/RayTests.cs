@@ -122,5 +122,17 @@ namespace GeometryTests
         {
             return first.Equals(second);
         }
+
+        public static TestCaseData[] DistanceCases =
+        {
+            new TestCaseData(new Ray(new Point(0, 0), new Point(1, 0)), new Point(1, 1), 1),
+            new TestCaseData(new Ray(new Point(0, 0), new Point(1, 1)), new Point(0, 1), Math.Sqrt(2) / 2),
+            new TestCaseData(new Ray(new Point(0, 0), new Point(1, 1)), new Point(-1, 0), 1)
+        };
+        [TestCaseSource(nameof(DistanceCases))]
+        public void TestDistance(Ray targetRay, Point checkedPoint, double expected)
+        {
+            targetRay.DistanceTo(checkedPoint).Should().BeApproximately(expected, DoubleComparer.DefaultEpsilon);
+        }
     }
 }
