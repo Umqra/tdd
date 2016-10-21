@@ -84,5 +84,17 @@ namespace GeometryTests
             var k = -2;
             (A / k).Should().Be(new Point(-1.5, 0.5));
         }
+
+        public static TestCaseData[] PointPairs =
+        {
+            new TestCaseData(new Point(0, 0), new Point(1, 1)).Returns(true),
+            new TestCaseData(new Point(1, -1), new Point(-2, 2)).Returns(true),
+            new TestCaseData(new Point(1, -1), new Point(1, 1)).Returns(false),
+        };
+        [TestCaseSource(nameof(PointPairs))]
+        public bool TestCollinear(Point first, Point second)
+        {
+            return first.CollinearTo(second);
+        }
     }
 }

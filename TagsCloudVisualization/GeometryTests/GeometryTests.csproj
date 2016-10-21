@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DoubleComparerTests.cs" />
+    <Compile Include="LineTests.cs" />
     <Compile Include="PointTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

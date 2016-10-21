@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Geometry
 {
+#pragma warning disable CS0659 // Тип переопределяет Object.Equals(object o), но не переопределяет Object.GetHashCode()
     public class Point
+#pragma warning restore CS0659 // Тип переопределяет Object.Equals(object o), но не переопределяет Object.GetHashCode()
     {
         // ReSharper disable InconsistentNaming
         public readonly double x;
@@ -56,13 +58,17 @@ namespace Geometry
             return x * other.y - y * other.x;
         }
 
+        public bool CollinearTo(Point other)
+        {
+            return this.CrossProduct(other).EqualTo(0);
+        }
+
         protected bool Equals(Point other)
         {
             return x.EqualTo(other.x) && y.EqualTo(other.y);
         }
 
 #pragma warning disable 659
-        // Can't generate .GetHashCode() because Equals complicated and non-transitive
         public override bool Equals(object obj)
 #pragma warning restore 659
         {
@@ -70,6 +76,11 @@ namespace Geometry
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
             return Equals((Point)obj);
+        }
+
+        public override string ToString()
+        {
+            return $"({x}, {y})";
         }
     }
 }
