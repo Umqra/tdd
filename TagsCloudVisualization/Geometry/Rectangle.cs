@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,23 +20,19 @@ namespace Geometry
         public Point Center => (TopLeft + BottomRight) / 2;
         public Point TopRight => new Point(Right, Top);
         public Point BottomLeft => new Point(Bottom, Left);
-        public SizeF Size => new SizeF((float)(Right - Left), (float)(Top - Bottom));
+        public Size Size => new Size(Right - Left, Top - Bottom);
 
         public double Area => (Top - Bottom) * (Right - Left);
         public bool IsEmpty => Area.EqualTo(0);
 
-        public Rectangle(Point center, SizeF size)
+        public Rectangle(Point center, Size size)
         {
             TopLeft = center + new Point(-size.Width, size.Height);
             BottomRight = center + new Point(size.Width, -size.Height);
         }
 
-        public Rectangle(Point center, Size size) : this(center, (SizeF)size)
-        {
-        }
-
         public Rectangle(Point center, double width, double height)
-            : this(center, new SizeF((float)width, (float)height))
+            : this(center, new Size(width, height))
         {
         }
 
@@ -69,6 +64,11 @@ namespace Geometry
             }
         }
 
+        public System.Drawing.Rectangle ToDrawingRectangle()
+        {
+            return new System.Drawing.Rectangle(TopLeft.ToDrawingPoint(), Size.ToDrawingSizeF().ToSize());
+        }
+
         protected bool Equals(Rectangle other)
         {
             return Equals(TopLeft, other.TopLeft) && Equals(BottomRight, other.BottomRight);
@@ -80,15 +80,6 @@ namespace Geometry
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
             return Equals((Rectangle)obj);
-        }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                return ((TopLeft != null ? TopLeft.GetHashCode() : 0) * 397) ^
-                       (BottomRight != null ? BottomRight.GetHashCode() : 0);
-            }
         }
 
         public override string ToString()

@@ -47,6 +47,12 @@
     <Compile Include="GeometryExtensions.cs" />
     <Compile Include="TagsCloudVisualizator.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Geometry\Geometry.csproj">
+      <Project>{12755cd2-bcb6-49a1-95d3-74cac34040d6}</Project>
+      <Name>Geometry</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -100,5 +100,15 @@ namespace Geometry
         {
             return $"({x}, {y})";
         }
+
+        public System.Drawing.PointF ToDrawingPointF()
+        {
+            return new System.Drawing.PointF((float)x, (float)y);
+        }
+
+        public System.Drawing.Point ToDrawingPoint()
+        {
+            return new System.Drawing.Point((int)Math.Round(x), (int)Math.Round(y));
+        }
     }
 }
