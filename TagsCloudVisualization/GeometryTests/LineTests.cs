@@ -69,7 +69,7 @@ namespace GeometryTests
         [TestCaseSource(nameof(NonParallelIntersectionCases))]
         public Point TestIntersectNonParallerlLines(Line first, Line second)
         {
-            return first.IntersectsWith(second);
+            return first.IntersectWith(second);
         }
 
         [Test]
@@ -79,7 +79,7 @@ namespace GeometryTests
             Point B = new Point(1, 0);
             Point C = new Point(-2, 0);
             Point D = new Point(4, 0);
-            new Line(A, B).IntersectsWith(new Line(C, D)).Should().BeNull();
+            new Line(A, B).IntersectWith(new Line(C, D)).Should().BeNull();
         }
 
         [Test]
@@ -89,7 +89,7 @@ namespace GeometryTests
             Point B = new Point(1, 0);
             Point C = new Point(-2, 1);
             Point D = new Point(4, 1);
-            new Line(A, B).IntersectsWith(new Line(C, D)).Should().BeNull();
+            new Line(A, B).IntersectWith(new Line(C, D)).Should().BeNull();
         }
 
         public static TestCaseData[] EqualsCases =

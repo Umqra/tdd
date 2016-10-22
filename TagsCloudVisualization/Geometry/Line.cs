@@ -32,7 +32,7 @@ namespace Geometry
             return (P - A).CollinearTo(Direction);
         }
 
-        public Point IntersectsWith(Line otherLine)
+        public Point IntersectWith(Line otherLine)
         {
             if (this.ParallelTo(otherLine))
                 return null;

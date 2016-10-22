@@ -61,7 +61,7 @@ namespace GeometryTests
         [TestCaseSource(nameof(IntersectLineCases))]
         public Point TestIntersectionWithLine(Ray targetRay, Line testedLine)
         {
-            return targetRay.IntersectsWith(testedLine);
+            return targetRay.IntersectWith(testedLine);
         }
 
 
@@ -95,7 +95,7 @@ namespace GeometryTests
         [TestCaseSource(nameof(IntersectRayCases))]
         public Point TestIntersectionWithRay(Ray first, Ray second)
         {
-            return first.IntersectsWith(second);
+            return first.IntersectWith(second);
         }
 
         public static TestCaseData[] EqualsCases =

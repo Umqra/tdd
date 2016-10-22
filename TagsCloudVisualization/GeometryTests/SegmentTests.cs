@@ -60,7 +60,7 @@ namespace GeometryTests
         [TestCaseSource(nameof(IntersectLineCases))]
         public Point TestIntersectWithLine(Segment targetSegment, Line testedLine)
         {
-            return targetSegment.IntersectsWith(testedLine);
+            return targetSegment.IntersectWith(testedLine);
         }
 
         public static TestCaseData[] IntersectRayCases =
@@ -84,12 +84,12 @@ namespace GeometryTests
             new TestCaseData(
                 new Segment(new Point(0, 0), new Point(1, 0)),
                 new Ray(new Point(0, 1), new Point(1, 1)))
-                .Returns(null),
+                .Returns(null)
         };
         [TestCaseSource(nameof(IntersectRayCases))]
         public Point TestIntersectWithRay(Segment targetSegment, Ray testedRay)
         {
-            return targetSegment.IntersectsWith(testedRay);
+            return targetSegment.IntersectWith(testedRay);
         }
 
         public static TestCaseData[] IntersectSegmentCases =
@@ -122,7 +122,7 @@ namespace GeometryTests
         [TestCaseSource(nameof(IntersectSegmentCases))]
         public Point TestIntersectWithSegment(Segment first, Segment second)
         {
-            return first.IntersectsWith(second);
+            return first.IntersectWith(second);
         }
 
         public static TestCaseData[] DistanceCases =
@@ -137,6 +137,31 @@ namespace GeometryTests
         public void TestDistance(Segment targetSegment, Point checkedPoint, double expected)
         {
             targetSegment.DistanceTo(checkedPoint).Should().BeApproximately(expected, DoubleComparer.DefaultEpsilon);
+        }
+
+        public static TestCaseData[] EqualsCases =
+        {
+            new TestCaseData(
+                new Segment(new Point(0, 0), new Point(1, 0)),
+                new Segment(new Point(0, 0), new Point(1, 0)))
+                .Returns(true),
+            new TestCaseData(
+                new Segment(new Point(0, 0), new Point(1, 0)),
+                new Segment(new Point(1, 0), new Point(0, 0)))
+                .Returns(true),
+            new TestCaseData(
+                new Segment(new Point(0, 0), new Point(1, 0)),
+                new Segment(new Point(2, 0), new Point(0, 0)))
+                .Returns(false),
+            new TestCaseData(
+                new Segment(new Point(0, 0), new Point(1, 0)),
+                new Segment(new Point(0, 0), new Point(0, 1)))
+                .Returns(false),
+        };
+        [TestCaseSource(nameof(EqualsCases))]
+        public bool TestEquals(Segment first, Segment second)
+        {
+            return first.Equals(second);
         }
     }
 }

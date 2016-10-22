@@ -26,25 +26,25 @@ namespace Geometry
             return BaseLine.ContainsPoint(P) && (B - A).HasSameDirectionAs(P - A) && (A - B).HasSameDirectionAs(P - B);
         }
 
-        public Point IntersectsWith(Line line)
+        public Point IntersectWith(Line line)
         {
-            Point P = line.IntersectsWith(BaseLine);
+            Point P = line.IntersectWith(BaseLine);
             if (P != null && ContainsPoint(P))
                 return P;
             return null;
         }
 
-        public Point IntersectsWith(Ray ray)
+        public Point IntersectWith(Ray ray)
         {
-            Point P = ray.IntersectsWith(BaseLine);
+            Point P = ray.IntersectWith(BaseLine);
             if (P != null && ContainsPoint(P))
                 return P;
             return null;
         }
 
-        public Point IntersectsWith(Segment otherSegment)
+        public Point IntersectWith(Segment otherSegment)
         {
-            Point P = otherSegment.IntersectsWith(BaseLine);
+            Point P = otherSegment.IntersectWith(BaseLine);
             if (P != null && ContainsPoint(P))
                 return P;
             return null;

@@ -28,17 +28,17 @@ namespace Geometry
             return Direction.HasSameDirectionAs(P - From);
         }
 
-        public Point IntersectsWith(Line line)
+        public Point IntersectWith(Line line)
         {
-            Point P = BaseLine.IntersectsWith(line);
+            Point P = BaseLine.IntersectWith(line);
             if (P != null && this.ContainsPoint(P))
                 return P;
             return null;
         }
 
-        public Point IntersectsWith(Ray otherRay)
+        public Point IntersectWith(Ray otherRay)
         {
-            Point P = BaseLine.IntersectsWith(otherRay.BaseLine);
+            Point P = BaseLine.IntersectWith(otherRay.BaseLine);
             if (P != null && this.ContainsPoint(P) && otherRay.ContainsPoint(P))
                 return P;
             return null;
