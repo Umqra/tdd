@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TagsCloudVisualizationTests
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TagsCloudDemonstration", "TagCloudDemonstration\TagsCloudDemonstration.csproj", "{F88CB70D-0421-42EC-BFE8-5BCD1FE0811F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geometry", "Geometry\Geometry.csproj", "{12755CD2-BCB6-49A1-95D3-74CAC34040D6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeometryTests", "GeometryTests\GeometryTests.csproj", "{80B1AAE0-8441-417D-8B81-944A0882D0FC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{F88CB70D-0421-42EC-BFE8-5BCD1FE0811F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F88CB70D-0421-42EC-BFE8-5BCD1FE0811F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F88CB70D-0421-42EC-BFE8-5BCD1FE0811F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12755CD2-BCB6-49A1-95D3-74CAC34040D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12755CD2-BCB6-49A1-95D3-74CAC34040D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12755CD2-BCB6-49A1-95D3-74CAC34040D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12755CD2-BCB6-49A1-95D3-74CAC34040D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80B1AAE0-8441-417D-8B81-944A0882D0FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80B1AAE0-8441-417D-8B81-944A0882D0FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80B1AAE0-8441-417D-8B81-944A0882D0FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80B1AAE0-8441-417D-8B81-944A0882D0FC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
