@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TagsCloudCore", "TagsCloudVisualization\TagsCloudCore.csproj", "{46D5CA67-42D6-4FDB-9B70-759F78F8E529}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TagsCloudCore", "TagsCloudCore\TagsCloudCore.csproj", "{46D5CA67-42D6-4FDB-9B70-759F78F8E529}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TagsCloudCoreTests", "TagsCloudVisualizationTests\TagsCloudCoreTests.csproj", "{E4C7743C-6289-4C21-A04C-B9AEF1D6279F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TagsCloudCoreTests", "TagsCloudCoreTests\TagsCloudCoreTests.csproj", "{E4C7743C-6289-4C21-A04C-B9AEF1D6279F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geometry", "Geometry\Geometry.csproj", "{12755CD2-BCB6-49A1-95D3-74CAC34040D6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeometryTests", "GeometryTests\GeometryTests.csproj", "{80B1AAE0-8441-417D-8B81-944A0882D0FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleGenerator", "TagsCloudConsole\ConsoleGenerator.csproj", "{0190B0DB-2E1A-4A4F-9EA6-91BCE6AC2EAF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TagsCloudGenerator", "TagsCloudGenerator\TagsCloudGenerator.csproj", "{0190B0DB-2E1A-4A4F-9EA6-91BCE6AC2EAF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -7,8 +7,8 @@
     <ProjectGuid>{0190B0DB-2E1A-4A4F-9EA6-91BCE6AC2EAF}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TagsCloudConsole</RootNamespace>
-    <AssemblyName>TagsCloudConsole</AssemblyName>
+    <RootNamespace>TagsCloudGenerator</RootNamespace>
+    <AssemblyName>TagsCloudGenerator</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
