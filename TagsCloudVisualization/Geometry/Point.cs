@@ -18,19 +18,19 @@ namespace Geometry
         public Point Orthogonal => new Point(-y, x);
         public double Length => Math.Sqrt(x * x + y * y);
 
-        public object Quater
+        public int Quater
         {
             get
             {
                 if (this.Equals(new Point(0, 0)))
                     return 0;
-                if (x >= 0 && y > 0)
+                if (x > 0 && y >= 0)
                     return 1;
-                if (x < 0 && y >= 0)
+                if (x <= 0 && y > 0)
                     return 2;
-                if (x <= 0 && y < 0)
+                if (x < 0 && y <= 0)
                     return 3;
-                if (x > 0 && y <= 0)
+                if (x >= 0 && y < 0)
                     return 4;
                 throw new ArgumentException();
             }

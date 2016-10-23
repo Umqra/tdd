@@ -139,5 +139,41 @@ namespace GeometryTests
             Point B = new Point(4, 5);
             A.DistanceTo(B).Should().BeApproximately(3 * Math.Sqrt(2), DoubleComparer.DefaultEpsilon);
         }
+
+
+        public static TestCaseData[] QuarterCases =
+        {
+            new TestCaseData(new Point(0, 0)).Returns(0),
+            new TestCaseData(new Point(1, 0)).Returns(1),
+            new TestCaseData(new Point(0, 1)).Returns(2),
+            new TestCaseData(new Point(-1, 0)).Returns(3),
+            new TestCaseData(new Point(0, -1)).Returns(4),
+
+            new TestCaseData(new Point(1, 1)).Returns(1),
+            new TestCaseData(new Point(-1, 1)).Returns(2),
+            new TestCaseData(new Point(-1, -1)).Returns(3),
+            new TestCaseData(new Point(1, -1)).Returns(4),
+        };
+        [TestCaseSource(nameof(QuarterCases))]
+        public int TestQuarter(Point point)
+        {
+            return point.Quater;
+        }
+
+        public static TestCaseData[] AngleCases =
+        {
+            new TestCaseData(new Point(1, 1), new Point(1, 1), 0),
+            new TestCaseData(new Point(1, 1), new Point(-1, -1), Math.PI),
+            new TestCaseData(new Point(1, 0), new Point(0, 1), Math.PI / 2),
+            new TestCaseData(new Point(0, 1), new Point(1, 0), -Math.PI / 2),
+            new TestCaseData(new Point(0, 0), new Point(1, 1), 0),
+            new TestCaseData(new Point(1, 1), new Point(0, 0), 0),
+            new TestCaseData(new Point(0, 0), new Point(0, 0), 0),
+        };
+        [TestCaseSource(nameof(AngleCases))]
+        public void TestAngleTo(Point from, Point to, double expected)
+        {
+            from.AngleTo(to).Should().BeApproximately(expected, DoubleComparer.DefaultEpsilon);
+        }
     }
 }

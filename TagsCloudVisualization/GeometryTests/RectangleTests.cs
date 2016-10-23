@@ -61,5 +61,40 @@ namespace GeometryTests
         {
             return first.IntersectWith(second);
         }
+
+        public static TestCaseData[] ContainsCases =
+        {
+            new TestCaseData(new Rectangle(new Point(0, 0), new Point(2, 2)), new Point(1, 1)).Returns(true),
+            new TestCaseData(new Rectangle(new Point(0, 0), new Point(2, 2)), new Point(1, 2)).Returns(true),
+            new TestCaseData(new Rectangle(new Point(0, 0), new Point(2, 2)), new Point(-1, 1)).Returns(false),
+            new TestCaseData(new Rectangle(new Point(0, 0), new Point(2, 2)), new Point(-1, -1)).Returns(false),
+        };
+        [TestCaseSource(nameof(ContainsCases))]
+        public bool Contains(Rectangle first, Point point)
+        {
+            return first.Contains(point);
+        }
+
+        public static TestCaseData[] TouchCases =
+        {
+            new TestCaseData(
+                new Rectangle(new Point(0, 0), new Point(2, 2)), 
+                new Rectangle(new Point(2, 2), new Point(3, 3)))
+                .Returns(true), 
+            new TestCaseData(
+                new Rectangle(new Point(0, 0), new Point(2, 2)),
+                new Rectangle(new Point(2, 0), new Point(4, 2)))
+                .Returns(true),
+            new TestCaseData(
+                new Rectangle(new Point(0, 0), new Point(2, 2)),
+                new Rectangle(new Point(3, 0), new Point(5, 2)))
+                .Returns(false)
+        };
+        [TestCaseSource(nameof(TouchCases))]
+        public bool TestTouch(Rectangle first, Rectangle second)
+        {
+            return first.Touches(second);
+        }
     }
+
 }
