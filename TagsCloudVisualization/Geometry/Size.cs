@@ -28,6 +28,11 @@ namespace Geometry
             return new Point(P.x - size.Width, P.y - size.Height);
         }
 
+        public static Size operator +(Size first, Size second)
+        {
+            return new Size(first.Width + second.Width, first.Height + second.Height);
+        }
+
         public static Size operator /(Size size, double k)
         {
             return new Size(size.Width / k, size.Height / k);
@@ -36,6 +41,11 @@ namespace Geometry
         public static Size operator *(Size size, double k)
         {
             return new Size(size.Width * k, size.Height * k);
+        }
+
+        public static Size operator *(double k, Size size)
+        {
+            return size * k;
         }
 
         public static explicit operator System.Drawing.SizeF(Size size)

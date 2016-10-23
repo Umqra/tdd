@@ -7,11 +7,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TagsCloudVisualization", "T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TagsCloudVisualizationTests", "TagsCloudVisualizationTests\TagsCloudVisualizationTests.csproj", "{E4C7743C-6289-4C21-A04C-B9AEF1D6279F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TagsCloudDemonstration", "TagCloudDemonstration\TagsCloudDemonstration.csproj", "{F88CB70D-0421-42EC-BFE8-5BCD1FE0811F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TagsCloudApplication", "TagCloudDemonstration\TagsCloudApplication.csproj", "{F88CB70D-0421-42EC-BFE8-5BCD1FE0811F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geometry", "Geometry\Geometry.csproj", "{12755CD2-BCB6-49A1-95D3-74CAC34040D6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeometryTests", "GeometryTests\GeometryTests.csproj", "{80B1AAE0-8441-417D-8B81-944A0882D0FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TagsCloudConsole", "TagsCloudConsole\TagsCloudConsole.csproj", "{0190B0DB-2E1A-4A4F-9EA6-91BCE6AC2EAF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{80B1AAE0-8441-417D-8B81-944A0882D0FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{80B1AAE0-8441-417D-8B81-944A0882D0FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{80B1AAE0-8441-417D-8B81-944A0882D0FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0190B0DB-2E1A-4A4F-9EA6-91BCE6AC2EAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0190B0DB-2E1A-4A4F-9EA6-91BCE6AC2EAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0190B0DB-2E1A-4A4F-9EA6-91BCE6AC2EAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0190B0DB-2E1A-4A4F-9EA6-91BCE6AC2EAF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

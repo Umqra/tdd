@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace TagsCloudVisualization
@@ -11,8 +12,7 @@ namespace TagsCloudVisualization
     public class VisualizatorConfiguration
     {
         public Func<ICloudLayouter> Layouter { get; set; }
-        public Font Font { get; set; }
-        public Brush Brush { get; set; }
+        public Func<ICloudFormatter> Formatter { get; set; }
     }
 
     public class TagsCloudVisualizator
@@ -35,11 +35,12 @@ namespace TagsCloudVisualization
         public void CreateTagsCloud(IEnumerable<string> tags, Graphics graphics)
         {
             var layouter = Configuration.Layouter();
+            var formatter = Configuration.Formatter();
             foreach (var tag in tags)
             {
-                var boundingBox = graphics.MeasureString(tag, Configuration.Font);
-                var finalPosition = layouter.PutNextRectangle(boundingBox.ToSize());
-                graphics.DrawString(tag, Configuration.Font, Configuration.Brush, finalPosition.Location);
+                var boundingBox = formatter.MeasureString(tag, graphics);
+                var tagPlace = layouter.PutNextRectangle(boundingBox);
+                formatter.PutTag(tag, tagPlace, graphics);
             }
         }
     }

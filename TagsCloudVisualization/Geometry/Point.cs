@@ -18,6 +18,24 @@ namespace Geometry
         public Point Orthogonal => new Point(-y, x);
         public double Length => Math.Sqrt(x * x + y * y);
 
+        public object Quater
+        {
+            get
+            {
+                if (this.Equals(new Point(0, 0)))
+                    return 0;
+                if (x >= 0 && y > 0)
+                    return 1;
+                if (x < 0 && y >= 0)
+                    return 2;
+                if (x <= 0 && y < 0)
+                    return 3;
+                if (x > 0 && y <= 0)
+                    return 4;
+                throw new ArgumentException();
+            }
+        }
+
         public Point(double x, double y)
         {
             this.x = x;
@@ -119,6 +137,18 @@ namespace Geometry
         public static explicit operator Point(System.Drawing.Point point)
         {
             return new Point(point.X, point.Y);
+        }
+
+        public static Point operator -(Point point)
+        {
+            return new Point(-point.x, -point.y);
+        }
+
+        public double AngleTo(Point direction)
+        {
+            if (this.Equals(new Point(0, 0)) || direction.Equals(new Point(0, 0)))
+                return 0;
+            return Math.Atan2(CrossProduct(direction), DotProduct(direction));
         }
     }
 }
