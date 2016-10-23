@@ -100,5 +100,25 @@ namespace Geometry
         {
             return $"({x}, {y})";
         }
+        
+        public static explicit operator System.Drawing.PointF(Point point)
+        {
+            return new System.Drawing.PointF((float)point.x, (float)point.y);
+        }
+
+        public static explicit operator System.Drawing.Point(Point point)
+        {
+            return new System.Drawing.Point((int)Math.Round(point.x), (int)Math.Round(point.y));
+        }
+
+        public static explicit operator Point(System.Drawing.PointF point)
+        {
+            return new Point(point.X, point.Y);
+        }
+
+        public static explicit operator Point(System.Drawing.Point point)
+        {
+            return new Point(point.X, point.Y);
+        }
     }
 }

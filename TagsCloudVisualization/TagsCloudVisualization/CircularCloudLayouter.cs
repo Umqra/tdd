@@ -1,28 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Geometry;
 
 namespace TagsCloudVisualization
 {
     public class CircularCloudLayouter : ICloudLayouter
     {
         public Point Center { get; set; }
-        public Rectangle? LastRectangle { get; set; }
-        public CircularCloudLayouter(Point center)
+        public Rectangle LastRectangle { get; set; }
+        public CircularCloudLayouter(System.Drawing.Point center)
         {
-            Center = center;
+            Center = (Point)center;
         }
 
-        public Rectangle PutNextRectangle(Size rectangleSize)
+        public System.Drawing.Rectangle PutNextRectangle(System.Drawing.Size drawingSize)
         {
-            if (LastRectangle.HasValue)
-                LastRectangle = new Rectangle(LastRectangle.Value.Location + LastRectangle.Value.Size, rectangleSize);
+            var rectangleSize = (Size)drawingSize;
+            if (LastRectangle != null)
+                LastRectangle = new Rectangle(LastRectangle.TopRight, rectangleSize);
             else
-                LastRectangle = new Rectangle(Center, rectangleSize);
-            return LastRectangle.Value;
+                LastRectangle = new Rectangle(Center - rectangleSize / 2, rectangleSize);
+            return (System.Drawing.Rectangle)LastRectangle;
         }
     }
 }
