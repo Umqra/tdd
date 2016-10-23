@@ -3,13 +3,13 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace TagCloudDemonstration
+namespace TagsCloudVisualization
 {
     public class TagsExtractor
     {
         public IEnumerable<string> ExtractFromFile(string filename)
         {
-            var text = "";
+            string text;
             using (var file = new StreamReader(File.Open(filename, FileMode.Open)))
             {
                 text = file.ReadToEnd();

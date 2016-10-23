@@ -12,14 +12,15 @@ namespace TagsCloudVisualization
     public class FrequencyCloudFormatter : ICloudFormatter
     {
         public FontFamily FontFamily { get; set; }
-        public float MaxEmSize { get; set; }
+        public float MaxFontSizeInEm { get; set; }
         public Brush Brush { get; set; }
         public Dictionary<string, int> TagsFrequency;
-        private int maxFrequency = 0;
-        public FrequencyCloudFormatter(FontFamily fontFamily, float maxEmSize, Brush brush, IEnumerable<string> tags)
+        private int _maxFrequency = 0;
+
+        public FrequencyCloudFormatter(FontFamily fontFamily, float maxFontSizeInEm, Brush brush, IEnumerable<string> tags)
         {
             FontFamily = fontFamily;
-            MaxEmSize = maxEmSize;
+            MaxFontSizeInEm = maxFontSizeInEm;
             Brush = brush;
 
             TagsFrequency = new Dictionary<string, int>();
@@ -28,7 +29,7 @@ namespace TagsCloudVisualization
                 if (!TagsFrequency.ContainsKey(tag))
                     TagsFrequency[tag] = 0;
                 TagsFrequency[tag]++;
-                maxFrequency = Math.Max(maxFrequency, TagsFrequency[tag]);
+                _maxFrequency = Math.Max(_maxFrequency, TagsFrequency[tag]);
             }
         }
 
@@ -39,8 +40,8 @@ namespace TagsCloudVisualization
 
         private Font GetTagFont(string tag)
         {
-            var emSize = MaxEmSize * Math.Pow(((double)GetFrequence(tag) + 1) / (maxFrequency + 1), 0.7);
-            return new Font(FontFamily, (float)emSize);
+            var fontSize = MaxFontSizeInEm * Math.Pow(((double)GetFrequence(tag) + 1) / (_maxFrequency + 1), 0.7);
+            return new Font(FontFamily, (float)fontSize);
         }
 
         public Size MeasureString(string tag, Graphics graphics)

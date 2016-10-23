@@ -32,16 +32,16 @@ namespace TagsCloudVisualization
 
         private bool CanPutRectangle(Rectangle rectangle)
         {
-            foreach (var otherRectangle in Rectangles)
+            foreach (var other in Rectangles)
             {
-                var intersection = otherRectangle.IntersectWith(rectangle);
+                var intersection = other.IntersectWith(rectangle);
                 if (intersection != null && !intersection.IsEmpty)
                     return false;
             }
             return true;
         }
 
-        private IEnumerable<Rectangle> GetPossibleRectanglePositions(Point direction, Size rectangleSize)
+        private IEnumerable<Rectangle> GetRelevantRectanglePositions(Point direction, Size rectangleSize)
         {
             Ray ray = new Ray(Center, Center + direction);
             foreach (var rectangle in Rectangles)
@@ -50,22 +50,20 @@ namespace TagsCloudVisualization
                 foreach (var side in extendedRectangle.Sides)
                 {
                     var intersection = side.IntersectWith(ray);
-                    if (intersection != null)
-                    {
-                        var current = new Rectangle(intersection - rectangleSize / 2, rectangleSize);
-                        if (CanPutRectangle(current))
-                            yield return current;
-                    }
+                    if (intersection == null) continue;
+
+                    var current = new Rectangle(intersection - rectangleSize / 2, rectangleSize);
+                    if (CanPutRectangle(current))
+                        yield return current;
                 }
             }
         }
 
         private Rectangle PutNextRectangleAlongDirection(Point direction, Size rectangleSize)
         {
-            return
-                GetPossibleRectanglePositions(direction, rectangleSize)
-                    .OrderBy(rectangle => Center.DistanceTo(rectangle.Center))
-                    .First();
+            return GetRelevantRectanglePositions(direction, rectangleSize)
+                .OrderBy(rectangle => Center.DistanceTo(rectangle.Center))
+                .First();
         }
 
         private Point GetRandomDirection()
@@ -75,13 +73,12 @@ namespace TagsCloudVisualization
 
         private double GetDirectionCost(Point direction)
         {
-            var cost = Rectangles.Select(rectangle => Math.Abs((rectangle.Center - Center).AngleTo(direction))).Min();
-            return cost;
+            return Rectangles.Select(rectangle => Math.Abs((rectangle.Center - Center).AngleTo(direction))).Min();
         }
 
-        private Point GetSparseDirection()
+        private Point GetSparseDirection(int numberOfRandomDirections = 10)
         {
-            var candidates = Enumerable.Range(0, 10)
+            var candidates = Enumerable.Range(0, numberOfRandomDirections)
                 .Select(i => GetRandomDirection());
             return candidates
                 .OrderByDescending(GetDirectionCost)
