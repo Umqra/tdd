@@ -13,17 +13,17 @@ namespace TagsCloudVisualization
         public Rectangle LastRectangle { get; set; }
         public CircularCloudLayouter(System.Drawing.Point center)
         {
-            Center = center;
+            Center = (Point)center;
         }
 
         public System.Drawing.Rectangle PutNextRectangle(System.Drawing.Size drawingSize)
         {
-            var rectangleSize = new Size(drawingSize);
+            var rectangleSize = (Size)drawingSize;
             if (LastRectangle != null)
-                LastRectangle = new Rectangle(LastRectangle.TopRight + LastRectangle.Size, rectangleSize);
+                LastRectangle = new Rectangle(LastRectangle.TopRight, rectangleSize);
             else
-                LastRectangle = new Rectangle(Center, rectangleSize);
-            return LastRectangle.ToDrawingRectangle();
+                LastRectangle = new Rectangle(Center - rectangleSize / 2, rectangleSize);
+            return (System.Drawing.Rectangle)LastRectangle;
         }
     }
 }
