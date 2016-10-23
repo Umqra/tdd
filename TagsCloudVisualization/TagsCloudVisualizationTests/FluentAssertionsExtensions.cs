@@ -2,7 +2,7 @@
 using FluentAssertions;
 using FluentAssertions.Primitives;
 
-namespace TagsCloudVisualizationTests
+namespace TagsCloudCoreTests
 {
     public static class FluentAssertionsExtensions
     {

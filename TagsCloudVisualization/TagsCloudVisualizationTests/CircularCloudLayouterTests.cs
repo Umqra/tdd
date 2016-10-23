@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NUnit.Framework;
-using TagsCloudVisualization;
 using FluentAssertions;
 using Geometry;
+using NUnit.Framework;
+using TagsCloudCore;
 
 // ReSharper disable InconsistentNaming
 
-namespace TagsCloudVisualizationTests
+namespace TagsCloudCoreTests
 {
     public class CircularCloudLayouterTests
     {

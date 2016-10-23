@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace TagsCloudVisualization
+namespace TagsCloudCore
 {
     public class VisualizatorConfiguration
     {

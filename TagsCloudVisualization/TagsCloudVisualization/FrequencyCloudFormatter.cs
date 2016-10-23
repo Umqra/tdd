@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Rectangle = Geometry.Rectangle;
 using Size = Geometry.Size;
 
-namespace TagsCloudVisualization
+namespace TagsCloudCore
 {
     public class FrequencyCloudFormatter : ICloudFormatter
     {
