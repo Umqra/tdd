@@ -97,7 +97,7 @@ namespace GeometryTests
             return first.CollinearTo(second);
         }
 
-        public static TestCaseData[] TwoPointDirectionsCases =
+        public static TestCaseData[] DirectionCases =
         {
             new TestCaseData(new Point(0, 1), new Point(1, 1)).Returns(false),
             new TestCaseData(new Point(0, 1), new Point(-1, 0)).Returns(false),
@@ -105,8 +105,8 @@ namespace GeometryTests
             new TestCaseData(new Point(1, 0), new Point(0, 0)).Returns(true),
             new TestCaseData(new Point(0, 0), new Point(0, 0)).Returns(true),
         };
-        [TestCaseSource(nameof(TwoPointDirectionsCases))]
-        public bool TestTwoPointDirections(Point first, Point second)
+        [TestCaseSource(nameof(DirectionCases))]
+        public bool TestDirection(Point first, Point second)
         {
             return first.HasSameDirectionAs(second);
         }
@@ -120,9 +120,9 @@ namespace GeometryTests
             new TestCaseData(new Point(1, 0), 1).Returns(new Point(Math.Cos(1), Math.Sin(1)))   
         };
         [TestCaseSource(nameof(RotationCases))]
-        public Point TestRotation(Point target, double angle)
+        public Point TestRotation(Point direction, double angle)
         {
-            return target.Rotate(angle);
+            return direction.Rotate(angle);
         }
 
         [Test]
@@ -155,9 +155,9 @@ namespace GeometryTests
             new TestCaseData(new Point(1, -1)).Returns(4),
         };
         [TestCaseSource(nameof(QuarterCases))]
-        public int TestQuarter(Point point)
+        public int TestQuarter(Point P)
         {
-            return point.Quater;
+            return P.Quater;
         }
 
         public static TestCaseData[] AngleCases =

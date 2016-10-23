@@ -4,6 +4,8 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+// ReSharper disable InconsistentNaming
+#pragma warning disable 659
 
 namespace Geometry
 {
@@ -23,25 +25,28 @@ namespace Geometry
             To = to;
         }
 
-        public bool ContainsPoint(Point P)
+        public bool Contains(Point P)
         {
             return Direction.HasSameDirectionAs(P - From);
         }
 
-        public Point IntersectWith(Line line)
+        private Point PointIfContainsElseNull(Point P)
         {
-            Point P = BaseLine.IntersectWith(line);
-            if (P != null && this.ContainsPoint(P))
+            if (P != null && Contains(P))
                 return P;
             return null;
         }
 
-        public Point IntersectWith(Ray otherRay)
+        public Point IntersectWith(Line line)
         {
-            Point P = BaseLine.IntersectWith(otherRay.BaseLine);
-            if (P != null && this.ContainsPoint(P) && otherRay.ContainsPoint(P))
-                return P;
-            return null;
+            Point P = line.IntersectWith(BaseLine);
+            return PointIfContainsElseNull(P);
+        }
+
+        public Point IntersectWith(Ray other)
+        {
+            Point P = other.IntersectWith(BaseLine);
+            return PointIfContainsElseNull(P);
         }
 
         public double DistanceTo(Point P)

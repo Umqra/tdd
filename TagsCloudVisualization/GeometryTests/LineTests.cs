@@ -39,16 +39,16 @@ namespace GeometryTests
             return first.ParallelTo(second);
         }
 
-        public static TestCaseData[] ContainCases =
+        public static TestCaseData[] ContainsCases =
         {
             new TestCaseData(new Line(new Point(0, 0), new Point(1, 0)), new Point(2, 0)).Returns(true),
             new TestCaseData(new Line(new Point(0, 0), new Point(1, 1)), new Point(3, 4)).Returns(false),
             new TestCaseData(new Line(new Point(0, 0), new Point(1, 1)), new Point(0, 0)).Returns(true),
         };
-        [TestCaseSource(nameof(ContainCases))]
-        public bool TestContain(Line targetLine, Point testedPoint)
+        [TestCaseSource(nameof(ContainsCases))]
+        public bool TestContains(Line line, Point P)
         {
-            return targetLine.ContainsPoint(testedPoint);
+            return line.Contains(P);
         }
 
         public static TestCaseData[] NonParallelIntersectionCases =
@@ -116,9 +116,9 @@ namespace GeometryTests
             new TestCaseData(new Line(new Point(0, 0), new Point(1, 1)), new Point(0, 1), Math.Sqrt(2) / 2),
         };
         [TestCaseSource(nameof(DistanceCases))]
-        public void TestDistance(Line target, Point checkedPoint, double expected)
+        public void TestDistance(Line line, Point P, double expected)
         {
-            target.DistanceTo(checkedPoint).Should().BeApproximately(expected, DoubleComparer.DefaultEpsilon);
+            line.DistanceTo(P).Should().BeApproximately(expected, DoubleComparer.DefaultEpsilon);
         }
 
         public static TestCaseData[] PerpendicularCases =
@@ -128,9 +128,9 @@ namespace GeometryTests
             new TestCaseData(new Line(new Point(0, 0), new Point(1, 1)), new Point(0, 1)).Returns(new Point(0.5, 0.5))
         };
         [TestCaseSource(nameof(PerpendicularCases))]
-        public Point TestPerpendicular(Line target, Point from)
+        public Point TestPerpendicular(Line line, Point P)
         {
-            return target.PerpendicularFrom(from);
+            return line.PerpendicularFrom(P);
         }
     }
 }

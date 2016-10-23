@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+// ReSharper disable InconsistentNaming
+#pragma warning disable 659
 
 namespace Geometry
 {
-#pragma warning disable CS0659 // Тип переопределяет Object.Equals(object o), но не переопределяет Object.GetHashCode()
     public class Point
-#pragma warning restore CS0659 // Тип переопределяет Object.Equals(object o), но не переопределяет Object.GetHashCode()
     {
         // ReSharper disable InconsistentNaming
         public readonly double x;
@@ -42,29 +42,29 @@ namespace Geometry
             this.y = y;
         }
         
-        public static Point operator + (Point a, Point b)
+        public static Point operator + (Point A, Point B)
         {
-            return new Point(a.x + b.x, a.y + b.y);
+            return new Point(A.x + B.x, A.y + B.y);
         }
 
-        public static Point operator -(Point a, Point b)
+        public static Point operator -(Point A, Point B)
         {
-            return new Point(a.x - b.x, a.y - b.y);
+            return new Point(A.x - B.x, A.y - B.y);
         }
 
-        public static Point operator *(Point a, double k)
+        public static Point operator *(Point A, double k)
         {
-            return new Point(a.x * k, a.y * k);
+            return new Point(A.x * k, A.y * k);
         }
 
-        public static Point operator *(double k, Point a)
+        public static Point operator *(double k, Point A)
         {
-            return new Point(a.x * k, a.y * k);
+            return new Point(A.x * k, A.y * k);
         }
 
-        public static Point operator /(Point a, double k)
+        public static Point operator /(Point A, double k)
         {
-            return new Point(a.x / k, a.y / k);
+            return new Point(A.x / k, A.y / k);
         }
 
         public double DotProduct(Point other)
@@ -94,9 +94,9 @@ namespace Geometry
             return new Point(x * cosAngle - y * sinAngle, x * sinAngle + y * cosAngle);
         }
 
-        public double DistanceTo(Point point)
+        public double DistanceTo(Point other)
         {
-            return (this - point).Length;
+            return (this - other).Length;
         }
 
         protected bool Equals(Point other)
@@ -104,9 +104,7 @@ namespace Geometry
             return x.EqualTo(other.x) && y.EqualTo(other.y);
         }
 
-#pragma warning disable 659
         public override bool Equals(object obj)
-#pragma warning restore 659
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
@@ -119,29 +117,29 @@ namespace Geometry
             return $"({x}, {y})";
         }
         
-        public static explicit operator System.Drawing.PointF(Point point)
+        public static explicit operator System.Drawing.PointF(Point P)
         {
-            return new System.Drawing.PointF((float)point.x, (float)point.y);
+            return new System.Drawing.PointF((float)P.x, (float)P.y);
         }
 
-        public static explicit operator System.Drawing.Point(Point point)
+        public static explicit operator System.Drawing.Point(Point P)
         {
-            return new System.Drawing.Point((int)Math.Round(point.x), (int)Math.Round(point.y));
+            return new System.Drawing.Point((int)Math.Round(P.x), (int)Math.Round(P.y));
         }
 
-        public static explicit operator Point(System.Drawing.PointF point)
+        public static explicit operator Point(System.Drawing.PointF P)
         {
-            return new Point(point.X, point.Y);
+            return new Point(P.X, P.Y);
         }
 
-        public static explicit operator Point(System.Drawing.Point point)
+        public static explicit operator Point(System.Drawing.Point P)
         {
-            return new Point(point.X, point.Y);
+            return new Point(P.X, P.Y);
         }
 
-        public static Point operator -(Point point)
+        public static Point operator -(Point P)
         {
-            return new Point(-point.x, -point.y);
+            return new Point(-P.x, -P.y);
         }
 
         public double AngleTo(Point direction)

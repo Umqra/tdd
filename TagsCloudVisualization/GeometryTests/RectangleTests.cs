@@ -70,12 +70,12 @@ namespace GeometryTests
             new TestCaseData(new Rectangle(new Point(0, 0), new Point(2, 2)), new Point(-1, -1)).Returns(false),
         };
         [TestCaseSource(nameof(ContainsCases))]
-        public bool Contains(Rectangle first, Point point)
+        public bool Contains(Rectangle rectangle, Point P)
         {
-            return first.Contains(point);
+            return rectangle.Contains(P);
         }
 
-        public static TestCaseData[] TouchCases =
+        public static TestCaseData[] TouchesCases =
         {
             new TestCaseData(
                 new Rectangle(new Point(0, 0), new Point(2, 2)), 
@@ -90,8 +90,8 @@ namespace GeometryTests
                 new Rectangle(new Point(3, 0), new Point(5, 2)))
                 .Returns(false)
         };
-        [TestCaseSource(nameof(TouchCases))]
-        public bool TestTouch(Rectangle first, Rectangle second)
+        [TestCaseSource(nameof(TouchesCases))]
+        public bool TestTouches(Rectangle first, Rectangle second)
         {
             return first.Touches(second);
         }
