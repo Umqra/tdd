@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Geometry;
 
-namespace TagsCloudVisualization
+namespace TagsCloudCore
 {
     public interface ICloudLayouter
     {

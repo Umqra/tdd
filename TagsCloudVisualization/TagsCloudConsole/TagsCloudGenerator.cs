@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Text;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Fclp;
-using TagsCloudVisualization;
+using TagsCloudCore;
 
 namespace TagsCloudConsole
 {
@@ -91,8 +92,10 @@ namespace TagsCloudConsole
             if (options.OutputFilename != null)
             {
                 var image = new Bitmap(options.Width, options.Height);
-                Graphics.FromImage(image).Clear(GetColor(options.BackgroundColor));
-                visualizator.CreateTagsCloud(tags.Distinct(), Graphics.FromImage(image));
+                var graphics = Graphics.FromImage(image);
+                graphics.TextRenderingHint = TextRenderingHint.AntiAlias;
+                graphics.Clear(GetColor(options.BackgroundColor));
+                visualizator.CreateTagsCloud(tags.Distinct(), graphics);
                 image.Save(options.OutputFilename);
             }
             else

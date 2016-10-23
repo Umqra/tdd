@@ -64,9 +64,9 @@
       <Project>{12755cd2-bcb6-49a1-95d3-74cac34040d6}</Project>
       <Name>Geometry</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TagsCloudVisualization\TagsCloudVisualization.csproj">
+    <ProjectReference Include="..\TagsCloudVisualization\TagsCloudCore.csproj">
       <Project>{46D5CA67-42D6-4FDB-9B70-759F78F8E529}</Project>
-      <Name>TagsCloudVisualization</Name>
+      <Name>TagsCloudCore</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
