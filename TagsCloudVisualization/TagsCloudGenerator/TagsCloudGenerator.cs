@@ -17,6 +17,8 @@ namespace TagsCloudGenerator
         public int MaximumFontSize { get; set; }
         public string BackgroundColor { get; set; }
         public string ForegroundColor { get; set; }
+
+        public string LayouterName { get; set; }
     }
     class TagsCloudGenerator
     {
@@ -25,6 +27,15 @@ namespace TagsCloudGenerator
             if (colorRepresentation[0] == '#')
                 return ColorTranslator.FromHtml(colorRepresentation);
             return Color.FromName(colorRepresentation);
+        }
+
+        static Func<Geometry.Point, ICloudLayouter> GetLayouterByName(string name)
+        {
+            if (name == "random")
+                return center => new RandomDirectionsCloudLayouter(center);
+            if (name == "sparse")
+                return center => new RandomSparseCloudLayouter(center);
+            throw new ArgumentException("Unknown layouter name");
         }
 
         static FluentCommandLineParser<GeneratorOptions> ConfigureCommandParser()
@@ -57,6 +68,10 @@ namespace TagsCloudGenerator
                 .As("fc")
                 .WithDescription("Text color")
                 .SetDefault("black");
+            parser.Setup(arg => arg.LayouterName)
+                .As('l', "layouter")
+                .WithDescription("Choose implementation of layouter")
+                .SetDefault("sparse");
 
             parser.SetupHelp("help", "?")
                 .Callback(text => Console.WriteLine(text));
@@ -77,13 +92,11 @@ namespace TagsCloudGenerator
                 new VisualizatorConfiguration
                 {
                     Layouter =
-                        () =>
-                            new RandomDirectionsCloudLayouter(new Geometry.Point(options.Width / 2.0,
-                                options.Height / 2.0)),
+                        () => GetLayouterByName(options.LayouterName)(new Geometry.Point(options.Width / 2.0,
+                            options.Height / 2.0)),
                     Formatter =
-                        () =>
-                            new FrequencyCloudFormatter(FontFamily.GenericSerif, options.MaximumFontSize,
-                                new SolidBrush(GetColor(options.ForegroundColor)), tags)
+                        () => new FrequencyCloudFormatter(FontFamily.GenericSerif, options.MaximumFontSize,
+                            new SolidBrush(GetColor(options.ForegroundColor)), tags)
                 }
             );
             if (options.OutputFilename != null)
