@@ -12,6 +12,7 @@ namespace TagsCloudCore
         private Random Random { get; }
         public Point Center { get; set; }
         public List<Rectangle> Rectangles { get; set; }
+
         public RandomDirectionsCloudLayouter(Point center)
         {
             Random = new Random(0);
