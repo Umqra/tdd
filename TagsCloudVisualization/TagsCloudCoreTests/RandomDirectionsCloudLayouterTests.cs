@@ -1,32 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.IO;
 using System.Linq;
 using FluentAssertions;
-using Geometry;
 using NUnit.Framework;
+using NUnit.Framework.Interfaces;
 using TagsCloudCore;
+using Point = Geometry.Point;
+using Rectangle = Geometry.Rectangle;
+using Size = Geometry.Size;
 
 // ReSharper disable InconsistentNaming
 
 namespace TagsCloudCoreTests
 {
-    public class RandomDirectionsCloudLayouterTests
+    public abstract class CloudLayouterTests
     {
-        public static TestCaseData[] FirstRectangleParameters = 
-        {
-            new TestCaseData(new Point(0, 0), new Size(2, 2)),
-            new TestCaseData(new Point(10, 10), new Size(2, 2)),
-        };
-        [TestCaseSource(nameof(FirstRectangleParameters))]
-        public void FirstRectangleMustContainCenter(Point center, Size rectangleSize)
-        {
-            var layouter = new RandomDirectionsCloudLayouter(center);
-            var rectangle = layouter.PutNextRectangle(rectangleSize);
+        public abstract ICloudLayouter Layouter { get; set; }
+        public abstract int ScaleFactor { get; }
 
-            rectangle.Should().Match<Rectangle>(r => r.Contains(center));
-        }
-
-        public static TestCaseData[] TwoRectangleParameters =
+        public static TestCaseData[] TwoRectangleCases =
         { 
             new TestCaseData((object)new [] {new Size(2, 2), new Size(2, 2)}),
             new TestCaseData((object)new [] {new Size(1, 2), new Size(2, 1)}),
@@ -34,13 +29,12 @@ namespace TagsCloudCoreTests
             new TestCaseData((object)new [] {new Size(3, 1), new Size(3, 1), new Size(3, 1)}),
             new TestCaseData((object)new [] {new Size(3, 1), new Size(1, 1), new Size(4, 2), new Size(3, 3)})
         };
-        [TestCaseSource(nameof(TwoRectangleParameters))]
-        public void RectanglesCanNotOverlap(Size[] rectangleSizes)
+        [TestCaseSource(nameof(TwoRectangleCases))]
+        public void Rectangles_ShouldNotOverlap(Size[] rectangleSizes)
         {
-            var layouter = new RandomDirectionsCloudLayouter(new Point(0, 0));
             var rectangles = new List<Rectangle>();
             foreach (var size in rectangleSizes)
-                rectangles.Add(layouter.PutNextRectangle(size));
+                rectangles.Add(Layouter.PutNextRectangle(size));
             for (int i = 0; i < rectangles.Count; i++)
                 for (int s = i + 1; s < rectangles.Count; s++)
                 {
@@ -58,12 +52,11 @@ namespace TagsCloudCoreTests
             new TestCaseData((object)new [] {new Size(3, 1), new Size(1, 1), new Size(4, 2), new Size(3, 3)})
         };
         [TestCaseSource(nameof(TouchCases))]
-        public void EachRectangleMustTouchAnother(Size[] rectangleSizes)
+        public void EachRectangle_ShouldTouchesAnother(Size[] rectangleSizes)
         {
-            var layouter = new RandomDirectionsCloudLayouter(new Point(0, 0));
             var rectangles = new List<Rectangle>();
             foreach (var size in rectangleSizes)
-                rectangles.Add(layouter.PutNextRectangle(size));
+                rectangles.Add(Layouter.PutNextRectangle(size));
             for (int i = 0; i < rectangles.Count; i++)
             {
                 bool touchAny = false;
@@ -78,28 +71,117 @@ namespace TagsCloudCoreTests
         }
         
         [TestCase(10)]
-        public void ManyRectanglesMustAppearsInAnyQuater(int amount)
+        public void Rectangles_ShouldAppearInAnyQuater(int numberOfRectangles)
         {
-            var layouter = new RandomDirectionsCloudLayouter(new Point(0, 0));
-            Enumerable.Range(0, amount)
-                .Select(i => layouter.PutNextRectangle(new Size(1, 1)))
+            Enumerable.Range(0, numberOfRectangles)
+                .Select(i => Layouter.PutNextRectangle(new Size(1, 1)))
                 .Select(rect => rect.Center.Quater)
                 .Distinct()
                 .Should().HaveCount(5);
         }
 
+
+        [TestCase(10)]
+        [TestCase(20)]
+        public void BoundingBox_ShouldBeApproximatelySquare(int numberOfRectangles)
+        {
+            IEnumerable<Point> allCorners = Enumerable.Empty<Point>();
+            for (int i = 0; i < numberOfRectangles; i++)
+                allCorners = allCorners.Concat(Layouter.PutNextRectangle(new Size(1, 1)).Corners);
+            Rectangle boundingBox = Rectangle.BoundingBoxOf(allCorners);
+            boundingBox.Size.Width.Should()
+                .BeGreaterThan(boundingBox.Size.Height / 2)
+                .And
+                .BeLessThan(boundingBox.Size.Height * 2);
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            var testContext = TestContext.CurrentContext;
+            if (testContext.Result.Outcome.Status != TestStatus.Failed)
+                return;
+            var image = Layouter.Rectangles.CreateImage(ScaleFactor, new SolidBrush(Color.FromArgb(100, 100, 100, 255)));
+            var imageDestination = Path.Combine(testContext.TestDirectory, testContext.Test.FullName + ".bmp");
+            image.Save(imageDestination);
+            TestContext.Out.Write("Generated layout written in {0}", imageDestination);
+        }
+    }
+
+    [TestFixture]
+    public class RandomDirectionsCloudLayouterTests : CloudLayouterTests
+    {
+        public override ICloudLayouter Layouter { get; set; }
+        public override int ScaleFactor => 100;
+
+        [SetUp]
+        public void SetUp()
+        {
+            Layouter = new RandomDirectionsCloudLayouter(new Point(0, 0));
+        }
+
+        public static TestCaseData[] FirstRectangleCases =
+        {
+            new TestCaseData(new Point(0, 0), new Size(2, 2)),
+            new TestCaseData(new Point(10, 10), new Size(2, 2)),
+        };
+        [TestCaseSource(nameof(FirstRectangleCases))]
+        public void FirstRectangle_ShouldContainCenter(Point center, Size rectangleSize)
+        {
+            Layouter = new RandomDirectionsCloudLayouter(center);
+            var rectangle = Layouter.PutNextRectangle(rectangleSize);
+            rectangle.Should().Match<Rectangle>(r => r.Contains(center));
+        }
+
+        [TestCase(50)]
+        public void Rectangles_ShouldOccupyMostOfFreeSpace(int numberOfRectangles)
+        {
+            IEnumerable<Point> allCorners = Enumerable.Empty<Point>();
+            double rectanglesArea = numberOfRectangles;
+            for (int i = 0; i < numberOfRectangles; i++)
+                allCorners = allCorners.Concat(Layouter.PutNextRectangle(new Size(1, 1)).Corners);
+            Rectangle boundingBox = Rectangle.BoundingBoxOf(allCorners);
+
+            rectanglesArea.Should().BeGreaterThan(boundingBox.Area / 2);
+        }
+    }
+
+    [TestFixture]
+    public class RandomSparseCloudLayouterTests : CloudLayouterTests
+    {
+        public override ICloudLayouter Layouter { get; set; }
+        public override int ScaleFactor => 100;
+
+        [SetUp]
+        public void SetUp()
+        {
+            Layouter = new RandomSparseCloudLayouter(new Point(0, 0));
+        }
+
+        public static TestCaseData[] FirstRectangleCases =
+        {
+            new TestCaseData(new Point(0, 0), new Size(2, 2)),
+            new TestCaseData(new Point(10, 10), new Size(2, 2)),
+        };
+        [TestCaseSource(nameof(FirstRectangleCases))]
+        public void FirstRectangle_ShouldContainCenter(Point center, Size rectangleSize)
+        {
+            Layouter = new RandomSparseCloudLayouter(center);
+            var rectangle = Layouter.PutNextRectangle(rectangleSize);
+            rectangle.Should().Match<Rectangle>(r => r.Contains(center));
+        }
+
         public static TestCaseData[] OppositeDirectionCases =
         {
             new TestCaseData((object)new [] {new Size(2, 2), new Size(2, 2), new Size(2, 2)}),
-            new TestCaseData((object)new [] {new Size(3, 1), new Size(3, 1), new Size(3, 1)}),
+            new TestCaseData((object)new [] {new Size(3, 1), new Size(1, 3), new Size(2, 4)}),
         };
         [TestCaseSource(nameof(OppositeDirectionCases))]
-        public void SecondAndThirdRectanglesInOppositeDirections(Size[] rectangleSizes)
+        public void SecondAndThirdRectangles_LocatedInOppositeDirections(Size[] rectangleSizes)
         {
-            var layouter = new RandomDirectionsCloudLayouter(new Point(0, 0));
             var rectangles = new List<Rectangle>();
             foreach (var size in rectangleSizes)
-                rectangles.Add(layouter.PutNextRectangle(size));
+                rectangles.Add(Layouter.PutNextRectangle(size));
             Point secondDirection = rectangles[1].Center - rectangles[0].Center;
             Point thirdDirection = rectangles[2].Center - rectangles[0].Center;
             Math.Abs(secondDirection.AngleTo(thirdDirection)).Should().BeGreaterThan(Math.PI / 2);

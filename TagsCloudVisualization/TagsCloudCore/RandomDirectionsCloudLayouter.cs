@@ -12,6 +12,7 @@ namespace TagsCloudCore
         private Random Random { get; }
         public Point Center { get; set; }
         public List<Rectangle> Rectangles { get; set; }
+
         public RandomDirectionsCloudLayouter(Point center)
         {
             Random = new Random(0);
@@ -23,14 +24,23 @@ namespace TagsCloudCore
         {
             Rectangle current;
             if (Rectangles.Any())
-                current = PutNextRectangleAlongDirection(GetSparseDirection(), rectangleSize);
+                current = ChooseNextPlace(rectangleSize);
             else
                 current = new Rectangle(Center - rectangleSize / 2, rectangleSize);
             Rectangles.Add(current);
             return current;
         }
 
-        private bool CanPutRectangle(Rectangle rectangle)
+        private int NumberOfRandomDirections = 10;
+        protected virtual Rectangle ChooseNextPlace(Size rectangleSize)
+        {
+            return Enumerable.Range(0, NumberOfRandomDirections)
+                .Select(i => PutNextRectangleAlongDirection(GetRandomDirection(), rectangleSize))
+                .OrderBy(rectangle => Center.DistanceTo(rectangle.Center))
+                .First();
+        }
+
+        protected bool CanPutRectangle(Rectangle rectangle)
         {
             foreach (var other in Rectangles)
             {
@@ -41,7 +51,7 @@ namespace TagsCloudCore
             return true;
         }
 
-        private IEnumerable<Rectangle> GetRelevantRectanglePositions(Point direction, Size rectangleSize)
+        protected IEnumerable<Rectangle> GetRelevantRectanglePositions(Point direction, Size rectangleSize)
         {
             Ray ray = new Ray(Center, Center + direction);
             foreach (var rectangle in Rectangles)
@@ -59,16 +69,33 @@ namespace TagsCloudCore
             }
         }
 
-        private Rectangle PutNextRectangleAlongDirection(Point direction, Size rectangleSize)
+        protected Rectangle PutNextRectangleAlongDirection(Point direction, Size rectangleSize)
         {
             return GetRelevantRectanglePositions(direction, rectangleSize)
                 .OrderBy(rectangle => Center.DistanceTo(rectangle.Center))
                 .First();
         }
 
-        private Point GetRandomDirection()
+        protected Point GetRandomDirection()
         {
             return new Point(1, 0).Rotate(Random.NextDouble() * 2 * Math.PI);
+        }
+    }
+
+    public class RandomSparseCloudLayouter : RandomDirectionsCloudLayouter
+    {
+        public RandomSparseCloudLayouter(Point center) : base(center)
+        {
+        }
+
+        private int NumberOfRandomDirections = 10;
+        protected override Rectangle ChooseNextPlace(Size rectangleSize)
+        {
+            var direction = Enumerable.Range(0, NumberOfRandomDirections)
+                .Select(i => GetRandomDirection())
+                .OrderBy(GetDirectionCost)
+                .First();
+            return PutNextRectangleAlongDirection(direction, rectangleSize);
         }
 
         private double GetDirectionCost(Point direction)

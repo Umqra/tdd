@@ -30,7 +30,26 @@ namespace GeometryTests
                 new Segment(new Point(1, 1), new Point(1, 0)),
                 new Segment(new Point(1, 1), new Point(0, 1))
             };
-            rectangle.Sides.Should().OnlyContain(segment => expectedSides.Contains(segment));
+            rectangle.Sides.ShouldBeEquivalentTo(expectedSides, options => options.ExcludingNestedObjects());
+        }
+
+        [Test]
+        public void TestSidesOfDegenerateRectangle()
+        {
+            var rectangle = new Rectangle(new Point(0, 1), new Point(0, 0));
+            var expectedSides = new[]
+            {
+                new Segment(new Point(0, 0), new Point(0, 1)),
+                new Segment(new Point(0, 1), new Point(0, 0)),
+            };
+            rectangle.Sides.ShouldBeEquivalentTo(expectedSides, options => options.ExcludingNestedObjects());
+        }
+
+        [Test]
+        public void TestSideOfSingularRectangle()
+        {
+            var rectangle = new Rectangle(new Point(0, 0), new Point(0, 0));
+            rectangle.Sides.ShouldBeEquivalentTo(new Segment[] {}, options => options.ExcludingNestedObjects());
         }
 
         public static TestCaseData[] IntersectCases =
@@ -95,6 +114,54 @@ namespace GeometryTests
         {
             return first.Touches(second);
         }
+
+        [Test]
+        public void TestCorners()
+        {
+            var rectangle = new Rectangle(new Point(0, 2), new Point(2, 0));
+            var expectedCorners = new[]
+            {
+                new Point(0, 0),
+                new Point(2, 0),
+                new Point(0, 2),
+                new Point(2, 2)
+            };
+            rectangle.Corners.ShouldBeEquivalentTo(expectedCorners, options => options.ExcludingNestedObjects());
+        }
+
+        [Test]
+        public void TestCornersOfDegenerateRectangle()
+        {
+            var rectangle = new Rectangle(new Point(0, 0), new Point(0, 2));
+            var expectedCorners = new[]
+            {
+                new Point(0, 0),
+                new Point(0, 2),
+                new Point(0, 2),
+                new Point(0, 0)
+            };
+            rectangle.Corners.ShouldBeEquivalentTo(expectedCorners, options => options.ExcludingNestedObjects());
+        }
+
+        public static TestCaseData[] BoundingBoxCases =
+        {
+            new TestCaseData((object)(new Point[] {}))
+                .Returns(null),
+            new TestCaseData((object)new[] {new Point(0, 0)})
+                .Returns(new Rectangle(new Point(0, 0), new Point(0, 0))),
+            new TestCaseData((object)new[] {new Point(0, 0), new Point(0, 1)})
+                .Returns(new Rectangle(new Point(0, 0), new Point(0, 1))),
+            new TestCaseData((object)new[] {new Point(0, 2), new Point(2, 0)})
+                .Returns(new Rectangle(new Point(0, 0), new Point(2, 2))),
+            new TestCaseData((object)new[] {new Point(0, 1), new Point(2, 0), new Point(-1, 3), new Point(0, 5)})
+                .Returns(new Rectangle(new Point(-1, 0), new Point(2, 5)))
+        };
+        [TestCaseSource(nameof(BoundingBoxCases))]
+        public Rectangle TestBoundingBox(Point[] points)
+        {
+            return Rectangle.BoundingBoxOf(points);
+        }
     }
 
 }
+
