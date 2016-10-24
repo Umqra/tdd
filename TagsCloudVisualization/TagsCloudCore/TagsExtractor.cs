@@ -7,6 +7,23 @@ namespace TagsCloudCore
 {
     public class TagsExtractor
     {
+        public static string[] AuxiliaryWords =
+        {
+            "the",
+            "and",
+            "that",
+            "this",
+            "then",
+            "than",
+            "are",
+            "which",
+            "where",
+            "what",
+            "for",
+            "was",
+            "not",
+            "there"
+        };
         public IEnumerable<string> ExtractFromFile(string filename)
         {
             string text;
@@ -17,7 +34,8 @@ namespace TagsCloudCore
             return
                 Regex.Split(text, @"\b")
                     .Where(tag => tag.All(char.IsLetter) && tag.Length > 2)
-                    .Select(tag => tag.ToLower());
+                    .Select(tag => tag.ToLower())
+                    .Where(tag => !AuxiliaryWords.Contains(tag));
         }
     }
 }
