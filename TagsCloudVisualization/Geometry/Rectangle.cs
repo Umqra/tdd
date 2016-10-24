@@ -4,6 +4,8 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+// ReSharper disable InconsistentNaming
+#pragma warning disable 659
 
 namespace Geometry
 {
@@ -19,7 +21,7 @@ namespace Geometry
 
         public Point Center => (TopLeft + BottomRight) / 2;
         public Point TopLeft => new Point(Left, Top);
-        public Point BottomRight => new Point(Bottom, Right);
+        public Point BottomRight => new Point(Right, Bottom);
         public Size Size => new Size(Right - Left, Top - Bottom);
 
         public double Area => (Top - Bottom) * (Right - Left);
@@ -100,6 +102,19 @@ namespace Geometry
         public override string ToString()
         {
             return $"RT[{BottomLeft},{TopRight}]";
+        }
+
+        public bool Contains(Point P)
+        {
+            return Left.LessThanOrEqualTo(P.x) && P.x.LessThanOrEqualTo(Right) &&
+                   Bottom.LessThanOrEqualTo(P.y) && P.y.LessThanOrEqualTo(Top);
+        }
+
+        public bool Touches(Rectangle rectangle)
+        {
+            var intersection = IntersectWith(rectangle);
+            return intersection != null &&
+                   (intersection.Left.EqualTo(intersection.Right) || intersection.Bottom.EqualTo(intersection.Top));
         }
     }
 }

@@ -29,9 +29,9 @@ namespace GeometryTests
             new TestCaseData(new Segment(new Point(0, 0), new Point(1, 0)), new Point(2, 2)).Returns(false)   
         };
         [TestCaseSource(nameof(ContainsCases))]
-        public bool TestContains(Segment targetSegment, Point checkedPoint)
+        public bool TestContains(Segment segment, Point P)
         {
-            return targetSegment.ContainsPoint(checkedPoint);
+            return segment.Contains(P);
         }
 
         public static TestCaseData[] IntersectLineCases =
@@ -58,9 +58,9 @@ namespace GeometryTests
                 .Returns(null), 
         };
         [TestCaseSource(nameof(IntersectLineCases))]
-        public Point TestIntersectWithLine(Segment targetSegment, Line testedLine)
+        public Point TestIntersectWithLine(Segment segment, Line line)
         {
-            return targetSegment.IntersectWith(testedLine);
+            return segment.IntersectWith(line);
         }
 
         public static TestCaseData[] IntersectRayCases =
@@ -87,9 +87,9 @@ namespace GeometryTests
                 .Returns(null)
         };
         [TestCaseSource(nameof(IntersectRayCases))]
-        public Point TestIntersectWithRay(Segment targetSegment, Ray testedRay)
+        public Point TestIntersectWithRay(Segment segment, Ray ray)
         {
-            return targetSegment.IntersectWith(testedRay);
+            return segment.IntersectWith(ray);
         }
 
         public static TestCaseData[] IntersectSegmentCases =
@@ -134,9 +134,9 @@ namespace GeometryTests
             new TestCaseData(new Segment(new Point(0, 0), new Point(2, 0)), new Point(1, 0), 0),
         };
         [TestCaseSource(nameof(DistanceCases))]
-        public void TestDistance(Segment targetSegment, Point checkedPoint, double expected)
+        public void TestDistance(Segment segment, Point P, double expected)
         {
-            targetSegment.DistanceTo(checkedPoint).Should().BeApproximately(expected, DoubleComparer.DefaultEpsilon);
+            segment.DistanceTo(P).Should().BeApproximately(expected, DoubleComparer.DefaultEpsilon);
         }
 
         public static TestCaseData[] EqualsCases =

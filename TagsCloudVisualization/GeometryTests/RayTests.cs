@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Geometry;
 using NUnit.Framework;
+// ReSharper disable InconsistentNaming
 
 namespace GeometryTests
 {
@@ -21,17 +22,17 @@ namespace GeometryTests
             act.ShouldThrow<ArgumentException>();
         }
 
-        public static TestCaseData[] ContainCases =
+        public static TestCaseData[] ContainsCases =
         {
             new TestCaseData(new Ray(new Point(0, 0), new Point(1, 1)), new Point(2, 2)).Returns(true),
             new TestCaseData(new Ray(new Point(0, 0), new Point(1, 1)), new Point(0, 0)).Returns(true),
             new TestCaseData(new Ray(new Point(0, 0), new Point(1, 1)), new Point(-1, -1)).Returns(false),
             new TestCaseData(new Ray(new Point(0, 0), new Point(1, 1)), new Point(0, 1)).Returns(false),
         };
-        [TestCaseSource(nameof(ContainCases))]
-        public bool TestContain(Ray targetRay, Point testedPoint)
+        [TestCaseSource(nameof(ContainsCases))]
+        public bool TestContains(Ray ray, Point P)
         {
-            return targetRay.ContainsPoint(testedPoint);
+            return ray.Contains(P);
         }
 
         public static TestCaseData[] IntersectLineCases =
@@ -59,9 +60,9 @@ namespace GeometryTests
         };
 
         [TestCaseSource(nameof(IntersectLineCases))]
-        public Point TestIntersectionWithLine(Ray targetRay, Line testedLine)
+        public Point TestIntersectionWithLine(Ray ray, Line line)
         {
-            return targetRay.IntersectWith(testedLine);
+            return ray.IntersectWith(line);
         }
 
 

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+// ReSharper disable InconsistentNaming
+#pragma warning disable 659
 
 namespace Geometry
 {
@@ -21,33 +23,36 @@ namespace Geometry
             this.B = B;
         }
 
-        public bool ContainsPoint(Point P)
+        public bool Contains(Point P)
         {
-            return BaseLine.ContainsPoint(P) && (B - A).HasSameDirectionAs(P - A) && (A - B).HasSameDirectionAs(P - B);
+            return BaseLine.Contains(P) &&
+                   (B - A).HasSameDirectionAs(P - A) &&
+                   (A - B).HasSameDirectionAs(P - B);
+        }
+
+        private Point PointIfContainsElseNull(Point P)
+        {
+            if (P != null && Contains(P))
+                return P;
+            return null;
         }
 
         public Point IntersectWith(Line line)
         {
             Point P = line.IntersectWith(BaseLine);
-            if (P != null && ContainsPoint(P))
-                return P;
-            return null;
+            return PointIfContainsElseNull(P);
         }
 
         public Point IntersectWith(Ray ray)
         {
             Point P = ray.IntersectWith(BaseLine);
-            if (P != null && ContainsPoint(P))
-                return P;
-            return null;
+            return PointIfContainsElseNull(P);
         }
 
-        public Point IntersectWith(Segment otherSegment)
+        public Point IntersectWith(Segment other)
         {
-            Point P = otherSegment.IntersectWith(BaseLine);
-            if (P != null && ContainsPoint(P))
-                return P;
-            return null;
+            Point P = other.IntersectWith(BaseLine);
+            return PointIfContainsElseNull(P);
         }
 
         public double DistanceTo(Point P)

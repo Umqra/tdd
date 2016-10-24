@@ -97,7 +97,7 @@ namespace GeometryTests
             return first.CollinearTo(second);
         }
 
-        public static TestCaseData[] TwoPointDirectionsCases =
+        public static TestCaseData[] DirectionCases =
         {
             new TestCaseData(new Point(0, 1), new Point(1, 1)).Returns(false),
             new TestCaseData(new Point(0, 1), new Point(-1, 0)).Returns(false),
@@ -105,8 +105,8 @@ namespace GeometryTests
             new TestCaseData(new Point(1, 0), new Point(0, 0)).Returns(true),
             new TestCaseData(new Point(0, 0), new Point(0, 0)).Returns(true),
         };
-        [TestCaseSource(nameof(TwoPointDirectionsCases))]
-        public bool TestTwoPointDirections(Point first, Point second)
+        [TestCaseSource(nameof(DirectionCases))]
+        public bool TestDirection(Point first, Point second)
         {
             return first.HasSameDirectionAs(second);
         }
@@ -120,9 +120,9 @@ namespace GeometryTests
             new TestCaseData(new Point(1, 0), 1).Returns(new Point(Math.Cos(1), Math.Sin(1)))   
         };
         [TestCaseSource(nameof(RotationCases))]
-        public Point TestRotation(Point target, double angle)
+        public Point TestRotation(Point direction, double angle)
         {
-            return target.Rotate(angle);
+            return direction.Rotate(angle);
         }
 
         [Test]
@@ -138,6 +138,42 @@ namespace GeometryTests
             Point A = new Point(1, 2);
             Point B = new Point(4, 5);
             A.DistanceTo(B).Should().BeApproximately(3 * Math.Sqrt(2), DoubleComparer.DefaultEpsilon);
+        }
+
+
+        public static TestCaseData[] QuarterCases =
+        {
+            new TestCaseData(new Point(0, 0)).Returns(0),
+            new TestCaseData(new Point(1, 0)).Returns(1),
+            new TestCaseData(new Point(0, 1)).Returns(2),
+            new TestCaseData(new Point(-1, 0)).Returns(3),
+            new TestCaseData(new Point(0, -1)).Returns(4),
+
+            new TestCaseData(new Point(1, 1)).Returns(1),
+            new TestCaseData(new Point(-1, 1)).Returns(2),
+            new TestCaseData(new Point(-1, -1)).Returns(3),
+            new TestCaseData(new Point(1, -1)).Returns(4),
+        };
+        [TestCaseSource(nameof(QuarterCases))]
+        public int TestQuarter(Point P)
+        {
+            return P.Quater;
+        }
+
+        public static TestCaseData[] AngleCases =
+        {
+            new TestCaseData(new Point(1, 1), new Point(1, 1), 0),
+            new TestCaseData(new Point(1, 1), new Point(-1, -1), Math.PI),
+            new TestCaseData(new Point(1, 0), new Point(0, 1), Math.PI / 2),
+            new TestCaseData(new Point(0, 1), new Point(1, 0), -Math.PI / 2),
+            new TestCaseData(new Point(0, 0), new Point(1, 1), 0),
+            new TestCaseData(new Point(1, 1), new Point(0, 0), 0),
+            new TestCaseData(new Point(0, 0), new Point(0, 0), 0),
+        };
+        [TestCaseSource(nameof(AngleCases))]
+        public void TestAngleTo(Point from, Point to, double expected)
+        {
+            from.AngleTo(to).Should().BeApproximately(expected, DoubleComparer.DefaultEpsilon);
         }
     }
 }

@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+// ReSharper disable InconsistentNaming
+#pragma warning disable 659
 
 namespace Geometry
 {
@@ -22,22 +24,22 @@ namespace Geometry
             this.B = B;
         }
 
-        public bool ParallelTo(Line otherLine)
+        public bool ParallelTo(Line other)
         {
-            return Direction.CollinearTo(otherLine.Direction);
+            return Direction.CollinearTo(other.Direction);
         }
 
-        public bool ContainsPoint(Point P)
+        public bool Contains(Point P)
         {
             return (P - A).CollinearTo(Direction);
         }
 
-        public Point IntersectWith(Line otherLine)
+        public Point IntersectWith(Line other)
         {
-            if (this.ParallelTo(otherLine))
+            if (this.ParallelTo(other))
                 return null;
-            double k = (A - otherLine.A).CrossProduct(Direction) / otherLine.Direction.CrossProduct(Direction);
-            return otherLine.A + k * otherLine.Direction;
+            double k = (A - other.A).CrossProduct(Direction) / other.Direction.CrossProduct(Direction);
+            return other.A + k * other.Direction;
         }
 
         public double DistanceTo(Point P)
@@ -52,7 +54,7 @@ namespace Geometry
 
         protected bool Equals(Line other)
         {
-            return Direction.CollinearTo(other.Direction) && other.ContainsPoint(A);
+            return Direction.CollinearTo(other.Direction) && other.Contains(A);
         }
 
         public override bool Equals(object obj)
