@@ -16,30 +16,10 @@ using Size = Geometry.Size;
 
 namespace TagsCloudCoreTests
 {
-    public class RandomDirectionsCloudLayouterTests
+    public abstract class CloudLayouterTests
     {
-        public RandomDirectionsCloudLayouter Layouter { get; set; }
-        private int ScaleFactor = 100;
-
-        [SetUp]
-        public void SetUp()
-        {
-            Layouter = new RandomDirectionsCloudLayouter(new Point(0, 0));
-            ScaleFactor = 100;
-        }
-
-        public static TestCaseData[] FirstRectangleCases = 
-        {
-            new TestCaseData(new Point(0, 0), new Size(2, 2)),
-            new TestCaseData(new Point(10, 10), new Size(2, 2)),
-        };
-        [TestCaseSource(nameof(FirstRectangleCases))]
-        public void FirstRectangle_ShouldContainCenter(Point center, Size rectangleSize)
-        {
-            Layouter = new RandomDirectionsCloudLayouter(center);
-            var rectangle = Layouter.PutNextRectangle(rectangleSize);
-            rectangle.Should().Match<Rectangle>(r => r.Contains(center));
-        }
+        public abstract ICloudLayouter Layouter { get; set; }
+        public abstract int ScaleFactor { get; }
 
         public static TestCaseData[] TwoRectangleCases =
         { 
@@ -152,6 +132,32 @@ namespace TagsCloudCoreTests
             var imageDestination = Path.Combine(testContext.TestDirectory, testContext.Test.FullName + ".bmp");
             image.Save(imageDestination);
             TestContext.Out.Write("Generated layout written in {0}", imageDestination);
+        }
+    }
+
+    [TestFixture]
+    public class RandomDirectionsCloudLayouterTests : CloudLayouterTests
+    {
+        public override ICloudLayouter Layouter { get; set; }
+        public override int ScaleFactor => 100;
+
+        [SetUp]
+        public void SetUp()
+        {
+            Layouter = new RandomDirectionsCloudLayouter(new Point(0, 0));
+        }
+
+        public static TestCaseData[] FirstRectangleCases =
+        {
+            new TestCaseData(new Point(0, 0), new Size(2, 2)),
+            new TestCaseData(new Point(10, 10), new Size(2, 2)),
+        };
+        [TestCaseSource(nameof(FirstRectangleCases))]
+        public void FirstRectangle_ShouldContainCenter(Point center, Size rectangleSize)
+        {
+            Layouter = new RandomDirectionsCloudLayouter(center);
+            var rectangle = Layouter.PutNextRectangle(rectangleSize);
+            rectangle.Should().Match<Rectangle>(r => r.Contains(center));
         }
     }
 }
