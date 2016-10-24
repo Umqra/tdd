@@ -42,7 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CircularCloudLayouter.cs" />
+    <Compile Include="RandomDirectionsCloudLayouter.cs" />
     <Compile Include="FrequencyCloudFormatter.cs" />
     <Compile Include="ICloudFormatter.cs" />
     <Compile Include="ICloudLayouter.cs" />

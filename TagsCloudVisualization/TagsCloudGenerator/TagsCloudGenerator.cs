@@ -78,7 +78,7 @@ namespace TagsCloudGenerator
                 {
                     Layouter =
                         () =>
-                            new CircularCloudLayouter(new Geometry.Point(options.Width / 2.0,
+                            new RandomDirectionsCloudLayouter(new Geometry.Point(options.Width / 2.0,
                                 options.Height / 2.0)),
                     Formatter =
                         () =>

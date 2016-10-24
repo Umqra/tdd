@@ -7,12 +7,12 @@ using Geometry;
 
 namespace TagsCloudCore
 {
-    public class CircularCloudLayouter : ICloudLayouter
+    public class RandomDirectionsCloudLayouter : ICloudLayouter
     {
         private Random Random { get; }
         public Point Center { get; set; }
         public List<Rectangle> Rectangles { get; set; }
-        public CircularCloudLayouter(Point center)
+        public RandomDirectionsCloudLayouter(Point center)
         {
             Random = new Random(0);
             Center = center;

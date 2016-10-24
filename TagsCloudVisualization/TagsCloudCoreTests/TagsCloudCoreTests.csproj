@@ -53,7 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CircularCloudLayouterTests.cs" />
+    <Compile Include="RandomDirectionsCloudLayouterTests.cs" />
     <Compile Include="FluentAssertionsExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

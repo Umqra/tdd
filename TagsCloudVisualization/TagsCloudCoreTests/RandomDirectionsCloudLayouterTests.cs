@@ -10,7 +10,7 @@ using TagsCloudCore;
 
 namespace TagsCloudCoreTests
 {
-    public class CircularCloudLayouterTests
+    public class RandomDirectionsCloudLayouterTests
     {
         public static TestCaseData[] FirstRectangleParameters = 
         {
@@ -20,7 +20,7 @@ namespace TagsCloudCoreTests
         [TestCaseSource(nameof(FirstRectangleParameters))]
         public void FirstRectangleMustContainCenter(Point center, Size rectangleSize)
         {
-            var layouter = new CircularCloudLayouter(center);
+            var layouter = new RandomDirectionsCloudLayouter(center);
             var rectangle = layouter.PutNextRectangle(rectangleSize);
 
             rectangle.Should().Match<Rectangle>(r => r.Contains(center));
@@ -37,7 +37,7 @@ namespace TagsCloudCoreTests
         [TestCaseSource(nameof(TwoRectangleParameters))]
         public void RectanglesCanNotOverlap(Size[] rectangleSizes)
         {
-            var layouter = new CircularCloudLayouter(new Point(0, 0));
+            var layouter = new RandomDirectionsCloudLayouter(new Point(0, 0));
             var rectangles = new List<Rectangle>();
             foreach (var size in rectangleSizes)
                 rectangles.Add(layouter.PutNextRectangle(size));
@@ -60,7 +60,7 @@ namespace TagsCloudCoreTests
         [TestCaseSource(nameof(TouchCases))]
         public void EachRectangleMustTouchAnother(Size[] rectangleSizes)
         {
-            var layouter = new CircularCloudLayouter(new Point(0, 0));
+            var layouter = new RandomDirectionsCloudLayouter(new Point(0, 0));
             var rectangles = new List<Rectangle>();
             foreach (var size in rectangleSizes)
                 rectangles.Add(layouter.PutNextRectangle(size));
@@ -80,7 +80,7 @@ namespace TagsCloudCoreTests
         [TestCase(10)]
         public void ManyRectanglesMustAppearsInAnyQuater(int amount)
         {
-            var layouter = new CircularCloudLayouter(new Point(0, 0));
+            var layouter = new RandomDirectionsCloudLayouter(new Point(0, 0));
             Enumerable.Range(0, amount)
                 .Select(i => layouter.PutNextRectangle(new Size(1, 1)))
                 .Select(rect => rect.Center.Quater)
@@ -96,7 +96,7 @@ namespace TagsCloudCoreTests
         [TestCaseSource(nameof(OppositeDirectionCases))]
         public void SecondAndThirdRectanglesInOppositeDirections(Size[] rectangleSizes)
         {
-            var layouter = new CircularCloudLayouter(new Point(0, 0));
+            var layouter = new RandomDirectionsCloudLayouter(new Point(0, 0));
             var rectangles = new List<Rectangle>();
             foreach (var size in rectangleSizes)
                 rectangles.Add(layouter.PutNextRectangle(size));
