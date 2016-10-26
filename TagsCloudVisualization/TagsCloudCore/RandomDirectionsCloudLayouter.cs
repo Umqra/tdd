@@ -87,20 +87,20 @@ namespace TagsCloudCore
         public RandomSparseCloudLayouter(Point center) : base(center)
         {
         }
-
-        private int NumberOfRandomDirections = 10;
+        
         protected override Rectangle ChooseNextPlace(Size rectangleSize)
         {
-            var direction = Enumerable.Range(0, NumberOfRandomDirections)
-                .Select(i => GetRandomDirection())
-                .OrderBy(GetDirectionCost)
-                .First();
+            var direction = GetSparseDirection();
             return PutNextRectangleAlongDirection(direction, rectangleSize);
         }
 
         private double GetDirectionCost(Point direction)
         {
-            return Rectangles.Select(rectangle => Math.Abs((rectangle.Center - Center).AngleTo(direction))).Min();
+            return Rectangles
+                .Where(rectangle => !rectangle.Center.Equals(Center))
+                .Select(rectangle => Math.Abs((rectangle.Center - Center).AngleTo(direction)))
+                .DefaultIfEmpty(0)
+                .Min();
         }
 
         private Point GetSparseDirection(int numberOfRandomDirections = 10)
