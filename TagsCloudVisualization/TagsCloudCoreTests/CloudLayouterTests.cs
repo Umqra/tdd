@@ -9,6 +9,7 @@ using FluentAssertions;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
 using TagsCloudCore;
+using TagsCloudCore.Layout;
 using Point = Geometry.Point;
 using Rectangle = Geometry.Rectangle;
 using Size = Geometry.Size;
@@ -21,7 +22,7 @@ namespace TagsCloudCoreTests
     // CR: Why test classes need to be public?
     public abstract class CloudLayouterTests
     {
-        public abstract ICloudLayouter Layouter { get; set; }
+        public abstract ITagsCloudLayouter Layouter { get; set; }
         public abstract int ScaleFactor { get; }
 
         public static TestCaseData[] TwoRectangleCases =
@@ -120,13 +121,13 @@ namespace TagsCloudCoreTests
     [TestFixture]
     public class RandomDirectionsCloudLayouterTests : CloudLayouterTests
     {
-        public override ICloudLayouter Layouter { get; set; }
+        public override ITagsCloudLayouter Layouter { get; set; }
         public override int ScaleFactor => 100;
 
         [SetUp]
         public void SetUp()
         {
-            Layouter = new RandomDirectionsCloudLayouter(new Point(0, 0));
+            Layouter = new RandomDenseTagsCloudLayouter(new Point(0, 0));
         }
 
         public static TestCaseData[] FirstRectangleCases =
@@ -137,7 +138,7 @@ namespace TagsCloudCoreTests
         [TestCaseSource(nameof(FirstRectangleCases))]
         public void FirstRectangle_ShouldContainCenter(Point center, Size rectangleSize)
         {
-            Layouter = new RandomDirectionsCloudLayouter(center);
+            Layouter = new RandomDenseTagsCloudLayouter(center);
             var rectangle = Layouter.PutNextRectangle(rectangleSize);
             rectangle.Should().Match<Rectangle>(r => r.Contains(center));
         }
@@ -159,13 +160,13 @@ namespace TagsCloudCoreTests
     [TestFixture]
     public class RandomSparseCloudLayouterTests : CloudLayouterTests
     {
-        public override ICloudLayouter Layouter { get; set; }
+        public override ITagsCloudLayouter Layouter { get; set; }
         public override int ScaleFactor => 100;
 
         [SetUp]
         public void SetUp()
         {
-            Layouter = new RandomSparseCloudLayouter(new Point(0, 0));
+            Layouter = new RandomSparseTagsCloudLayouter(new Point(0, 0));
         }
 
         public static TestCaseData[] FirstRectangleCases =
@@ -176,7 +177,7 @@ namespace TagsCloudCoreTests
         [TestCaseSource(nameof(FirstRectangleCases))]
         public void FirstRectangle_ShouldContainCenter(Point center, Size rectangleSize)
         {
-            Layouter = new RandomSparseCloudLayouter(center);
+            Layouter = new RandomSparseTagsCloudLayouter(center);
             var rectangle = Layouter.PutNextRectangle(rectangleSize);
             rectangle.Should().Match<Rectangle>(r => r.Contains(center));
         }

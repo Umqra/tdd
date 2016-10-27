@@ -9,7 +9,7 @@ namespace TagsCloudCore
     {
         // It's usually called stop-words
         // CR: Why it would be public?
-        public static string[] AuxiliaryWords =
+        private static readonly string[] StopWords =
         {
             "the",
             "and",
@@ -38,7 +38,7 @@ namespace TagsCloudCore
                 Regex.Split(text, @"\b")
                     .Where(tag => tag.All(char.IsLetter) && tag.Length > 2)
                     .Select(tag => tag.ToLower())
-                    .Where(tag => !AuxiliaryWords.Contains(tag));
+                    .Where(tag => !StopWords.Contains(tag));
         }
     }
 }

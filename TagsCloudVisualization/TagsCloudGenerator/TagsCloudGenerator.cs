@@ -5,6 +5,8 @@ using System.Linq;
 using System.Windows.Forms;
 using Fclp;
 using TagsCloudCore;
+using TagsCloudCore.Format;
+using TagsCloudCore.Layout;
 
 // CR: Generator seems like a bad name for the application. Imagine calling tagscloud.generator.
 // What it's going to do? Generate a picture? Generate a text? Start a web ui for generating pictures?
@@ -42,12 +44,12 @@ namespace TagsCloudGenerator
 
         // CR: Don't use clousures and lambdas when it's not needed
         // Why do you need lambda here?
-        static Func<Geometry.Point, ICloudLayouter> GetLayouterByName(string name)
+        static Func<Geometry.Point, ITagsCloudLayouter> GetLayouterByName(string name)
         {
             if (name == "random")
-                return center => new RandomDirectionsCloudLayouter(center);
+                return center => new RandomDenseTagsCloudLayouter(center);
             if (name == "sparse")
-                return center => new RandomSparseCloudLayouter(center);
+                return center => new RandomSparseTagsCloudLayouter(center);
             throw new ArgumentException("Unknown layouter name");
         }
 
@@ -117,7 +119,7 @@ namespace TagsCloudGenerator
                         () => GetLayouterByName(options.LayouterName)(new Geometry.Point(options.Width / 2.0,
                             options.Height / 2.0)),
                     Formatter =
-                        () => new FrequencyCloudFormatter(FontFamily.GenericSerif, options.MaximumFontSize,
+                        () => new FrequencyTagsCloudFormatter(FontFamily.GenericSerif, options.MaximumFontSize,
                             new SolidBrush(GetColor(options.ForegroundColor)), tags)
                 }
             );

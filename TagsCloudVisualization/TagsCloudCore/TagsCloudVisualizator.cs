@@ -6,13 +6,15 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using TagsCloudCore.Format;
+using TagsCloudCore.Layout;
 
 namespace TagsCloudCore
 {
     public class VisualizatorConfiguration
     {
-        public Func<ICloudLayouter> Layouter { get; set; }
-        public Func<ICloudFormatter> Formatter { get; set; }
+        public Func<ITagsCloudLayouter> Layouter { get; set; }
+        public Func<ITagsCloudFormatter> Formatter { get; set; }
     }
 
     public class TagsCloudVisualizator

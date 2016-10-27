@@ -4,16 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Geometry;
+using TagsCloudCore.Layout;
 
-namespace TagsCloudCore
+namespace TagsCloudCore.Layout
 {
-    public class RandomDirectionsCloudLayouter : ICloudLayouter
+    public class RandomDenseTagsCloudLayouter : ITagsCloudLayouter
     {
         private Random Random { get; }
         public Point Center { get; set; }
         public List<Rectangle> Rectangles { get; set; }
 
-        public RandomDirectionsCloudLayouter(Point center)
+        public RandomDenseTagsCloudLayouter(Point center)
         {
             Random = new Random(0);
             Center = center;
@@ -79,37 +80,6 @@ namespace TagsCloudCore
         protected Point GetRandomDirection()
         {
             return new Point(1, 0).Rotate(Random.NextDouble() * 2 * Math.PI);
-        }
-    }
-
-    public class RandomSparseCloudLayouter : RandomDirectionsCloudLayouter
-    {
-        public RandomSparseCloudLayouter(Point center) : base(center)
-        {
-        }
-        
-        protected override Rectangle ChooseNextPlace(Size rectangleSize)
-        {
-            var direction = GetSparseDirection();
-            return PutNextRectangleAlongDirection(direction, rectangleSize);
-        }
-
-        private double GetDirectionCost(Point direction)
-        {
-            return Rectangles
-                .Where(rectangle => !rectangle.Center.Equals(Center))
-                .Select(rectangle => Math.Abs((rectangle.Center - Center).AngleTo(direction)))
-                .DefaultIfEmpty(0)
-                .Min();
-        }
-
-        private Point GetSparseDirection(int numberOfRandomDirections = 10)
-        {
-            var candidates = Enumerable.Range(0, numberOfRandomDirections)
-                .Select(i => GetRandomDirection());
-            return candidates
-                .OrderByDescending(GetDirectionCost)
-                .First();
         }
     }
 }

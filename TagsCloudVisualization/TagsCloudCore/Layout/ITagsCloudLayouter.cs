@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Geometry;
 
-namespace TagsCloudCore
+namespace TagsCloudCore.Layout
 {
     // CR: Cloud is too ambiguous. Be consistent, use TagsCloud everywhere
-    public interface ICloudLayouter
+    public interface ITagsCloudLayouter
     {
         Rectangle PutNextRectangle(Size rectangleSize);
         // CR: Why do you need List? What if you want to use some kind of tree internally to place tags faster?
