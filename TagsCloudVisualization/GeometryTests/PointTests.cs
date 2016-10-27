@@ -7,7 +7,8 @@ using Geometry;
 using NUnit.Framework;
 using FluentAssertions;
 
-// ReSharper disable InconsistentNaming
+// CR: Nope, fix names
+//! ReSharper disable InconsistentNaming
 
 namespace GeometryTests
 {

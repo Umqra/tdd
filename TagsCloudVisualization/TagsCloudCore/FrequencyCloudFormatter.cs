@@ -16,6 +16,7 @@ namespace TagsCloudCore
         public float MaxFontSizeInEm { get; set; }
         public Brush Brush { get; set; }
         public Dictionary<string, int> TagsFrequency;
+        // CR: Why underscore?
         private int _maxFrequency = 0;
 
         public FrequencyCloudFormatter(FontFamily fontFamily, float maxFontSizeInEm, Brush brush, IEnumerable<string> tags)

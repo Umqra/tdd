@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-// ReSharper disable InconsistentNaming
-#pragma warning disable 659
+// CR: Do not use those
+//! ReSharper disable InconsistentNaming
+//#pragma warning disable 659
+// fix problems they indicate
 
+// CR: Make naming consistent again!
 namespace Geometry
 {
+    // CR: Warning actually indicates serious problem
     public class Point
     {
         // ReSharper disable InconsistentNaming
@@ -22,6 +26,7 @@ namespace Geometry
         {
             get
             {
+                // CR: Why create new object?
                 if (this.Equals(new Point(0, 0)))
                     return 0;
                 if (x > 0 && y >= 0)

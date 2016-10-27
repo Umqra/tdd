@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+// CR: Don't forget to remove unused references
 using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
@@ -12,10 +13,12 @@ using Point = Geometry.Point;
 using Rectangle = Geometry.Rectangle;
 using Size = Geometry.Size;
 
-// ReSharper disable InconsistentNaming
+// CR: Don't use this unless you ABSOLUTELY MUST
+//! ReSharper disable InconsistentNaming
 
 namespace TagsCloudCoreTests
 {
+    // CR: Why test classes need to be public?
     public abstract class CloudLayouterTests
     {
         public abstract ICloudLayouter Layouter { get; set; }
@@ -52,11 +55,15 @@ namespace TagsCloudCoreTests
             new TestCaseData((object)new [] {new Size(3, 1), new Size(1, 1), new Size(4, 2), new Size(3, 3)})
         };
         [TestCaseSource(nameof(TouchCases))]
+        // CR: Mb 'ShouldTouchOneAnother'?
         public void EachRectangle_ShouldTouchesAnother(Size[] rectangleSizes)
         {
             var rectangles = new List<Rectangle>();
             foreach (var size in rectangleSizes)
                 rectangles.Add(Layouter.PutNextRectangle(size));
+            // CR: I think new line between Arrange, Act and Assert seems nice
+            // Not a strict requirement, but consider using it
+            // CR: Maybe make it nicer with some LINQ?
             for (int i = 0; i < rectangles.Count; i++)
             {
                 bool touchAny = false;
@@ -73,6 +80,7 @@ namespace TagsCloudCoreTests
         [TestCase(10)]
         public void Rectangles_ShouldAppearInAnyQuater(int numberOfRectangles)
         {
+            // CR: Act and Assert don't look very distinct here
             Enumerable.Range(0, numberOfRectangles)
                 .Select(i => Layouter.PutNextRectangle(new Size(1, 1)))
                 .Select(rect => rect.Center.Quater)
@@ -80,7 +88,7 @@ namespace TagsCloudCoreTests
                 .Should().HaveCount(5);
         }
 
-
+        // CR: I thought we need a circle, not square :D
         [TestCase(10)]
         [TestCase(20)]
         public void BoundingBox_ShouldBeApproximatelySquare(int numberOfRectangles)
@@ -108,6 +116,7 @@ namespace TagsCloudCoreTests
         }
     }
 
+    // CR: 1 class = 1 file
     [TestFixture]
     public class RandomDirectionsCloudLayouterTests : CloudLayouterTests
     {
@@ -136,6 +145,7 @@ namespace TagsCloudCoreTests
         [TestCase(50)]
         public void Rectangles_ShouldOccupyMostOfFreeSpace(int numberOfRectangles)
         {
+            // CR: Are you sure you need to specify variables types? Especially in tests
             IEnumerable<Point> allCorners = Enumerable.Empty<Point>();
             double rectanglesArea = numberOfRectangles;
             for (int i = 0; i < numberOfRectangles; i++)

@@ -7,6 +7,8 @@ namespace TagsCloudCore
 {
     public class TagsExtractor
     {
+        // It's usually called stop-words
+        // CR: Why it would be public?
         public static string[] AuxiliaryWords =
         {
             "the",
@@ -24,6 +26,7 @@ namespace TagsCloudCore
             "not",
             "there"
         };
+        // CR: Right here should be a new line
         public IEnumerable<string> ExtractFromFile(string filename)
         {
             string text;

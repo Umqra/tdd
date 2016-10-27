@@ -6,8 +6,14 @@ using System.Windows.Forms;
 using Fclp;
 using TagsCloudCore;
 
+// CR: Generator seems like a bad name for the application. Imagine calling tagscloud.generator.
+// What it's going to do? Generate a picture? Generate a text? Start a web ui for generating pictures?
+// Not very clear. It's a command-line interface, right? What about TagsCloud.Cli? Then it's clear that
+// this application is a CLI for library/product TagsCloud. At least it won't start the web-server by default :)
+// You can come up with something even better.
 namespace TagsCloudGenerator
 {
+    // CR: One class = one file
     public class GeneratorOptions
     {
         public string InputFilename { get; set; }
@@ -20,8 +26,13 @@ namespace TagsCloudGenerator
 
         public string LayouterName { get; set; }
     }
+    // CR: Mark classes internal explicitly (uniformity with public classes & better readability)
+    // CR: This is not Generator, this is EntryPoint/Program.
     class TagsCloudGenerator
     {
+        // CR: Mark methods private explicitly
+        // CR: It's not GetColor, it's ParseColor
+        // CR: What if color is not correct? It'll return uninitialized color. Is it OK?
         static Color GetColor(string colorRepresentation)
         {
             if (colorRepresentation[0] == '#')
@@ -29,6 +40,8 @@ namespace TagsCloudGenerator
             return Color.FromName(colorRepresentation);
         }
 
+        // CR: Don't use clousures and lambdas when it's not needed
+        // Why do you need lambda here?
         static Func<Geometry.Point, ICloudLayouter> GetLayouterByName(string name)
         {
             if (name == "random")
@@ -44,6 +57,9 @@ namespace TagsCloudGenerator
             parser.Setup(arg => arg.InputFilename)
                 .As('i', "input")
                 .WithDescription("Filename with input text")
+                // CR: Bad practice, better make it required parameter and add an example.
+                // For example, make folder 'examples', move 'text.txt' to 'examples/sample.txt'
+                // And set parameter in VS to use this file, so it's part of developer's setup, not output package
                 .SetDefault("text.txt");
 
             parser.Setup(arg => arg.OutputFilename)
@@ -70,6 +86,7 @@ namespace TagsCloudGenerator
                 .SetDefault("black");
             parser.Setup(arg => arg.LayouterName)
                 .As('l', "layouter")
+                // CR: What options do I have?
                 .WithDescription("Choose implementation of layouter")
                 .SetDefault("sparse");
 
@@ -77,16 +94,21 @@ namespace TagsCloudGenerator
                 .Callback(text => Console.WriteLine(text));
             return parser;
         }
-        
+
+        // CR: In C# you don't need forward declaration, used functions usually placed below their usages
+        // CR: 30+ lines, seems like a large function
         static void Main(string[] args)
         {
             var parser = ConfigureCommandParser();
+            // CR: result - bad name, too ambiguous in the context
             var result = parser.Parse(args);
             if (result.HelpCalled) return;
             if (result.HasErrors) return;
 
             var options = parser.Object;
             
+            // CR: What if there's no file?
+            // CR: What's the benifit in having really long lines?
             var tags = new TagsExtractor().ExtractFromFile(options.InputFilename);
             var visualizator = new TagsCloudVisualizator(
                 new VisualizatorConfiguration
@@ -104,6 +126,7 @@ namespace TagsCloudGenerator
                 var image = new Bitmap(options.Width, options.Height);
                 var graphics = Graphics.FromImage(image);
                 graphics.TextRenderingHint = TextRenderingHint.AntiAlias;
+                // CR: I see some duplications, do you?
                 graphics.Clear(GetColor(options.BackgroundColor));
                 visualizator.CreateTagsCloud(tags.Distinct(), graphics);
                 image.Save(options.OutputFilename);
