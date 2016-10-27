@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FluentAssertions;
 using Geometry;
 using NUnit.Framework;
@@ -15,9 +11,9 @@ namespace GeometryTests
         [Test]
         public void TestFailsWhenPivotPointsCoincide()
         {
-            Point A = new Point(1, 2);
-            Point B = new Point(1, 2);
-            Action act = () => new Segment(A, B);
+            Point a = new Point(1, 2);
+            Point b = new Point(1, 2);
+            Action act = () => new Segment(a, b);
             act.ShouldThrow<ArgumentException>();
         }
 
@@ -29,9 +25,9 @@ namespace GeometryTests
             new TestCaseData(new Segment(new Point(0, 0), new Point(1, 0)), new Point(2, 2)).Returns(false)   
         };
         [TestCaseSource(nameof(ContainsCases))]
-        public bool TestContains(Segment segment, Point P)
+        public bool TestContains(Segment segment, Point p)
         {
-            return segment.Contains(P);
+            return segment.Contains(p);
         }
 
         public static TestCaseData[] IntersectLineCases =
@@ -134,9 +130,9 @@ namespace GeometryTests
             new TestCaseData(new Segment(new Point(0, 0), new Point(2, 0)), new Point(1, 0), 0),
         };
         [TestCaseSource(nameof(DistanceCases))]
-        public void TestDistance(Segment segment, Point P, double expected)
+        public void TestDistance(Segment segment, Point p, double expected)
         {
-            segment.DistanceTo(P).Should().BeApproximately(expected, DoubleComparer.DefaultEpsilon);
+            segment.DistanceTo(p).Should().BeApproximately(expected, DoubleComparer.DefaultEpsilon);
         }
 
         public static TestCaseData[] EqualsCases =

@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-// ReSharper disable InconsistentNaming
-#pragma warning disable 659
+
+//TODO: warning 659
 
 namespace Geometry
 {
@@ -25,35 +20,35 @@ namespace Geometry
             To = to;
         }
 
-        public bool Contains(Point P)
+        public bool Contains(Point p)
         {
-            return Direction.HasSameDirectionAs(P - From);
+            return Direction.HasSameDirectionAs(p - From);
         }
 
-        private Point PointIfContainsElseNull(Point P)
+        private Point PointIfContainsElseNull(Point p)
         {
-            if (P != null && Contains(P))
-                return P;
+            if (p != null && Contains(p))
+                return p;
             return null;
         }
 
         public Point IntersectWith(Line line)
         {
-            Point P = line.IntersectWith(BaseLine);
-            return PointIfContainsElseNull(P);
+            Point intersection = line.IntersectWith(BaseLine);
+            return PointIfContainsElseNull(intersection);
         }
 
         public Point IntersectWith(Ray other)
         {
-            Point P = other.IntersectWith(BaseLine);
-            return PointIfContainsElseNull(P);
+            Point intersection = other.IntersectWith(BaseLine);
+            return PointIfContainsElseNull(intersection);
         }
 
-        public double DistanceTo(Point P)
+        public double DistanceTo(Point p)
         {
-            if ((P - From).DotProduct(Direction).GreaterThanOrEqualTo(0))
-                return BaseLine.DistanceTo(P);
-            return From.DistanceTo(P);
+            if ((p - From).DotProduct(Direction).GreaterThanOrEqualTo(0))
+                return BaseLine.DistanceTo(p);
+            return From.DistanceTo(p);
         }
 
         protected bool Equals(Ray other)
@@ -65,7 +60,7 @@ namespace Geometry
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (obj.GetType() != GetType()) return false;
             return Equals((Ray)obj);
         }
     }

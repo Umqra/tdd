@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Geometry;
 using NUnit.Framework;
 
@@ -89,9 +84,9 @@ namespace GeometryTests
             new TestCaseData(new Rectangle(new Point(0, 0), new Point(2, 2)), new Point(-1, -1)).Returns(false),
         };
         [TestCaseSource(nameof(ContainsCases))]
-        public bool Contains(Rectangle rectangle, Point P)
+        public bool Contains(Rectangle rectangle, Point p)
         {
-            return rectangle.Contains(P);
+            return rectangle.Contains(p);
         }
 
         public static TestCaseData[] TouchesCases =

@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-// ReSharper disable InconsistentNaming
-#pragma warning disable 659
+﻿using System.Drawing;
+
+//TODO: warning 659
 
 namespace Geometry
 {
@@ -20,14 +15,14 @@ namespace Geometry
             Height = height;
         }
 
-        public static Point operator +(Point P, Size size)
+        public static Point operator +(Point p, Size size)
         {
-            return new Point(P.x + size.Width, P.y + size.Height);
+            return new Point(p.X + size.Width, p.Y + size.Height);
         }
 
-        public static Point operator -(Point P, Size size)
+        public static Point operator -(Point p, Size size)
         {
-            return new Point(P.x - size.Width, P.y - size.Height);
+            return new Point(p.X - size.Width, p.Y - size.Height);
         }
 
         public static Size operator +(Size first, Size second)
@@ -50,7 +45,7 @@ namespace Geometry
             return size * k;
         }
 
-        public static explicit operator System.Drawing.SizeF(Size size)
+        public static explicit operator SizeF(Size size)
         {
             return new SizeF((float)size.Width, (float)size.Height);
         }
@@ -60,7 +55,7 @@ namespace Geometry
             return ((SizeF)size).ToSize();
         }
 
-        public static explicit operator Size(System.Drawing.SizeF size)
+        public static explicit operator Size(SizeF size)
         {
             return new Size(size.Width, size.Height);
         }
@@ -79,7 +74,7 @@ namespace Geometry
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (obj.GetType() != GetType()) return false;
             return Equals((Size)obj);
         }
     }

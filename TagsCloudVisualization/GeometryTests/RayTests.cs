@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FluentAssertions;
 using Geometry;
 using NUnit.Framework;
-// ReSharper disable InconsistentNaming
+//! ReSharper disable InconsistentNaming
 
 namespace GeometryTests
 {
@@ -16,9 +12,9 @@ namespace GeometryTests
         [Test]
         public void TestFailsWhenPivotPointsCoincide()
         {
-            Point A = new Point(1, 2);
-            Point B = new Point(1, 2);
-            Action act = () => new Ray(A, B);
+            Point a = new Point(1, 2);
+            Point b = new Point(1, 2);
+            Action act = () => new Ray(a, b);
             act.ShouldThrow<ArgumentException>();
         }
 
@@ -30,9 +26,9 @@ namespace GeometryTests
             new TestCaseData(new Ray(new Point(0, 0), new Point(1, 1)), new Point(0, 1)).Returns(false),
         };
         [TestCaseSource(nameof(ContainsCases))]
-        public bool TestContains(Ray ray, Point P)
+        public bool TestContains(Ray ray, Point p)
         {
-            return ray.Contains(P);
+            return ray.Contains(p);
         }
 
         public static TestCaseData[] IntersectLineCases =
@@ -131,9 +127,9 @@ namespace GeometryTests
             new TestCaseData(new Ray(new Point(0, 0), new Point(1, 1)), new Point(-1, 0), 1)
         };
         [TestCaseSource(nameof(DistanceCases))]
-        public void TestDistance(Ray targetRay, Point checkedPoint, double expected)
+        public void TestDistance(Ray ray, Point p, double expected)
         {
-            targetRay.DistanceTo(checkedPoint).Should().BeApproximately(expected, DoubleComparer.DefaultEpsilon);
+            ray.DistanceTo(p).Should().BeApproximately(expected, DoubleComparer.DefaultEpsilon);
         }
     }
 }
