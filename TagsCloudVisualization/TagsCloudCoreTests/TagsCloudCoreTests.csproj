@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="CloudLayouterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RandomDenseCloudLayouterTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
