@@ -11,6 +11,11 @@ namespace TagsCloudCore.Layout
         public Point Center { get; set; }
         public List<Rectangle> Rectangles { get; set; }
 
+        public IEnumerable<Rectangle> GetRectangles()
+        {
+            return Rectangles;
+        }
+
         public DenseRandomTagsCloudLayouter(Point center)
         {
             Random = new Random(0);

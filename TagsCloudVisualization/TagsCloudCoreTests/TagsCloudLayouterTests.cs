@@ -101,7 +101,7 @@ namespace TagsCloudCoreTests
             var testContext = TestContext.CurrentContext;
             if (testContext.Result.Outcome.Status != TestStatus.Failed)
                 return;
-            var image = Layouter.Rectangles.CreateImage(ScaleFactor, new SolidBrush(Color.FromArgb(100, 100, 100, 255)));
+            var image = Layouter.GetRectangles().CreateImage(ScaleFactor, new SolidBrush(Color.FromArgb(100, 100, 100, 255)));
             var imageDestination = Path.Combine(testContext.TestDirectory, testContext.Test.FullName + ".bmp");
             image.Save(imageDestination);
             TestContext.Out.Write("Generated layout written in {0}", imageDestination);
