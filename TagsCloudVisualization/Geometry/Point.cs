@@ -2,7 +2,6 @@
 
 // CR: Do not use those
 //! ReSharper disable InconsistentNaming
-// TODO: warning disable 659
 // fix problems they indicate
 
 // CR: Make naming consistent again!
@@ -17,7 +16,7 @@ namespace Geometry
         public Point Orthogonal => new Point(-Y, X);
         public double Length => Math.Sqrt(X * X + Y * Y);
 
-        public bool IsZero => X.EqualTo(0) && Y.EqualTo(0);
+        public bool IsZero => X.ApproxEqualTo(0) && Y.ApproxEqualTo(0);
 
         public int Quater
         {
@@ -81,12 +80,12 @@ namespace Geometry
 
         public bool CollinearTo(Point other)
         {
-            return CrossProduct(other).EqualTo(0);
+            return CrossProduct(other).ApproxEqualTo(0);
         }
 
         public bool HasSameDirectionAs(Point other)
         {
-            return CollinearTo(other) && DotProduct(other).GreaterThanOrEqualTo(0);
+            return CollinearTo(other) && DotProduct(other).ApproxGreaterOrEqualTo(0);
         }
 
         public Point Rotate(double angleInRadians)
@@ -103,7 +102,7 @@ namespace Geometry
 
         protected bool Equals(Point other)
         {
-            return X.EqualTo(other.X) && Y.EqualTo(other.Y);
+            return X.ApproxEqualTo(other.X) && Y.ApproxEqualTo(other.Y);
         }
 
         public override bool Equals(object obj)
@@ -112,6 +111,18 @@ namespace Geometry
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != GetType()) return false;
             return Equals((Point)obj);
+        }
+
+        /// <summary>
+        /// Current GetHashCode implementation not consistent with Equals method.
+        /// <para>Use it only where it really needed and with caution.</para>
+        /// </summary>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (X.GetHashCode() * 397) ^ Y.GetHashCode();
+            }
         }
 
         public override string ToString()

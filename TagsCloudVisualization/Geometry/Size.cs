@@ -1,7 +1,5 @@
 ﻿using System.Drawing;
 
-//TODO: warning 659
-
 namespace Geometry
 {
     public class Size
@@ -67,7 +65,7 @@ namespace Geometry
 
         protected bool Equals(Size other)
         {
-            return Width.EqualTo(other.Width) && Height.EqualTo(other.Height);
+            return Width.ApproxEqualTo(other.Width) && Height.ApproxEqualTo(other.Height);
         }
 
         public override bool Equals(object obj)
@@ -76,6 +74,20 @@ namespace Geometry
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != GetType()) return false;
             return Equals((Size)obj);
+        }
+
+        /// <summary>
+        /// Current GetHashCode implementation not consistent with Equals method (because of 
+        /// <see cref="Point"/>.<see cref="Point.GetHashCode()"/> 
+        /// implementation).
+        /// <para>Use it only where it really needed and with caution.</para>
+        /// </summary>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (Width.GetHashCode() * 397) ^ Height.GetHashCode();
+            }
         }
     }
 }

@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 
-//TODO: warning 659
-
 namespace Geometry
 {
     public class Rectangle
@@ -22,7 +20,7 @@ namespace Geometry
         public Size Size => new Size(Right - Left, Top - Bottom);
 
         public double Area => (Top - Bottom) * (Right - Left);
-        public bool IsEmpty => Area.EqualTo(0);
+        public bool IsEmpty => Area.ApproxEqualTo(0);
 
         public Rectangle(Point bottomLeft, Size size)
         {
@@ -47,7 +45,7 @@ namespace Geometry
             double newRight = Math.Min(Right, otherRectangle.Right);
             double newTop = Math.Min(Top, otherRectangle.Top);
             double newBottom = Math.Max(Bottom, otherRectangle.Bottom);
-            if (newLeft.GreaterThan(newRight) || newBottom.GreaterThan(newTop))
+            if (newLeft.ApproxGreater(newRight) || newBottom.ApproxGreater(newTop))
                 return null;
             return new Rectangle(new Point(newLeft, newBottom), new Point(newRight, newTop));
         }
@@ -108,22 +106,36 @@ namespace Geometry
             return Equals((Rectangle)obj);
         }
 
+        /// <summary>
+        /// Current GetHashCode implementation not consistent with Equals method (because of 
+        /// <see cref="Point"/>.<see cref="Point.GetHashCode()"/> 
+        /// implementation).
+        /// <para>Use it only where it really needed and with caution.</para>
+        /// </summary>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((BottomLeft?.GetHashCode() ?? 0) * 397) ^ (TopRight?.GetHashCode() ?? 0);
+            }
+        }
+
         public override string ToString()
         {
-            return $"RT[{BottomLeft},{TopRight}]";
+            return $"Rectangle({BottomLeft}, {TopRight})";
         }
 
         public bool Contains(Point p)
         {
-            return Left.LessThanOrEqualTo(p.X) && p.X.LessThanOrEqualTo(Right) &&
-                   Bottom.LessThanOrEqualTo(p.Y) && p.Y.LessThanOrEqualTo(Top);
+            return Left.ApproxLessOrEqualTo(p.X) && p.X.ApproxLessOrEqualTo(Right) &&
+                   Bottom.ApproxLessOrEqualTo(p.Y) && p.Y.ApproxLessOrEqualTo(Top);
         }
 
         public bool Touches(Rectangle rectangle)
         {
             var intersection = IntersectWith(rectangle);
             return intersection != null &&
-                   (intersection.Left.EqualTo(intersection.Right) || intersection.Bottom.EqualTo(intersection.Top));
+                   (intersection.Left.ApproxEqualTo(intersection.Right) || intersection.Bottom.ApproxEqualTo(intersection.Top));
         }
 
         public static Rectangle BoundingBoxOf(IEnumerable<Point> allCorners)

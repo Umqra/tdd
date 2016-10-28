@@ -1,7 +1,5 @@
 ﻿using System;
 
-//TODO: warning 659
-
 namespace Geometry
 {
     public class Line
@@ -58,6 +56,20 @@ namespace Geometry
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != GetType()) return false;
             return Equals((Line)obj);
+        }
+
+        /// <summary>
+        /// Current GetHashCode implementation not consistent with Equals method (because of 
+        /// <see cref="Point"/>.<see cref="Point.GetHashCode()"/> 
+        /// implementation).
+        /// <para>Use it only where it really needed and with caution.</para>
+        /// </summary>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((A?.GetHashCode() ?? 0) * 397) ^ (B?.GetHashCode() ?? 0);
+            }
         }
 
         public override string ToString()

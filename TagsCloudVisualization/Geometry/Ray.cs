@@ -1,7 +1,5 @@
 ﻿using System;
 
-//TODO: warning 659
-
 namespace Geometry
 {
     public class Ray
@@ -46,7 +44,7 @@ namespace Geometry
 
         public double DistanceTo(Point p)
         {
-            if ((p - From).DotProduct(Direction).GreaterThanOrEqualTo(0))
+            if ((p - From).DotProduct(Direction).ApproxGreaterOrEqualTo(0))
                 return BaseLine.DistanceTo(p);
             return From.DistanceTo(p);
         }
@@ -62,6 +60,25 @@ namespace Geometry
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != GetType()) return false;
             return Equals((Ray)obj);
+        }
+
+        /// <summary>
+        /// Current GetHashCode implementation not consistent with Equals method (because of 
+        /// <see cref="Point"/>.<see cref="Point.GetHashCode()"/> 
+        /// implementation).
+        /// <para>Use it only where it really needed and with caution.</para>
+        /// </summary>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((From?.GetHashCode() ?? 0) * 397) ^ (To?.GetHashCode() ?? 0);
+            }
+        }
+
+        public override string ToString()
+        {
+            return $"Ray({From}, {To})";
         }
     }
 }

@@ -1,7 +1,5 @@
 ﻿using System;
 
-//TODO: warning 659
-
 namespace Geometry
 {
     public class Segment
@@ -53,8 +51,8 @@ namespace Geometry
 
         public double DistanceTo(Point p)
         {
-            if ((p - A).DotProduct(B - A).GreaterThanOrEqualTo(0) &&
-                (p - B).DotProduct(A - B).GreaterThanOrEqualTo(0))
+            if ((p - A).DotProduct(B - A).ApproxGreaterOrEqualTo(0) &&
+                (p - B).DotProduct(A - B).ApproxGreaterOrEqualTo(0))
                 return BaseLine.DistanceTo(p);
             return Math.Min(p.DistanceTo(A), p.DistanceTo(B));
         }
@@ -72,6 +70,24 @@ namespace Geometry
             if (obj.GetType() != GetType()) return false;
             return Equals((Segment)obj);
         }
-        
+
+        /// <summary>
+        /// Current GetHashCode implementation not consistent with Equals method (because of 
+        /// <see cref="Point"/>.<see cref="Point.GetHashCode()"/> 
+        /// implementation).
+        /// <para>Use it only where it really needed and with caution.</para>
+        /// </summary>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((A?.GetHashCode() ?? 0) * 397) ^ (B?.GetHashCode() ?? 0);
+            }
+        }
+
+        public override string ToString()
+        {
+            return $"Segment({A}, {B})";
+        }
     }
 }
