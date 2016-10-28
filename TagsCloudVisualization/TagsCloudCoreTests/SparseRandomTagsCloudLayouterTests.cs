@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using FluentAssertions;
 using Geometry;
 using NUnit.Framework;
@@ -41,9 +42,7 @@ namespace TagsCloudCoreTests
         [TestCaseSource(nameof(OppositeDirectionCases))]
         public void SecondAndThirdRectangles_LocatedInOppositeDirections(Size[] rectangleSizes)
         {
-            var rectangles = new List<Rectangle>();
-            foreach (var size in rectangleSizes)
-                rectangles.Add(Layouter.PutNextRectangle(size));
+            var rectangles = PutRectanglesOnLayout(rectangleSizes).ToList();
 
             var secondDirection = rectangles[1].Center - rectangles[0].Center;
             var thirdDirection = rectangles[2].Center - rectangles[0].Center;

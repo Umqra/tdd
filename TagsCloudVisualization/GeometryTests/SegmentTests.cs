@@ -13,7 +13,9 @@ namespace GeometryTests
         {
             Point a = new Point(1, 2);
             Point b = new Point(1, 2);
+
             Action act = () => new Segment(a, b);
+
             act.ShouldThrow<ArgumentException>();
         }
 

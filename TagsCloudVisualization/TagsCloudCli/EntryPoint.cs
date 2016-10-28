@@ -10,24 +10,13 @@ using TagsCloudCore.Layout;
 using TagsCloudCore.Visualization;
 using Point = Geometry.Point;
 
-// CR: Generator seems like a bad name for the application. Imagine calling tagscloud.generator.
-// What it's going to do? Generate a picture? Generate a text? Start a web ui for generating pictures?
-// Not very clear. It's a command-line interface, right? What about TagsCloud.Cli? Then it's clear that
-// this application is a CLI for library/product TagsCloud. At least it won't start the web-server by default :)
-// You can come up with something even better.
-
 namespace TagsCloudCli
 {
-    // CR: Mark classes internal explicitly (uniformity with public classes & better readability)
-    // CR: This is not Generator, this is EntryPoint/Program.
     internal class EntryPoint
     {
-        // CR: In C# you don't need forward declaration, used functions usually placed below their usages
-        // CR: 30+ lines, seems like a large function
         internal static void Main(string[] args)
         {
             var parser = ConfigureCommandParser();
-            // CR: result - bad name, too ambiguous in the context
             var parsingStatus = parser.Parse(args);
             if (ShouldTerminateCLI(parsingStatus, parser))
                 return;
@@ -92,9 +81,6 @@ namespace TagsCloudCli
             }
         }
 
-        // CR: Mark methods private explicitly
-        // CR: It's not GetColor, it's ParseColor
-        // CR: What if color is not correct? It'll return uninitialized color. Is it OK?
         private static Color ParseColor(string colorRepresentation)
         {
             if (colorRepresentation[0] == '#')
@@ -116,8 +102,6 @@ namespace TagsCloudCli
                 {"sparse", center => new SparseRandomTagsCloudLayouter(center)}
             };
 
-        // CR: Don't use clousures and lambdas when it's not needed
-        // Why do you need lambda here?
         private static ITagsCloudLayouter GetLayouterByNameWithFixedCenter(string name, Point center)
         {
             if (name == "random")
@@ -134,9 +118,6 @@ namespace TagsCloudCli
                 .As('i', "input")
                 .WithDescription("Filename with input text. You can use texts from examples/ folder.")
                 .Required();
-                // CR: Bad practice, better make it required parameter and add an example.
-                // For example, make folder 'examples', move 'text.txt' to 'examples/sample.txt'
-                // And set parameter in VS to use this file, so it's part of developer's setup, not output package
 
             parser.Setup(arg => arg.OutputFilename)
                 .As('o', "output")
@@ -181,8 +162,6 @@ namespace TagsCloudCli
                 new Point(options.Width / 2.0, options.Height / 2.0));
             var wrapper = new FrequencyTagsCloudWrapper(FontFamily.GenericSerif, options.MaximumFontSize, tags);
             var decorator = new SolidColorTagsDecorator(ParseColor(options.ForegroundColor));
-            // CR: What if there's no file?
-            // CR: What's the benifit in having really long lines?
             return new TagsCloudVisualizator(
                 new VisualizatorConfiguration
                 {

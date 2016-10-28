@@ -3,9 +3,6 @@ using Geometry;
 using NUnit.Framework;
 using FluentAssertions;
 
-// CR: Nope, fix names
-//! ReSharper disable InconsistentNaming
-
 namespace GeometryTests
 {
     [TestFixture]
@@ -16,6 +13,7 @@ namespace GeometryTests
         {
             var a = new Point(0, 2);
             var b = new Point(-5e-10, 2 + 1e-10);
+
             a.Should().Be(b);
         }
 
@@ -24,6 +22,7 @@ namespace GeometryTests
         {
             var a = new Point(1, 2);
             var b = new Point(3, -1);
+
             (a + b).Should().Be(new Point(4, 1));
         }
 
@@ -32,6 +31,7 @@ namespace GeometryTests
         {
             var a = new Point(1, 2);
             var b = new Point(3, -1);
+
             (a - b).Should().Be(new Point(-2, 3));
         }
 
@@ -39,6 +39,7 @@ namespace GeometryTests
         public void TestLength()
         {
             var a = new Point(1, 2);
+
             a.Length.Should().BeApproximately(Math.Sqrt(5), 1e-9);
         }
 
@@ -47,6 +48,7 @@ namespace GeometryTests
         {
             var a = new Point(1, 2);
             var b = new Point(3, -1);
+
             a.DotProduct(b).Should().Be(1);
         }
 
@@ -55,6 +57,7 @@ namespace GeometryTests
         {
             var a = new Point(1, 2);
             var b = new Point(3, -1);
+
             a.CrossProduct(b).Should().Be(-7);
         }
 
@@ -63,6 +66,7 @@ namespace GeometryTests
         {
             var a = new Point(3, -1);
             var k = -2;
+
             (a * k).Should().Be(new Point(-6, 2));
         }
 
@@ -71,6 +75,7 @@ namespace GeometryTests
         {
             var a = new Point(3, -1);
             var k = -2;
+
             (a * k).Should().Be(k * a);
         }
 
@@ -79,6 +84,7 @@ namespace GeometryTests
         {
             var a = new Point(3, -1);
             var k = -2;
+
             (a / k).Should().Be(new Point(-1.5, 0.5));
         }
 
@@ -134,9 +140,9 @@ namespace GeometryTests
         {
             Point a = new Point(1, 2);
             Point b = new Point(4, 5);
+
             a.DistanceTo(b).Should().BeApproximately(3 * Math.Sqrt(2), DoubleComparer.DefaultEpsilon);
         }
-
 
         public static TestCaseData[] QuarterCases =
         {

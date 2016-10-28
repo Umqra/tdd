@@ -35,11 +35,11 @@ namespace TagsCloudCoreTests
         [TestCase(50)]
         public void Rectangles_ShouldOccupyMostOfFreeSpace(int numberOfRectangles)
         {
-            // CR: Are you sure you need to specify variables types? Especially in tests
-            var allCorners = Enumerable.Empty<Point>();
             double rectanglesArea = numberOfRectangles;
-            for (int i = 0; i < numberOfRectangles; i++)
-                allCorners = allCorners.Concat(Layouter.PutNextRectangle(new Size(1, 1)).Corners);
+            var allCorners = PutRectanglesOnLayout(
+                       Enumerable.Range(0, numberOfRectangles)
+                           .Select(i => new Size(1, 1)))
+                   .SelectMany(rectangle => rectangle.Corners);
 
             var boundingBox = Rectangle.BoundingBoxOf(allCorners);
             rectanglesArea.Should().BeGreaterThan(boundingBox.Area / 2);

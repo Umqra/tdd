@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
-// CR: Don't forget to remove unused references
 using System.IO;
 using System.Linq;
 using FluentAssertions;
@@ -11,12 +10,8 @@ using TagsCloudCore.Layout;
 using Rectangle = Geometry.Rectangle;
 using Size = Geometry.Size;
 
-// CR: Don't use this unless you ABSOLUTELY MUST
-//! ReSharper disable InconsistentNaming
-
 namespace TagsCloudCoreTests
 {
-    // CR: Why test classes need to be public?
     internal abstract class TagsCloudLayouterTests
     {
         public abstract ITagsCloudLayouter Layouter { get; set; }
@@ -50,13 +45,10 @@ namespace TagsCloudCoreTests
         }
         
         [TestCaseSource(nameof(RectanglesSizeCases))]
-        // CR: Mb 'ShouldTouchOneAnother'?
         public void ShouldTouchOneAnother(Size[] rectangleSizes)
         {
             var rectangles = PutRectanglesOnLayout(rectangleSizes).ToList();
-            // CR: I think new line between Arrange, Act and Assert seems nice
-            // Not a strict requirement, but consider using it
-            // CR: Maybe make it nicer with some LINQ?
+
             for (int i = 0; i < rectangles.Count; i++)
             {
                 rectangles.Where((other, s) => i != s && rectangles[i].Touches(other)).Any().Should().BeTrue();
@@ -66,7 +58,6 @@ namespace TagsCloudCoreTests
         [TestCase(10)]
         public void Rectangles_ShouldAppearInAnyQuater(int numberOfRectangles)
         {
-            // CR: Act and Assert don't look very distinct here
             var rectangles = PutRectanglesOnLayout(
                 Enumerable.Range(0, numberOfRectangles)
                     .Select(i => new Size(1, 1)));
@@ -77,7 +68,6 @@ namespace TagsCloudCoreTests
                 .Should().HaveCount(5);
         }
 
-        // CR: I thought we need a circle, not square :D
         [TestCase(10)]
         [TestCase(20)]
         public void BoundingBox_ShouldBeApproximatelySquare(int numberOfRectangles)

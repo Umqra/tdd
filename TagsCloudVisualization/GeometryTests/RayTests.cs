@@ -2,7 +2,6 @@
 using FluentAssertions;
 using Geometry;
 using NUnit.Framework;
-//! ReSharper disable InconsistentNaming
 
 namespace GeometryTests
 {
@@ -14,7 +13,9 @@ namespace GeometryTests
         {
             Point a = new Point(1, 2);
             Point b = new Point(1, 2);
+
             Action act = () => new Ray(a, b);
+
             act.ShouldThrow<ArgumentException>();
         }
 
@@ -60,7 +61,6 @@ namespace GeometryTests
         {
             return ray.IntersectWith(line);
         }
-
 
         public static TestCaseData[] IntersectRayCases =
         {

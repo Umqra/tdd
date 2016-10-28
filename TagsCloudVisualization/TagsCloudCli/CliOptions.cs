@@ -1,6 +1,5 @@
 ﻿namespace TagsCloudCli
 {
-    // CR: One class = one file
     public class CliOptions
     {
         public string InputFilename { get; set; }

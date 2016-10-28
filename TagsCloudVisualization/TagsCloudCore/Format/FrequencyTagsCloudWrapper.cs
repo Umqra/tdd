@@ -10,7 +10,6 @@ namespace TagsCloudCore.Format
         public FontFamily FontFamily { get; set; }
         public float MaxFontSizeInEm { get; set; }
         public Dictionary<string, int> TagsFrequency;
-        // CR: Why underscore?
         private int MaxFrequency { get; }
 
         public FrequencyTagsCloudWrapper(FontFamily fontFamily, float maxFontSizeInEm, IEnumerable<string> tags)

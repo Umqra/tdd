@@ -1,29 +1,22 @@
 ﻿using System;
 
-// CR: Do not use those
-//! ReSharper disable InconsistentNaming
-// fix problems they indicate
-
-// CR: Make naming consistent again!
 namespace Geometry
 {
-    // CR: Warning actually indicates serious problem
     public class Point
     {
+        public static Point Zero = new Point(0, 0);
+
         public readonly double X;
         public readonly double Y;
 
         public Point Orthogonal => new Point(-Y, X);
         public double Length => Math.Sqrt(X * X + Y * Y);
 
-        public bool IsZero => X.ApproxEqualTo(0) && Y.ApproxEqualTo(0);
-
         public int Quater
         {
             get
             {
-                // CR: Why create new object?
-                if (IsZero)
+                if (Equals(Zero))
                     return 0;
                 if (X > 0 && Y >= 0)
                     return 1;
@@ -157,7 +150,7 @@ namespace Geometry
 
         public double AngleTo(Point direction)
         {
-            if (IsZero || direction.IsZero)
+            if (Equals(Zero) || direction.Equals(Zero))
                 return 0;
             return Math.Atan2(CrossProduct(direction), DotProduct(direction));
         }
