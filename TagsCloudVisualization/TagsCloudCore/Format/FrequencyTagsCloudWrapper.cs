@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using Rectangle = Geometry.Rectangle;
 using Size = Geometry.Size;
 
 namespace TagsCloudCore.Format

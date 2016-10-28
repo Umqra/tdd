@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 // CR: Don't forget to remove unused references
-using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
 using FluentAssertions;

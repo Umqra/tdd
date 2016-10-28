@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Text;
 using System.Linq;
 using System.Windows.Forms;
 using Fclp;
@@ -116,7 +115,7 @@ namespace TagsCloudCli
 
         // CR: Don't use clousures and lambdas when it's not needed
         // Why do you need lambda here?
-        private static ITagsCloudLayouter GetLayouterByNameWithFixedCenter(string name, Geometry.Point center)
+        private static ITagsCloudLayouter GetLayouterByNameWithFixedCenter(string name, Point center)
         {
             if (name == "random")
                 return new DenseRandomTagsCloudLayouter(center);
@@ -176,7 +175,7 @@ namespace TagsCloudCli
         private static ITagsCloudVisualizator ConfigureVisualizator(GeneratorOptions options, IEnumerable<string> tags)
         {
             var layouter = GetLayouterByNameWithFixedCenter(options.LayouterName,
-                new Geometry.Point(options.Width / 2.0, options.Height / 2.0));
+                new Point(options.Width / 2.0, options.Height / 2.0));
             var wrapper = new FrequencyTagsCloudWrapper(FontFamily.GenericSerif, options.MaximumFontSize, tags);
             var decorator = new SolidColorTagsDecorator(ParseColor(options.ForegroundColor));
             // CR: What if there's no file?

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TagsCloudCore.Format
+﻿namespace TagsCloudCore.Format
 {
     public static class TagsDecoratorExtensions
     {
