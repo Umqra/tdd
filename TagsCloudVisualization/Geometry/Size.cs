@@ -86,6 +86,8 @@ namespace Geometry
         {
             unchecked
             {
+                // CR: Warning is meaningful, Size is immutable, so we can do props read-only (without setters)
+                // Same applies to all other classes
                 return (Width.GetHashCode() * 397) ^ Height.GetHashCode();
             }
         }

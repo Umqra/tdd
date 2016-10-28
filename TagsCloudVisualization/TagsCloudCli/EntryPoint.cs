@@ -54,6 +54,7 @@ namespace TagsCloudCli
             }
         }
 
+        // Nit: Cli is preferable to CLI in names (similarly for all abbreviations)
         private static bool ShouldTerminateCLI(ICommandLineParserResult parsingStatus,
             FluentCommandLineParser<CliOptions> parser)
         {
@@ -95,6 +96,8 @@ namespace TagsCloudCli
             return parsedColor;
         }
 
+        // CR: Fields should be consistenly either before or after methods
+        // CR: Resharper has meaningful warning - private fields starts with small letter
         private static readonly Dictionary<string, Func<Point, ITagsCloudLayouter>> LayouterNames =
             new Dictionary<string, Func<Point, ITagsCloudLayouter>>
             {
@@ -102,8 +105,10 @@ namespace TagsCloudCli
                 {"sparse", center => new SparseRandomTagsCloudLayouter(center)}
             };
 
+        // Nit: Don't you think 'CreateLayouter' is enough?
         private static ITagsCloudLayouter GetLayouterByNameWithFixedCenter(string name, Point center)
         {
+            // CR: Forgot to use mapping above? :)
             if (name == "random")
                 return new DenseRandomTagsCloudLayouter(center);
             if (name == "sparse")

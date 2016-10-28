@@ -6,6 +6,7 @@ namespace Geometry
     {
         public static Point Zero = new Point(0, 0);
 
+        // Nit: Why fields here and props in for example Size? It's always better to be consistent
         public readonly double X;
         public readonly double Y;
 
