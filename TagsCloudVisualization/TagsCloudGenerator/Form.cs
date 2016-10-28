@@ -4,23 +4,22 @@ using System.Windows.Forms;
 using TagsCloudCore;
 using TagsCloudCore.Visualization;
 
-namespace TagsCloudGenerator
+namespace TagsCloudCli
 {
     // CR: TagsCloud -> CloudDisplay ? It's better to be consistent
     // BTW, cloud is VERY ambiguous nowadays
-    sealed class CloudDisplayForm : Form
+    sealed class TagsCloudDisplayForm : Form
     {
-        public TagsCloudVisualizator Visualizator { get; set; }
+        public ITagsCloudVisualizator Visualizator { get; set; }
         public List<string> Tags { get; set; }
         // CR: That's a looooong line
         // CR: Empty line needed
-        public CloudDisplayForm(TagsCloudVisualizator visualizator, List<string> tags, int width, int height, Color backgroundColor)
+        public TagsCloudDisplayForm(ITagsCloudVisualizator visualizator, List<string> tags, int width, int height)
         {
             Visualizator = visualizator;
             Tags = tags;
             Width = width;
             Height = height;
-            BackColor = backgroundColor;
         }
 
         protected override void OnPaint(PaintEventArgs e)

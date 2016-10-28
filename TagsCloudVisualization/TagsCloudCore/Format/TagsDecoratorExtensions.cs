@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TagsCloudCore.Format
 {
-    public static class TagsDrawerExtensions
+    public static class TagsDecoratorExtensions
     {
         public static ITagsDecorator With(this ITagsDecorator self, ITagsDecorator other)
         {

@@ -50,7 +50,7 @@
     <Compile Include="Format\TagsDecoratorCombinator.cs" />
     <Compile Include="Layout\DenseRandomTagsCloudLayouter.cs" />
     <Compile Include="Format\FrequencyTagsCloudWrapper.cs" />
-    <Compile Include="Format\TagsDrawerExtensions.cs" />
+    <Compile Include="Format\TagsDecoratorExtensions.cs" />
     <Compile Include="Layout\ITagsCloudLayouter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Layout\SparseRandomTagsCloudLayouter.cs" />
