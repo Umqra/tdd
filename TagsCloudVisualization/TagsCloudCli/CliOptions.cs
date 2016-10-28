@@ -1,7 +1,7 @@
 ﻿namespace TagsCloudCli
 {
     // CR: One class = one file
-    public class GeneratorOptions
+    public class CliOptions
     {
         public string InputFilename { get; set; }
         public string OutputFilename { get; set; }

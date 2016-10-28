@@ -29,7 +29,7 @@ namespace TagsCloudCli
             var parser = ConfigureCommandParser();
             // CR: result - bad name, too ambiguous in the context
             var parsingStatus = parser.Parse(args);
-            if (ShouldTerminateCLI(parsingStatus))
+            if (ShouldTerminateCLI(parsingStatus, parser))
                 return;
 
             var options = parser.Object;
@@ -65,12 +65,15 @@ namespace TagsCloudCli
             }
         }
 
-        private static bool ShouldTerminateCLI(ICommandLineParserResult parsingStatus)
+        private static bool ShouldTerminateCLI(ICommandLineParserResult parsingStatus,
+            FluentCommandLineParser<CliOptions> parser)
         {
             if (parsingStatus.HelpCalled) return true;
             if (parsingStatus.HasErrors)
             {
                 Console.WriteLine(parsingStatus.ErrorText);
+                foreach (var error in parsingStatus.Errors)
+                    parser.HelpOption.ShowHelp(new[] {error.Option});
                 return true;
             }
             return false;
@@ -124,9 +127,9 @@ namespace TagsCloudCli
             throw new ArgumentException("Unknown layouter name");
         }
 
-        private static FluentCommandLineParser<GeneratorOptions> ConfigureCommandParser()
+        private static FluentCommandLineParser<CliOptions> ConfigureCommandParser()
         {
-            var parser = new FluentCommandLineParser<GeneratorOptions>();
+            var parser = new FluentCommandLineParser<CliOptions>();
             parser.Setup(arg => arg.InputFilename)
                 .As('i', "input")
                 .WithDescription("Filename with input text. You can use texts from examples/ folder.")
@@ -172,7 +175,7 @@ namespace TagsCloudCli
             return parser;
         }
 
-        private static ITagsCloudVisualizator ConfigureVisualizator(GeneratorOptions options, IEnumerable<string> tags)
+        private static ITagsCloudVisualizator ConfigureVisualizator(CliOptions options, IEnumerable<string> tags)
         {
             var layouter = GetLayouterByNameWithFixedCenter(options.LayouterName,
                 new Point(options.Width / 2.0, options.Height / 2.0));
