@@ -7,7 +7,7 @@ using TagsCloudCore.Layout;
 namespace TagsCloudCoreTests
 {
     [TestFixture]
-    internal class RandomDenseCloudLayouterTests : CloudLayouterTests
+    internal class DenseRandomTagsCloudLayouterTests : TagsCloudLayouterTests
     {
         public override ITagsCloudLayouter Layouter { get; set; }
         public override int ScaleFactor => 100;
@@ -15,7 +15,7 @@ namespace TagsCloudCoreTests
         [SetUp]
         public void SetUp()
         {
-            Layouter = new RandomDenseTagsCloudLayouter(new Point(0, 0));
+            Layouter = new DenseRandomTagsCloudLayouter(new Point(0, 0));
         }
 
         public static TestCaseData[] FirstRectangleCases =
@@ -26,7 +26,7 @@ namespace TagsCloudCoreTests
         [TestCaseSource(nameof(FirstRectangleCases))]
         public void FirstRectangle_ShouldContainCenter(Point center, Size rectangleSize)
         {
-            Layouter = new RandomDenseTagsCloudLayouter(center);
+            Layouter = new DenseRandomTagsCloudLayouter(center);
             var rectangle = Layouter.PutNextRectangle(rectangleSize);
 
             rectangle.Should().Match<Rectangle>(r => r.Contains(center));

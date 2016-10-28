@@ -53,9 +53,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CloudLayouterTests.cs" />
+    <Compile Include="TagsCloudLayouterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RandomDenseCloudLayouterTests.cs" />
+    <Compile Include="DenseRandomTagsCloudLayouterTests.cs" />
+    <Compile Include="SparseRandomTagsCloudLayouterTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

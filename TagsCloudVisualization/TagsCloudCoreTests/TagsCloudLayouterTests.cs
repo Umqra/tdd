@@ -18,7 +18,7 @@ using Size = Geometry.Size;
 namespace TagsCloudCoreTests
 {
     // CR: Why test classes need to be public?
-    internal abstract class CloudLayouterTests
+    internal abstract class TagsCloudLayouterTests
     {
         public abstract ITagsCloudLayouter Layouter { get; set; }
         public abstract int ScaleFactor { get; }

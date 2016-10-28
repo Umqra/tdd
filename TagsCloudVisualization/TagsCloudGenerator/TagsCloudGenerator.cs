@@ -47,9 +47,9 @@ namespace TagsCloudGenerator
         static Func<Geometry.Point, ITagsCloudLayouter> GetLayouterByName(string name)
         {
             if (name == "random")
-                return center => new RandomDenseTagsCloudLayouter(center);
+                return center => new DenseRandomTagsCloudLayouter(center);
             if (name == "sparse")
-                return center => new RandomSparseTagsCloudLayouter(center);
+                return center => new SparseRandomTagsCloudLayouter(center);
             throw new ArgumentException("Unknown layouter name");
         }
 

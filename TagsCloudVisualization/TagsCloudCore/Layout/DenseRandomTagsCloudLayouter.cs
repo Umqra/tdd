@@ -1,20 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Geometry;
-using TagsCloudCore.Layout;
 
 namespace TagsCloudCore.Layout
 {
-    public class RandomDenseTagsCloudLayouter : ITagsCloudLayouter
+    public class DenseRandomTagsCloudLayouter : ITagsCloudLayouter
     {
         private Random Random { get; }
         public Point Center { get; set; }
         public List<Rectangle> Rectangles { get; set; }
 
-        public RandomDenseTagsCloudLayouter(Point center)
+        public DenseRandomTagsCloudLayouter(Point center)
         {
             Random = new Random(0);
             Center = center;

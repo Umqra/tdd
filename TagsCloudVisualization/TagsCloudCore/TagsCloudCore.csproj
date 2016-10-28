@@ -42,12 +42,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Layout\RandomDenseTagsCloudLayouter.cs" />
+    <Compile Include="Layout\DenseRandomTagsCloudLayouter.cs" />
     <Compile Include="Format\FrequencyTagsCloudFormatter.cs" />
     <Compile Include="Format\ITagsCloudFormatter.cs" />
     <Compile Include="Layout\ITagsCloudLayouter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Layout\RandomSparseTagsCloudLayouter.cs" />
+    <Compile Include="Layout\SparseRandomTagsCloudLayouter.cs" />
     <Compile Include="RectangleLayoutExtensions.cs" />
     <Compile Include="TagsCloudVisualizator.cs" />
     <Compile Include="TagsExtractor.cs" />
