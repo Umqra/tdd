@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 using TagsCloudCore;
+using TagsCloudCore.Visualization;
 
 namespace TagsCloudGenerator
 {

@@ -16,7 +16,7 @@ namespace GeometryTests
         [TestCase(0, 1e-10, DoubleComparer.DefaultEpsilon, ExpectedResult = true)]
         public bool TestEquals(double a, double b, double eps)
         {
-            return a.ApproxEquals(b, eps);
+            return a.ApproxEqualTo(b, eps);
         }
 
         [TestCase(0, 0.0001, DoubleComparer.DefaultEpsilon, ExpectedResult = true)]
@@ -32,7 +32,7 @@ namespace GeometryTests
         [TestCase(2, 1.99999, DoubleComparer.DefaultEpsilon, ExpectedResult = false)]
         public bool TestLessThanOrEqualTo(double a, double b, double eps)
         {
-            return a.ApproxLessOrEquals(b, eps);
+            return a.ApproxLessOrEqualTo(b, eps);
         }
 
         [TestCase(0, 0.0001, DoubleComparer.DefaultEpsilon, ExpectedResult = false)]
@@ -48,7 +48,7 @@ namespace GeometryTests
         [TestCase(2, 1.99999, DoubleComparer.DefaultEpsilon, ExpectedResult = true)]
         public bool TestGreaterThanOrEqualTo(double a, double b, double eps)
         {
-            return a.ApproxGreaterOrEquals(b, eps);
+            return a.ApproxGreaterOrEqualTo(b, eps);
         }
     }
 }

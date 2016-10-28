@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Rectangle = Geometry.Rectangle;
+﻿using System.Drawing;
 using Size = Geometry.Size;
 
 namespace TagsCloudCore.Format
@@ -15,9 +9,9 @@ namespace TagsCloudCore.Format
     // Look at the logical flow
     // tags -> (construct) -> formatter -> (generate size) -> layouter -> (generate rectangle) -> formatter
     // It seems like formatter on the left can be separated from the formatter on the right
-    public interface ITagsCloudFormatter
+    public interface ITagsWrapper
     {
-        Size MeasureString(string tag, Graphics graphics);
-        void PutTag(string tag, Rectangle tagPlace, Graphics graphics);
+        Font GetTagFont(string tag);
+        Size MeasureTag(string tag, Graphics graphics);
     }
 }

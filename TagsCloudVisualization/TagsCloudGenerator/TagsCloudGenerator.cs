@@ -7,6 +7,7 @@ using Fclp;
 using TagsCloudCore;
 using TagsCloudCore.Format;
 using TagsCloudCore.Layout;
+using TagsCloudCore.Visualization;
 
 // CR: Generator seems like a bad name for the application. Imagine calling tagscloud.generator.
 // What it's going to do? Generate a picture? Generate a text? Start a web ui for generating pictures?
@@ -118,9 +119,10 @@ namespace TagsCloudGenerator
                     Layouter =
                         () => GetLayouterByName(options.LayouterName)(new Geometry.Point(options.Width / 2.0,
                             options.Height / 2.0)),
-                    Formatter =
-                        () => new FrequencyTagsCloudFormatter(FontFamily.GenericSerif, options.MaximumFontSize,
-                            new SolidBrush(GetColor(options.ForegroundColor)), tags)
+                    Wrapper =
+                        () => new FrequencyTagsCloudWrapper(FontFamily.GenericSerif, options.MaximumFontSize, tags),
+                    Decorator = 
+                        () => new SolidColorTagsDecorator(GetColor(options.ForegroundColor))
                 }
             );
             if (options.OutputFilename != null)

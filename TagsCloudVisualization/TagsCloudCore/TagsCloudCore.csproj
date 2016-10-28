@@ -42,15 +42,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Format\FadedColorTagsDecorator.cs" />
+    <Compile Include="Format\ITagsDecorator.cs" />
+    <Compile Include="Format\ITagsWrapper.cs" />
+    <Compile Include="Format\ShadedBackgroundTagsDecorator.cs" />
+    <Compile Include="Format\SolidColorTagsDecorator.cs" />
+    <Compile Include="Format\TagsDecoratorCombinator.cs" />
     <Compile Include="Layout\DenseRandomTagsCloudLayouter.cs" />
-    <Compile Include="Format\FrequencyTagsCloudFormatter.cs" />
-    <Compile Include="Format\ITagsCloudFormatter.cs" />
+    <Compile Include="Format\FrequencyTagsCloudWrapper.cs" />
+    <Compile Include="Format\TagsDrawerExtensions.cs" />
     <Compile Include="Layout\ITagsCloudLayouter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Layout\SparseRandomTagsCloudLayouter.cs" />
     <Compile Include="RectangleLayoutExtensions.cs" />
-    <Compile Include="TagsCloudVisualizator.cs" />
+    <Compile Include="Visualization\ITagsCloudVisualizator.cs" />
+    <Compile Include="Visualization\TagsCloudVisualizator.cs" />
     <Compile Include="TagsExtractor.cs" />
+    <Compile Include="Visualization\VisualizatorConfiguration.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Geometry\Geometry.csproj">
