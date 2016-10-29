@@ -4,8 +4,8 @@ namespace Geometry
 {
     public class Segment
     {
-        public Point A { get; set; }
-        public Point B { get; set; }
+        public Point A { get; }
+        public Point B { get; }
 
         public Line BaseLine => new Line(A, B);
 

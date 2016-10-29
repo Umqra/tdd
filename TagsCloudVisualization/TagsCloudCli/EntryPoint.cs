@@ -14,11 +14,18 @@ namespace TagsCloudCli
 {
     internal class EntryPoint
     {
+        private static readonly Dictionary<string, Func<Point, ITagsCloudLayouter>> LayouterNames =
+            new Dictionary<string, Func<Point, ITagsCloudLayouter>>
+            {
+                {"random", center => new DenseRandomTagsCloudLayouter(center)},
+                {"sparse", center => new SparseRandomTagsCloudLayouter(center)}
+            };
+
         internal static void Main(string[] args)
         {
             var parser = ConfigureCommandParser();
             var parsingStatus = parser.Parse(args);
-            if (ShouldTerminateCLI(parsingStatus, parser))
+            if (ShouldTerminateCli(parsingStatus, parser))
                 return;
 
             var options = parser.Object;
@@ -43,7 +50,6 @@ namespace TagsCloudCli
             {
                 var image = new Bitmap(options.Width, options.Height);
                 var graphics = Graphics.FromImage(image);
-                // CR: I see some duplications, do you?
                 visualizator.CreateTagsCloud(tags.Distinct(), graphics);
                 image.Save(options.OutputFilename);
             }
@@ -54,8 +60,7 @@ namespace TagsCloudCli
             }
         }
 
-        // Nit: Cli is preferable to CLI in names (similarly for all abbreviations)
-        private static bool ShouldTerminateCLI(ICommandLineParserResult parsingStatus,
+        private static bool ShouldTerminateCli(ICommandLineParserResult parsingStatus,
             FluentCommandLineParser<CliOptions> parser)
         {
             if (parsingStatus.HelpCalled) return true;
@@ -96,23 +101,10 @@ namespace TagsCloudCli
             return parsedColor;
         }
 
-        // CR: Fields should be consistenly either before or after methods
-        // CR: Resharper has meaningful warning - private fields starts with small letter
-        private static readonly Dictionary<string, Func<Point, ITagsCloudLayouter>> LayouterNames =
-            new Dictionary<string, Func<Point, ITagsCloudLayouter>>
-            {
-                {"random", center => new DenseRandomTagsCloudLayouter(center)},
-                {"sparse", center => new SparseRandomTagsCloudLayouter(center)}
-            };
-
-        // Nit: Don't you think 'CreateLayouter' is enough?
         private static ITagsCloudLayouter GetLayouterByNameWithFixedCenter(string name, Point center)
         {
-            // CR: Forgot to use mapping above? :)
-            if (name == "random")
-                return new DenseRandomTagsCloudLayouter(center);
-            if (name == "sparse")
-                return new SparseRandomTagsCloudLayouter(center);
+            if (LayouterNames.ContainsKey(name))
+                return LayouterNames[name](center);
             throw new ArgumentException("Unknown layouter name");
         }
 
@@ -150,7 +142,6 @@ namespace TagsCloudCli
                 .SetDefault("black");
             parser.Setup(arg => arg.LayouterName)
                 .As('l', "layouter")
-                // CR: What options do I have?
                 .WithDescription($"Choose implementation of layouter from list: {string.Join(",", LayouterNames.Keys)}.")
                 .SetDefault("sparse");
 

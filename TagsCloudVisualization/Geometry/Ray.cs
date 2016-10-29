@@ -4,8 +4,8 @@ namespace Geometry
 {
     public class Ray
     {
-        public Point From { get; set; }
-        public Point To { get; set; }
+        public Point From { get; }
+        public Point To { get; }
 
         public Point Direction => To - From;
         public Line BaseLine => new Line(From, To);

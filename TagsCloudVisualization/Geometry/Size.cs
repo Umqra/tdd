@@ -4,8 +4,9 @@ namespace Geometry
 {
     public class Size
     {
-        public double Width { get; set; }
-        public double Height { get; set; }
+        public double Width { get; }
+
+        public double Height { get; }
 
         public Size(double width, double height)
         {
@@ -86,8 +87,6 @@ namespace Geometry
         {
             unchecked
             {
-                // CR: Warning is meaningful, Size is immutable, so we can do props read-only (without setters)
-                // Same applies to all other classes
                 return (Width.GetHashCode() * 397) ^ Height.GetHashCode();
             }
         }

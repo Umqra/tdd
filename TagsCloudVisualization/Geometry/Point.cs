@@ -4,11 +4,11 @@ namespace Geometry
 {
     public class Point
     {
-        public static Point Zero = new Point(0, 0);
+        public static readonly Point Zero = new Point(0, 0);
 
         // Nit: Why fields here and props in for example Size? It's always better to be consistent
-        public readonly double X;
-        public readonly double Y;
+        public double X { get; }
+        public double Y { get; }
 
         public Point Orthogonal => new Point(-Y, X);
         public double Length => Math.Sqrt(X * X + Y * Y);

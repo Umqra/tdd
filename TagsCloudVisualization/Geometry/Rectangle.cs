@@ -6,8 +6,8 @@ namespace Geometry
 {
     public class Rectangle
     {
-        public Point BottomLeft { get; set; }
-        public Point TopRight { get; set; }
+        public Point BottomLeft { get; }
+        public Point TopRight { get; }
 
         public double Bottom => BottomLeft.Y;
         public double Left => BottomLeft.X;
