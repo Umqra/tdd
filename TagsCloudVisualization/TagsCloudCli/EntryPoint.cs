@@ -14,6 +14,8 @@ namespace TagsCloudCli
 {
     internal class EntryPoint
     {
+        // Nit: As we discussed, this is totally acceptable per se,
+        // but in Kuntur styleguide lowerCamelCase is preferred for private static readonly
         private static readonly Dictionary<string, Func<Point, ITagsCloudLayouter>> LayouterNames =
             new Dictionary<string, Func<Point, ITagsCloudLayouter>>
             {
@@ -44,7 +46,6 @@ namespace TagsCloudCli
                 parser.HelpOption.ShowHelp(parser.Options); 
                 return;
             }
-
 
             if (options.OutputFilename != null)
             {

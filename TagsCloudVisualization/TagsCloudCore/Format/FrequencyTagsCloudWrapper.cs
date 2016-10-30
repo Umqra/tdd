@@ -27,6 +27,7 @@ namespace TagsCloudCore.Format
             }
         }
 
+        // Nit: Typo
         private int GetFrequence(string tag)
         {
             return TagsFrequency.ContainsKey(tag) ? TagsFrequency[tag] : 0;
@@ -34,6 +35,7 @@ namespace TagsCloudCore.Format
 
         public Font GetTagFont(string tag)
         {
+            // Nit: Magic constant
             var fontSize = MaxFontSizeInEm * Math.Pow(((double)GetFrequence(tag) + 1) / (MaxFrequency + 1), 0.7);
             return new Font(FontFamily, (float)fontSize);
         }

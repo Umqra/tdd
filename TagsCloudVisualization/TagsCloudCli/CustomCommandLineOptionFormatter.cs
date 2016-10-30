@@ -18,6 +18,8 @@ namespace TagsCloudCli
             return formattedOptions.ToString().TrimEnd();
         }
 
+        // CR: Fields & props should be above all methods
+        // + these fields can be made constant
         private int TextWidth => 80;
         private string LinePadding => "    ";
 
