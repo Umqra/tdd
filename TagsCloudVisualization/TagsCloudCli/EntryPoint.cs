@@ -14,9 +14,7 @@ namespace TagsCloudCli
 {
     internal class EntryPoint
     {
-        // Nit: As we discussed, this is totally acceptable per se,
-        // but in Kuntur styleguide lowerCamelCase is preferred for private static readonly
-        private static readonly Dictionary<string, Func<Point, ITagsCloudLayouter>> LayouterNames =
+        private static readonly Dictionary<string, Func<Point, ITagsCloudLayouter>> layouterNames =
             new Dictionary<string, Func<Point, ITagsCloudLayouter>>
             {
                 {"random", center => new DenseRandomTagsCloudLayouter(center)},
@@ -92,7 +90,7 @@ namespace TagsCloudCli
         {
             if (colorRepresentation[0] == '#')
             {
-                if (colorRepresentation.Length != 7 || !colorRepresentation.Skip(1).All(c => c.IsHex()))
+                if ((colorRepresentation.Length != 7) || !colorRepresentation.Skip(1).All(c => c.IsHex()))
                     throw new ArgumentException($"Invalid hex color code {colorRepresentation}");
                 return ColorTranslator.FromHtml(colorRepresentation);
             }
@@ -104,8 +102,8 @@ namespace TagsCloudCli
 
         private static ITagsCloudLayouter GetLayouterByNameWithFixedCenter(string name, Point center)
         {
-            if (LayouterNames.ContainsKey(name))
-                return LayouterNames[name](center);
+            if (layouterNames.ContainsKey(name))
+                return layouterNames[name](center);
             throw new ArgumentException("Unknown layouter name");
         }
 
@@ -146,7 +144,7 @@ namespace TagsCloudCli
                 .SetDefault("black");
             parser.Setup(arg => arg.LayouterName)
                 .As('l', "layouter")
-                .WithDescription($"Choose implementation of layouter from list: {string.Join(",", LayouterNames.Keys)}.")
+                .WithDescription($"Choose implementation of layouter from list: {string.Join(",", layouterNames.Keys)}.")
                 .SetDefault("sparse");
 
             parser.SetupHelp("help", "?")

@@ -7,6 +7,8 @@ namespace TagsCloudCore.Format
 {
     public class FrequencyTagsCloudWrapper : ITagsWrapper
     {
+        public const double FontSizeTuner = 0.7;
+
         public FontFamily FontFamily { get; set; }
         public float MaxFontSizeInEm { get; set; }
         public Dictionary<string, int> TagsFrequency;
@@ -27,16 +29,15 @@ namespace TagsCloudCore.Format
             }
         }
 
-        // Nit: Typo
-        private int GetFrequence(string tag)
+        private int GetFrequency(string tag)
         {
             return TagsFrequency.ContainsKey(tag) ? TagsFrequency[tag] : 0;
         }
 
         public Font GetTagFont(string tag)
         {
-            // Nit: Magic constant
-            var fontSize = MaxFontSizeInEm * Math.Pow(((double)GetFrequence(tag) + 1) / (MaxFrequency + 1), 0.7);
+            double frequencyRatio = (double)GetFrequency(tag) / MaxFrequency;
+            var fontSize = MaxFontSizeInEm * Math.Pow(frequencyRatio, FontSizeTuner);
             return new Font(FontFamily, (float)fontSize);
         }
 
