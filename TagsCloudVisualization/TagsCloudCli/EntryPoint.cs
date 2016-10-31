@@ -6,22 +6,30 @@ using System.Windows.Forms;
 using Fclp;
 using TagsCloudCore;
 using TagsCloudCore.Format;
-using TagsCloudCore.Layout;
 using TagsCloudCore.Visualization;
-using Point = Geometry.Point;
 
 namespace TagsCloudCli
 {
     internal class EntryPoint
     {
-        private static readonly Dictionary<string, Func<Point, ITagsCloudLayouter>> layouterNames =
-            new Dictionary<string, Func<Point, ITagsCloudLayouter>>
-            {
-                {"random", center => new DenseRandomTagsCloudLayouter(center)},
-                {"sparse", center => new SparseRandomTagsCloudLayouter(center)}
-            };
-
         internal static void Main(string[] args)
+        {
+            try
+            {
+                RunCli(args);
+            }
+            catch (Exception exception)
+            {
+                var currentException = exception;
+                while (currentException != null)
+                {
+                    Console.WriteLine(currentException.Message);
+                    currentException = currentException.InnerException;
+                }
+            }
+        }
+
+        private static void RunCli(string[] args)
         {
             var parser = ConfigureCommandParser();
             var parsingStatus = parser.Parse(args);
@@ -29,34 +37,39 @@ namespace TagsCloudCli
                 return;
 
             var options = parser.Object;
-
-            List<string> tags;
-            ITagsCloudVisualizator visualizator;
             try
             {
-                tags = AlertIfAnyErrorOccured(() => new TagsExtractor().ExtractFromFile(options.InputFilename).ToList(),
-                    $"Error while reading file {options.InputFilename} occured");
-                visualizator = AlertIfAnyErrorOccured(() => ConfigureVisualizator(options, tags),
-                    "Error while parsing visualizator parameters occured");
+                options.Initialize();
             }
-            catch (FormatException)
+            catch (Exception e)
             {
-                parser.HelpOption.ShowHelp(parser.Options);
-                return;
+                throw new FormatException("Error occured while parsing CLI parameters", e);
             }
 
+            var tags = new TagsExtractor().ExtractFromFile(options.InputFilename).ToList();
+            var visualizator = ConfigureVisualizator(options, tags);
+
             if (options.OutputFilename != null)
-            {
-                var image = new Bitmap(options.Width, options.Height);
-                var graphics = Graphics.FromImage(image);
-                visualizator.CreateTagsCloud(tags.Distinct(), graphics);
-                image.Save(options.OutputFilename);
-            }
+                ProcessBitmapImage(options, visualizator, tags);
             else
-            {
-                Application.Run(new TagsCloudDisplayForm(visualizator, tags.Distinct().ToList(),
-                    options.Width, options.Height));
-            }
+                ProcessWinFormsApplication(options, visualizator, tags);
+        }
+
+        private static void ProcessWinFormsApplication(CliOptions options, ITagsCloudVisualizator visualizator, List<string> tags)
+        {
+            Application.Run(
+                new TagsCloudDisplayForm(
+                    visualizator, tags.Distinct().ToList(),
+                    options.Width, options.Height)
+            );
+        }
+
+        private static void ProcessBitmapImage(CliOptions options, ITagsCloudVisualizator visualizator, List<string> tags)
+        {
+            var image = new Bitmap(options.Width, options.Height);
+            var graphics = Graphics.FromImage(image);
+            visualizator.CreateTagsCloud(tags.Distinct(), graphics);
+            image.Save(options.OutputFilename);
         }
 
         private static bool ShouldTerminateCli(ICommandLineParserResult parsingStatus,
@@ -73,40 +86,6 @@ namespace TagsCloudCli
             return false;
         }
 
-        private static T AlertIfAnyErrorOccured<T>(Func<T> getter, string errorMessagePrefix)
-        {
-            try
-            {
-                return getter();
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine($"{errorMessagePrefix}: {exception.Message}");
-                throw new FormatException();
-            }
-        }
-
-        private static Color ParseColor(string colorRepresentation)
-        {
-            if (colorRepresentation[0] == '#')
-            {
-                if ((colorRepresentation.Length != 7) || !colorRepresentation.Skip(1).All(c => c.IsHex()))
-                    throw new ArgumentException($"Invalid hex color code {colorRepresentation}");
-                return ColorTranslator.FromHtml(colorRepresentation);
-            }
-            var parsedColor = Color.FromName(colorRepresentation);
-            if (!parsedColor.IsKnownColor)
-                throw new ArgumentException($"Unknown color representation: {colorRepresentation}");
-            return parsedColor;
-        }
-
-        private static ITagsCloudLayouter GetLayouterByNameWithFixedCenter(string name, Point center)
-        {
-            if (layouterNames.ContainsKey(name))
-                return layouterNames[name](center);
-            throw new ArgumentException("Unknown layouter name");
-        }
-
         private static FluentCommandLineParser<CliOptions> ConfigureCommandParser()
         {
             var parser = new FluentCommandLineParser<CliOptions>();
@@ -114,7 +93,6 @@ namespace TagsCloudCli
                 .As('i', "input")
                 .WithDescription("Filename with input text. You can use texts from examples/ folder.")
                 .Required();
-
             parser.Setup(arg => arg.OutputFilename)
                 .As('o', "output")
                 .WithDescription(
@@ -132,19 +110,20 @@ namespace TagsCloudCli
                 .As('f', "font")
                 .WithDescription("Maximum font size in em units.")
                 .SetDefault(40);
-            parser.Setup(arg => arg.BackgroundColor)
+
+            parser.Setup(arg => arg.BackgroundColorName)
                 .As("bc")
                 .WithDescription(
                     "Background image color\nYou can use common names for colors or hex codes. For example: --fc orange, --fc #abc123.")
                 .SetDefault("white");
-            parser.Setup(arg => arg.ForegroundColor)
+            parser.Setup(arg => arg.ForegroundColorName)
                 .As("fc")
                 .WithDescription(
                     "Text color\nYou can use common names for colors or hex codes. For example: --fc orange, --fc #abc123.")
                 .SetDefault("black");
             parser.Setup(arg => arg.LayouterName)
                 .As('l', "layouter")
-                .WithDescription($"Choose implementation of layouter from list: {string.Join(",", layouterNames.Keys)}.")
+                .WithDescription($"Choose implementation of layouter from list: {string.Join(",", CliOptions.LayouterNames.Keys)}.")
                 .SetDefault("sparse");
 
             parser.SetupHelp("help", "?")
@@ -156,10 +135,9 @@ namespace TagsCloudCli
 
         private static ITagsCloudVisualizator ConfigureVisualizator(CliOptions options, IEnumerable<string> tags)
         {
-            var layouter = GetLayouterByNameWithFixedCenter(options.LayouterName,
-                new Point(options.Width / 2.0, options.Height / 2.0));
+            var layouter = options.Layouter;
             var wrapper = new FrequencyTagsCloudWrapper(FontFamily.GenericSerif, options.MaximumFontSize, tags);
-            var decorator = new SolidColorTagsDecorator(ParseColor(options.ForegroundColor));
+            var decorator = new SolidColorTagsDecorator(options.ForegroundColor);
             return new TagsCloudVisualizator(
                 new VisualizatorConfiguration
                 {
@@ -167,7 +145,7 @@ namespace TagsCloudCli
                     Wrapper = () => wrapper,
                     Decorator = () => decorator
                 },
-                ParseColor(options.BackgroundColor)
+                options.BackgroundColor
             );
         }
     }

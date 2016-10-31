@@ -8,30 +8,26 @@ namespace TagsCloudCli
 {
     public class CustomCommandLineOptionFormatter : ICommandLineOptionFormatter
     {
+        private const int TextWidth = 80;
+        private const string LinePadding = "    ";
+
         public string Format(IEnumerable<ICommandLineOption> options)
         {
             var formattedOptions = new StringBuilder();
             foreach (var option in options)
-            {
                 formattedOptions.AppendLine(CreateOptionLine(option));
-            }
             return formattedOptions.ToString().TrimEnd();
         }
 
-        // CR: Fields & props should be above all methods
-        // + these fields can be made constant
-        private int TextWidth => 80;
-        private string LinePadding => "    ";
-
         private string CreateOptionLine(ICommandLineOption option)
         {
-            string optionLine = LinePadding;
+            var optionLine = LinePadding;
             optionLine += string.Join(", ", GetNamesRepresentation(option));
             if (optionLine.Length * 2 > TextWidth)
                 optionLine += "\n" + LinePadding + LinePadding + WrapString(2 * LinePadding.Length, option.Description);
             else
             {
-                string separator = new string(' ', Math.Max(0, 20 - optionLine.Length)) + new string(' ', 5);
+                var separator = new string(' ', Math.Max(0, 20 - optionLine.Length)) + new string(' ', 5);
                 optionLine += separator;
                 optionLine += WrapString(optionLine.Length, option.Description);
             }
@@ -43,8 +39,8 @@ namespace TagsCloudCli
 
         private string WrapString(int startOffset, string text)
         {
-            string wrapped = "";
-            int offset = startOffset;
+            var wrapped = "";
+            var offset = startOffset;
             foreach (var token in text.Split())
             {
                 if (offset > TextWidth)

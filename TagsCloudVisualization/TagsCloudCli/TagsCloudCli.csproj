@@ -61,12 +61,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CharExtensions.cs" />
+    <Compile Include="CliOptionsInitialization.cs" />
+    <Compile Include="Extensions\ColorExtensions.cs" />
     <Compile Include="CustomCommandLineOptionFormatter.cs" />
+    <Compile Include="Extensions\FileExtensions.cs" />
     <Compile Include="Form.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="CliOptions.cs" />
     <Compile Include="EntryPoint.cs" />
+    <Compile Include="InitializeAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
