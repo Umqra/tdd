@@ -10,7 +10,11 @@ namespace TagsCloudCore
         public static Bitmap CreateImage(this IEnumerable<Geometry.Rectangle> rectangles, int scaleFactor, Brush brush)
         {
             var enumeratedRectangles = rectangles.ToList();
-            var boundingBox = Geometry.Rectangle.BoundingBoxOf(enumeratedRectangles.SelectMany(rectangle => rectangle.Corners));
+            var boundingBoxOrNull = Geometry.Rectangle.BoundingBoxOf(enumeratedRectangles.SelectMany(rectangle => rectangle.Corners));
+            if (!boundingBoxOrNull.HasValue)
+                throw new ArgumentException("Can't draw rectangles layout from empty sequence of rectangles", nameof(rectangles));
+
+            var boundingBox = boundingBoxOrNull.Value;
             var image = new Bitmap(
                 (int)Math.Round(boundingBox.Size.Width) * scaleFactor,
                 (int)Math.Round(boundingBox.Size.Height) * scaleFactor);

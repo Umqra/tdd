@@ -74,7 +74,7 @@ namespace GeometryTests
                 .Returns(null) 
         };
         [TestCaseSource(nameof(IntersectCases))]
-        public Rectangle TestIntersect(Rectangle first, Rectangle second)
+        public Rectangle? TestIntersect(Rectangle first, Rectangle second)
         {
             return first.IntersectWith(second);
         }
@@ -157,7 +157,7 @@ namespace GeometryTests
                 .Returns(new Rectangle(new Point(-1, 0), new Point(2, 5)))
         };
         [TestCaseSource(nameof(BoundingBoxCases))]
-        public Rectangle TestBoundingBox(Point[] points)
+        public Rectangle? TestBoundingBox(Point[] points)
         {
             return Rectangle.BoundingBoxOf(points);
         }

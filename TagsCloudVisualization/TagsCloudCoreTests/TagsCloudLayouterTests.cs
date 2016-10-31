@@ -40,7 +40,7 @@ namespace TagsCloudCoreTests
                 for (int s = i + 1; s < rectangles.Count; s++)
                 {
                     var intersection = rectangles[i].IntersectWith(rectangles[s]);
-                    intersection.Should().Match<Rectangle>(rectangle => rectangle == null || rectangle.IsEmpty);
+                    intersection.Should().Match<Rectangle?>(rectangle => rectangle == null || rectangle.Value.IsEmpty);
                 }
         }
         
@@ -76,8 +76,8 @@ namespace TagsCloudCoreTests
                     Enumerable.Range(0, numberOfRectangles)
                         .Select(i => new Size(1, 1)))
                 .SelectMany(rectangle => rectangle.Corners);
-            
-            var boundingBox = Rectangle.BoundingBoxOf(allCorners);
+
+            var boundingBox = Rectangle.BoundingBoxOf(allCorners).Value;
             boundingBox.Size.Width.Should()
                 .BeGreaterThan(boundingBox.Size.Height / 2)
                 .And

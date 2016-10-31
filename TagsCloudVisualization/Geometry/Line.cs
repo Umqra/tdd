@@ -2,10 +2,10 @@
 
 namespace Geometry
 {
-    public class Line
+    public struct Line
     {
-        public Point A { get; }
-        public Point B { get; }
+        public readonly Point A;
+        public readonly Point B;
 
         public Point Direction => B - A;
 
@@ -27,7 +27,7 @@ namespace Geometry
             return (p - A).CollinearTo(Direction);
         }
 
-        public Point IntersectWith(Line other)
+        public Point? IntersectWith(Line other)
         {
             if (ParallelTo(other))
                 return null;
@@ -45,7 +45,7 @@ namespace Geometry
             return A + Direction * (p - A).DotProduct(Direction) / (Direction.DotProduct(Direction));
         }
 
-        protected bool Equals(Line other)
+        public bool Equals(Line other)
         {
             return Direction.CollinearTo(other.Direction) && other.Contains(A);
         }
@@ -53,9 +53,7 @@ namespace Geometry
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != GetType()) return false;
-            return Equals((Line)obj);
+            return obj is Line && Equals((Line)obj);
         }
 
         /// <summary>
@@ -68,7 +66,7 @@ namespace Geometry
         {
             unchecked
             {
-                return ((A?.GetHashCode() ?? 0) * 397) ^ (B?.GetHashCode() ?? 0);
+                return (A.GetHashCode() * 397) ^ B.GetHashCode();
             }
         }
 

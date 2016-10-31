@@ -2,10 +2,10 @@
 
 namespace Geometry
 {
-    public class Ray
+    public struct Ray
     {
-        public Point From { get; }
-        public Point To { get; }
+        public readonly Point From;
+        public readonly Point To;
 
         public Point Direction => To - From;
         public Line BaseLine => new Line(From, To);
@@ -23,22 +23,22 @@ namespace Geometry
             return Direction.HasSameDirectionAs(p - From);
         }
 
-        private Point PointIfContainsElseNull(Point p)
+        private Point? PointIfContainsElseNull(Point? p)
         {
-            if (p != null && Contains(p))
+            if (p != null && Contains(p.Value))
                 return p;
             return null;
         }
 
-        public Point IntersectWith(Line line)
+        public Point? IntersectWith(Line line)
         {
-            Point intersection = line.IntersectWith(BaseLine);
+            Point? intersection = line.IntersectWith(BaseLine);
             return PointIfContainsElseNull(intersection);
         }
 
-        public Point IntersectWith(Ray other)
+        public Point? IntersectWith(Ray other)
         {
-            Point intersection = other.IntersectWith(BaseLine);
+            Point? intersection = other.IntersectWith(BaseLine);
             return PointIfContainsElseNull(intersection);
         }
 
@@ -49,7 +49,7 @@ namespace Geometry
             return From.DistanceTo(p);
         }
 
-        protected bool Equals(Ray other)
+        public bool Equals(Ray other)
         {
             return From.Equals(other.From) && Direction.HasSameDirectionAs(other.Direction);
         }
@@ -57,9 +57,7 @@ namespace Geometry
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != GetType()) return false;
-            return Equals((Ray)obj);
+            return obj is Ray && Equals((Ray)obj);
         }
 
         /// <summary>
@@ -72,7 +70,7 @@ namespace Geometry
         {
             unchecked
             {
-                return ((From?.GetHashCode() ?? 0) * 397) ^ (To?.GetHashCode() ?? 0);
+                return (From.GetHashCode() * 397) ^ To.GetHashCode();
             }
         }
 

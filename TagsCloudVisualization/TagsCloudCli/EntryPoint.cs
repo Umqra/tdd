@@ -43,7 +43,7 @@ namespace TagsCloudCli
             }
             catch (FormatException)
             {
-                parser.HelpOption.ShowHelp(parser.Options); 
+                parser.HelpOption.ShowHelp(parser.Options);
                 return;
             }
 
@@ -56,7 +56,7 @@ namespace TagsCloudCli
             }
             else
             {
-                Application.Run(new TagsCloudDisplayForm(visualizator, tags.Distinct().ToList(), 
+                Application.Run(new TagsCloudDisplayForm(visualizator, tags.Distinct().ToList(),
                     options.Width, options.Height));
             }
         }
@@ -119,7 +119,8 @@ namespace TagsCloudCli
 
             parser.Setup(arg => arg.OutputFilename)
                 .As('o', "output")
-                .WithDescription("Filename for output image. You can skip this parameter - than cloud will be generated in WF Application.");
+                .WithDescription(
+                    "Filename for output image. You can skip this parameter - than cloud will be generated in WF Application.");
 
             parser.Setup(arg => arg.Width)
                 .As('w', "width")
@@ -135,11 +136,13 @@ namespace TagsCloudCli
                 .SetDefault(40);
             parser.Setup(arg => arg.BackgroundColor)
                 .As("bc")
-                .WithDescription("Background image color\nYou can use common names for colors or hex codes. For example: --fc orange, --fc #abc123.")
+                .WithDescription(
+                    "Background image color\nYou can use common names for colors or hex codes. For example: --fc orange, --fc #abc123.")
                 .SetDefault("white");
             parser.Setup(arg => arg.ForegroundColor)
                 .As("fc")
-                .WithDescription("Text color\nYou can use common names for colors or hex codes. For example: --fc orange, --fc #abc123.")
+                .WithDescription(
+                    "Text color\nYou can use common names for colors or hex codes. For example: --fc orange, --fc #abc123.")
                 .SetDefault("black");
             parser.Setup(arg => arg.LayouterName)
                 .As('l', "layouter")

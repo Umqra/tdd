@@ -4,10 +4,10 @@ using System.Linq;
 
 namespace Geometry
 {
-    public class Rectangle
+    public struct Rectangle
     {
-        public Point BottomLeft { get; }
-        public Point TopRight { get; }
+        public readonly Point BottomLeft;
+        public readonly Point TopRight;
 
         public double Bottom => BottomLeft.Y;
         public double Left => BottomLeft.X;
@@ -39,7 +39,7 @@ namespace Geometry
             TopRight = new Point(Math.Max(corner.X, oppositeCorner.X), Math.Max(corner.Y, oppositeCorner.Y));
         }
 
-        public Rectangle IntersectWith(Rectangle otherRectangle)
+        public Rectangle? IntersectWith(Rectangle otherRectangle)
         {
             double newLeft = Math.Max(Left, otherRectangle.Left);
             double newRight = Math.Min(Right, otherRectangle.Right);
@@ -93,17 +93,15 @@ namespace Geometry
             return new Rectangle(new Point(rectangle.Left, rectangle.Top), new Point(rectangle.Right, rectangle.Bottom));
         }
 
-        protected bool Equals(Rectangle other)
+        public bool Equals(Rectangle other)
         {
-            return Equals(TopLeft, other.TopLeft) && Equals(BottomRight, other.BottomRight);
+            return BottomLeft.Equals(other.BottomLeft) && TopRight.Equals(other.TopRight);
         }
 
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != GetType()) return false;
-            return Equals((Rectangle)obj);
+            return obj is Rectangle && Equals((Rectangle)obj);
         }
 
         /// <summary>
@@ -116,7 +114,7 @@ namespace Geometry
         {
             unchecked
             {
-                return ((BottomLeft?.GetHashCode() ?? 0) * 397) ^ (TopRight?.GetHashCode() ?? 0);
+                return (BottomLeft.GetHashCode() * 397) ^ TopRight.GetHashCode();
             }
         }
 
@@ -133,12 +131,14 @@ namespace Geometry
 
         public bool Touches(Rectangle rectangle)
         {
-            var intersection = IntersectWith(rectangle);
-            return intersection != null &&
-                   (intersection.Left.ApproxEqualTo(intersection.Right) || intersection.Bottom.ApproxEqualTo(intersection.Top));
+            var intersectionOrNull = IntersectWith(rectangle);
+            if (intersectionOrNull == null)
+                return false;
+            var intersection = intersectionOrNull.Value;
+            return intersection.Left.ApproxEqualTo(intersection.Right) || intersection.Bottom.ApproxEqualTo(intersection.Top);
         }
 
-        public static Rectangle BoundingBoxOf(IEnumerable<Point> allCorners)
+        public static Rectangle? BoundingBoxOf(IEnumerable<Point> allCorners)
         {
             var enumerated = allCorners.ToList();
             if (enumerated.Count == 0)

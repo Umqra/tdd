@@ -64,7 +64,7 @@ namespace GeometryTests
                 .Returns(new Point(2, 1)), 
         };
         [TestCaseSource(nameof(NonParallelIntersectionCases))]
-        public Point TestIntersectNonParallerlLines(Line first, Line second)
+        public Point? TestIntersectNonParallerlLines(Line first, Line second)
         {
             return first.IntersectWith(second);
         }

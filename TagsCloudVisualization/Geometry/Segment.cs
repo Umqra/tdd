@@ -2,10 +2,10 @@
 
 namespace Geometry
 {
-    public class Segment
+    public struct Segment
     {
-        public Point A { get; }
-        public Point B { get; }
+        public readonly Point A;
+        public readonly Point B;
 
         public Line BaseLine => new Line(A, B);
 
@@ -24,28 +24,28 @@ namespace Geometry
                    (A - B).HasSameDirectionAs(p - B);
         }
 
-        private Point PointIfContainsElseNull(Point p)
+        private Point? PointIfContainsElseNull(Point? p)
         {
-            if (p != null && Contains(p))
+            if (p != null && Contains(p.Value))
                 return p;
             return null;
         }
 
-        public Point IntersectWith(Line line)
+        public Point? IntersectWith(Line line)
         {
-            Point intersection = line.IntersectWith(BaseLine);
+            Point? intersection = line.IntersectWith(BaseLine);
             return PointIfContainsElseNull(intersection);
         }
 
-        public Point IntersectWith(Ray ray)
+        public Point? IntersectWith(Ray ray)
         {
-            Point intersection = ray.IntersectWith(BaseLine);
+            Point? intersection = ray.IntersectWith(BaseLine);
             return PointIfContainsElseNull(intersection);
         }
 
-        public Point IntersectWith(Segment other)
+        public Point? IntersectWith(Segment other)
         {
-            Point intersection = other.IntersectWith(BaseLine);
+            Point? intersection = other.IntersectWith(BaseLine);
             return PointIfContainsElseNull(intersection);
         }
 
@@ -57,18 +57,16 @@ namespace Geometry
             return Math.Min(p.DistanceTo(A), p.DistanceTo(B));
         }
 
-        protected bool Equals(Segment other)
+        public bool Equals(Segment other)
         {
-            return (Equals(A, other.A) && Equals(B, other.B)) ||
-                   (Equals(A, other.B) && Equals(B, other.A));
+            return (A.Equals(other.A) && B.Equals(other.B)) ||
+                   (A.Equals(other.B) && B.Equals(other.A));
         }
 
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != GetType()) return false;
-            return Equals((Segment)obj);
+            return obj is Segment && Equals((Segment)obj);
         }
 
         /// <summary>
@@ -81,7 +79,7 @@ namespace Geometry
         {
             unchecked
             {
-                return ((A?.GetHashCode() ?? 0) * 397) ^ (B?.GetHashCode() ?? 0);
+                return (A.GetHashCode() * 397) ^ B.GetHashCode();
             }
         }
 

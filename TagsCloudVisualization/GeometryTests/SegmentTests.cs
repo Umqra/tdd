@@ -56,7 +56,7 @@ namespace GeometryTests
                 .Returns(null), 
         };
         [TestCaseSource(nameof(IntersectLineCases))]
-        public Point TestIntersectWithLine(Segment segment, Line line)
+        public Point? TestIntersectWithLine(Segment segment, Line line)
         {
             return segment.IntersectWith(line);
         }
@@ -85,7 +85,7 @@ namespace GeometryTests
                 .Returns(null)
         };
         [TestCaseSource(nameof(IntersectRayCases))]
-        public Point TestIntersectWithRay(Segment segment, Ray ray)
+        public Point? TestIntersectWithRay(Segment segment, Ray ray)
         {
             return segment.IntersectWith(ray);
         }
@@ -118,7 +118,7 @@ namespace GeometryTests
                 .Returns(null),
         };
         [TestCaseSource(nameof(IntersectSegmentCases))]
-        public Point TestIntersectWithSegment(Segment first, Segment second)
+        public Point? TestIntersectWithSegment(Segment first, Segment second)
         {
             return first.IntersectWith(second);
         }

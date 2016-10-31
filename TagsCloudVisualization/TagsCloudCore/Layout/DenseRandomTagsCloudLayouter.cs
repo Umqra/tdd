@@ -48,7 +48,7 @@ namespace TagsCloudCore.Layout
             foreach (var other in Rectangles)
             {
                 var intersection = other.IntersectWith(rectangle);
-                if (intersection != null && !intersection.IsEmpty)
+                if (intersection != null && !intersection.Value.IsEmpty)
                     return false;
             }
             return true;
@@ -65,7 +65,7 @@ namespace TagsCloudCore.Layout
                     var intersection = side.IntersectWith(ray);
                     if (intersection == null) continue;
 
-                    var current = new Rectangle(intersection - rectangleSize / 2, rectangleSize);
+                    var current = new Rectangle(intersection.Value - rectangleSize / 2, rectangleSize);
                     if (CanPutRectangle(current))
                         yield return current;
                 }

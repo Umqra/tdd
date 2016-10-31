@@ -2,11 +2,11 @@
 
 namespace Geometry
 {
-    public class Size
+    public struct Size
     {
-        public double Width { get; }
+        public readonly double Width;
 
-        public double Height { get; }
+        public readonly double Height;
 
         public Size(double width, double height)
         {
@@ -64,17 +64,15 @@ namespace Geometry
             return new Size(size.Width, size.Height);
         }
 
-        protected bool Equals(Size other)
+        public bool Equals(Size other)
         {
-            return Width.ApproxEqualTo(other.Width) && Height.ApproxEqualTo(other.Height);
+            return Width.Equals(other.Width) && Height.Equals(other.Height);
         }
 
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != GetType()) return false;
-            return Equals((Size)obj);
+            return obj is Size && Equals((Size)obj);
         }
 
         /// <summary>

@@ -2,13 +2,12 @@
 
 namespace Geometry
 {
-    public class Point
+    public struct Point
     {
         public static readonly Point Zero = new Point(0, 0);
 
-        // Nit: Why fields here and props in for example Size? It's always better to be consistent
-        public double X { get; }
-        public double Y { get; }
+        public readonly double X;
+        public readonly double Y;
 
         public Point Orthogonal => new Point(-Y, X);
         public double Length => Math.Sqrt(X * X + Y * Y);
@@ -94,7 +93,7 @@ namespace Geometry
             return (this - other).Length;
         }
 
-        protected bool Equals(Point other)
+        public bool Equals(Point other)
         {
             return X.ApproxEqualTo(other.X) && Y.ApproxEqualTo(other.Y);
         }
@@ -102,9 +101,7 @@ namespace Geometry
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != GetType()) return false;
-            return Equals((Point)obj);
+            return obj is Point && Equals((Point)obj);
         }
 
         /// <summary>

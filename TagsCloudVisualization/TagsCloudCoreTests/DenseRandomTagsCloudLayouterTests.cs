@@ -42,7 +42,7 @@ namespace TagsCloudCoreTests
                    .SelectMany(rectangle => rectangle.Corners);
 
             var boundingBox = Rectangle.BoundingBoxOf(allCorners);
-            rectanglesArea.Should().BeGreaterThan(boundingBox.Area / 2);
+            rectanglesArea.Should().BeGreaterThan(boundingBox.Value.Area / 2);
         }
     }
 }
