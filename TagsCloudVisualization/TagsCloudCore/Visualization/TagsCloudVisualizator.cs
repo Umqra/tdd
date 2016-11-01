@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Text;
+using System.Linq;
 
 namespace TagsCloudCore.Visualization
 {
@@ -8,11 +9,13 @@ namespace TagsCloudCore.Visualization
     {
         public VisualizatorConfiguration Configuration { get; }
         public Color BackgroundColor { get; }
+        public int? MaxTagsCount { get; set; }
 
-        public TagsCloudVisualizator(VisualizatorConfiguration configuration, Color backgroundColor)
+        public TagsCloudVisualizator(VisualizatorConfiguration configuration, Color backgroundColor, int? maxTagsCount)
         {
             Configuration = configuration;
             BackgroundColor = backgroundColor;
+            MaxTagsCount = maxTagsCount;
         }
 
         public void CreateTagsCloud(IEnumerable<string> tags, Graphics graphics)
@@ -22,6 +25,9 @@ namespace TagsCloudCore.Visualization
             var layouter = Configuration.Layouter();
             var wrapper = Configuration.Wrapper();
             var decorator = Configuration.Decorator();
+            if (MaxTagsCount.HasValue)
+                tags = tags.Take(MaxTagsCount.Value);
+
             foreach (var tag in tags)
             {
                 var tagBoundingBox = wrapper.MeasureTag(tag, graphics);

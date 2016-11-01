@@ -28,6 +28,7 @@ namespace TagsCloudCli
         public int Width { get; set; }
         public int Height { get; set; }
         public int MaximumFontSize { get; set; }
+        public int? MaxTagsCount { get; set; }
 
         [Initialize(
              MethodName = nameof(InitializeColor),
@@ -45,6 +46,8 @@ namespace TagsCloudCli
              MethodName = nameof(InitializeLayouter),
              BackingFieldName = nameof(Layouter)
          )]
+
+
         public string LayouterName { get; set; }
         
         public Color BackgroundColor { get; private set; }

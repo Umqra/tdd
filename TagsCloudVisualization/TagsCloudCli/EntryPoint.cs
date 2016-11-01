@@ -125,6 +125,9 @@ namespace TagsCloudCli
                 .As('l', "layouter")
                 .WithDescription($"Choose implementation of layouter from list: {string.Join(",", CliOptions.LayouterNames.Keys)}.")
                 .SetDefault("sparse");
+            parser.Setup(arg => arg.MaxTagsCount)
+                .As('m', "max-tags")
+                .WithDescription("This parameter limits amount of tags in the cloud");
 
             parser.SetupHelp("help", "?")
                 .WithHeader("Help for 'Command line tags cloud generator application'")
@@ -145,7 +148,8 @@ namespace TagsCloudCli
                     Wrapper = () => wrapper,
                     Decorator = () => decorator
                 },
-                options.BackgroundColor
+                options.BackgroundColor,
+                options.MaxTagsCount
             );
         }
     }

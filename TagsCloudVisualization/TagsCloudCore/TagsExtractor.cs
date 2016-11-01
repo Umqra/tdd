@@ -7,22 +7,16 @@ namespace TagsCloudCore
 {
     public class TagsExtractor
     {
+        //TODO: Stop words list in settings
         private static readonly string[] stopWords =
         {
-            "the",
-            "and",
-            "that",
-            "this",
-            "then",
-            "than",
-            "are",
-            "which",
-            "where",
-            "what",
-            "for",
-            "was",
-            "not",
-            "there"
+            "the", "and", "that", "this", "then", "than", "are",
+            "which", "where", "what", "for", "was", "not", "there",
+            "did", "his", "you", "him", "didn", "had", "their", "they",
+            "them", "from", "could", "were", "but", "with",
+            "when", "have", "would", "its", "should", "who",
+            "been", "be", "she", "her", "he", "don", "said",
+            "has", "can", "some", "one", "into", "just"
         };
         
         public IEnumerable<string> ExtractFromFile(string filename)
