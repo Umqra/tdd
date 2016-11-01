@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geometry", "Geometry\Geomet
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeometryTests", "GeometryTests\GeometryTests.csproj", "{80B1AAE0-8441-417D-8B81-944A0882D0FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TagsCloudGenerator", "TagsCloudGenerator\TagsCloudGenerator.csproj", "{0190B0DB-2E1A-4A4F-9EA6-91BCE6AC2EAF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TagsCloudCli", "TagsCloudCli\TagsCloudCli.csproj", "{0190B0DB-2E1A-4A4F-9EA6-91BCE6AC2EAF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

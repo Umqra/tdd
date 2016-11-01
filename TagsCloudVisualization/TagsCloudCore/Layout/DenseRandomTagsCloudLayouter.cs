@@ -1,19 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Geometry;
 
-namespace TagsCloudCore
+namespace TagsCloudCore.Layout
 {
-    public class RandomDirectionsCloudLayouter : ICloudLayouter
+    public class DenseRandomTagsCloudLayouter : ITagsCloudLayouter
     {
         private Random Random { get; }
         public Point Center { get; set; }
         public List<Rectangle> Rectangles { get; set; }
 
-        public RandomDirectionsCloudLayouter(Point center)
+        public IEnumerable<Rectangle> GetRectangles()
+        {
+            return Rectangles;
+        }
+
+        public DenseRandomTagsCloudLayouter(Point center)
         {
             Random = new Random(0);
             Center = center;
@@ -45,7 +48,7 @@ namespace TagsCloudCore
             foreach (var other in Rectangles)
             {
                 var intersection = other.IntersectWith(rectangle);
-                if (intersection != null && !intersection.IsEmpty)
+                if (intersection != null && !intersection.Value.IsEmpty)
                     return false;
             }
             return true;
@@ -62,7 +65,7 @@ namespace TagsCloudCore
                     var intersection = side.IntersectWith(ray);
                     if (intersection == null) continue;
 
-                    var current = new Rectangle(intersection - rectangleSize / 2, rectangleSize);
+                    var current = new Rectangle(intersection.Value - rectangleSize / 2, rectangleSize);
                     if (CanPutRectangle(current))
                         yield return current;
                 }
@@ -79,37 +82,6 @@ namespace TagsCloudCore
         protected Point GetRandomDirection()
         {
             return new Point(1, 0).Rotate(Random.NextDouble() * 2 * Math.PI);
-        }
-    }
-
-    public class RandomSparseCloudLayouter : RandomDirectionsCloudLayouter
-    {
-        public RandomSparseCloudLayouter(Point center) : base(center)
-        {
-        }
-        
-        protected override Rectangle ChooseNextPlace(Size rectangleSize)
-        {
-            var direction = GetSparseDirection();
-            return PutNextRectangleAlongDirection(direction, rectangleSize);
-        }
-
-        private double GetDirectionCost(Point direction)
-        {
-            return Rectangles
-                .Where(rectangle => !rectangle.Center.Equals(Center))
-                .Select(rectangle => Math.Abs((rectangle.Center - Center).AngleTo(direction)))
-                .DefaultIfEmpty(0)
-                .Min();
-        }
-
-        private Point GetSparseDirection(int numberOfRandomDirections = 10)
-        {
-            var candidates = Enumerable.Range(0, numberOfRandomDirections)
-                .Select(i => GetRandomDirection());
-            return candidates
-                .OrderByDescending(GetDirectionCost)
-                .First();
         }
     }
 }

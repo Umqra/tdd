@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Geometry;
+﻿using Geometry;
 using NUnit.Framework;
 
 namespace GeometryTests
@@ -16,7 +11,7 @@ namespace GeometryTests
         [TestCase(0, 1e-10, DoubleComparer.DefaultEpsilon, ExpectedResult = true)]
         public bool TestEquals(double a, double b, double eps)
         {
-            return a.EqualTo(b, eps);
+            return a.ApproxEqualTo(b, eps);
         }
 
         [TestCase(0, 0.0001, DoubleComparer.DefaultEpsilon, ExpectedResult = true)]
@@ -24,7 +19,7 @@ namespace GeometryTests
         [TestCase(2, 1.99999, DoubleComparer.DefaultEpsilon, ExpectedResult = false)]
         public bool TestLess(double a, double b, double eps)
         {
-            return a.LessThan(b, eps);
+            return a.ApproxLess(b, eps);
         }
 
         [TestCase(0, 0.0001, DoubleComparer.DefaultEpsilon, ExpectedResult = true)]
@@ -32,7 +27,7 @@ namespace GeometryTests
         [TestCase(2, 1.99999, DoubleComparer.DefaultEpsilon, ExpectedResult = false)]
         public bool TestLessThanOrEqualTo(double a, double b, double eps)
         {
-            return a.LessThanOrEqualTo(b, eps);
+            return a.ApproxLessOrEqualTo(b, eps);
         }
 
         [TestCase(0, 0.0001, DoubleComparer.DefaultEpsilon, ExpectedResult = false)]
@@ -40,7 +35,7 @@ namespace GeometryTests
         [TestCase(2, 1.99999, DoubleComparer.DefaultEpsilon, ExpectedResult = true)]
         public bool TestGreater(double a, double b, double eps)
         {
-            return a.GreaterThan(b, eps);
+            return a.ApproxGreater(b, eps);
         }
 
         [TestCase(0, 0.0001, DoubleComparer.DefaultEpsilon, ExpectedResult = false)]
@@ -48,7 +43,7 @@ namespace GeometryTests
         [TestCase(2, 1.99999, DoubleComparer.DefaultEpsilon, ExpectedResult = true)]
         public bool TestGreaterThanOrEqualTo(double a, double b, double eps)
         {
-            return a.GreaterThanOrEqualTo(b, eps);
+            return a.ApproxGreaterOrEqualTo(b, eps);
         }
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Geometry;
 using NUnit.Framework;
 
@@ -16,6 +11,7 @@ namespace GeometryTests
         public void TestConstructFromTwoCorners()
         {
             var rectangle = new Rectangle(new Point(0, 0), new Point(1, 1));
+
             rectangle.Should().Be(new Rectangle(new Point(0, 1), new Point(1, 0)));
         }
 
@@ -30,6 +26,7 @@ namespace GeometryTests
                 new Segment(new Point(1, 1), new Point(1, 0)),
                 new Segment(new Point(1, 1), new Point(0, 1))
             };
+
             rectangle.Sides.ShouldBeEquivalentTo(expectedSides, options => options.ExcludingNestedObjects());
         }
 
@@ -42,6 +39,7 @@ namespace GeometryTests
                 new Segment(new Point(0, 0), new Point(0, 1)),
                 new Segment(new Point(0, 1), new Point(0, 0)),
             };
+
             rectangle.Sides.ShouldBeEquivalentTo(expectedSides, options => options.ExcludingNestedObjects());
         }
 
@@ -76,7 +74,7 @@ namespace GeometryTests
                 .Returns(null) 
         };
         [TestCaseSource(nameof(IntersectCases))]
-        public Rectangle TestIntersect(Rectangle first, Rectangle second)
+        public Rectangle? TestIntersect(Rectangle first, Rectangle second)
         {
             return first.IntersectWith(second);
         }
@@ -89,9 +87,9 @@ namespace GeometryTests
             new TestCaseData(new Rectangle(new Point(0, 0), new Point(2, 2)), new Point(-1, -1)).Returns(false),
         };
         [TestCaseSource(nameof(ContainsCases))]
-        public bool Contains(Rectangle rectangle, Point P)
+        public bool Contains(Rectangle rectangle, Point p)
         {
-            return rectangle.Contains(P);
+            return rectangle.Contains(p);
         }
 
         public static TestCaseData[] TouchesCases =
@@ -126,6 +124,7 @@ namespace GeometryTests
                 new Point(0, 2),
                 new Point(2, 2)
             };
+
             rectangle.Corners.ShouldBeEquivalentTo(expectedCorners, options => options.ExcludingNestedObjects());
         }
 
@@ -140,6 +139,7 @@ namespace GeometryTests
                 new Point(0, 2),
                 new Point(0, 0)
             };
+
             rectangle.Corners.ShouldBeEquivalentTo(expectedCorners, options => options.ExcludingNestedObjects());
         }
 
@@ -157,7 +157,7 @@ namespace GeometryTests
                 .Returns(new Rectangle(new Point(-1, 0), new Point(2, 5)))
         };
         [TestCaseSource(nameof(BoundingBoxCases))]
-        public Rectangle TestBoundingBox(Point[] points)
+        public Rectangle? TestBoundingBox(Point[] points)
         {
             return Rectangle.BoundingBoxOf(points);
         }

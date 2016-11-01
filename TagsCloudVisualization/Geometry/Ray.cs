@@ -1,18 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-// ReSharper disable InconsistentNaming
-#pragma warning disable 659
 
 namespace Geometry
 {
-    public class Ray
+    public struct Ray
     {
-        public Point From { get; set; }
-        public Point To { get; set; }
+        public readonly Point From;
+        public readonly Point To;
 
         public Point Direction => To - From;
         public Line BaseLine => new Line(From, To);
@@ -25,38 +18,38 @@ namespace Geometry
             To = to;
         }
 
-        public bool Contains(Point P)
+        public bool Contains(Point p)
         {
-            return Direction.HasSameDirectionAs(P - From);
+            return Direction.HasSameDirectionAs(p - From);
         }
 
-        private Point PointIfContainsElseNull(Point P)
+        private Point? PointIfContainsElseNull(Point? p)
         {
-            if (P != null && Contains(P))
-                return P;
+            if (p != null && Contains(p.Value))
+                return p;
             return null;
         }
 
-        public Point IntersectWith(Line line)
+        public Point? IntersectWith(Line line)
         {
-            Point P = line.IntersectWith(BaseLine);
-            return PointIfContainsElseNull(P);
+            Point? intersection = line.IntersectWith(BaseLine);
+            return PointIfContainsElseNull(intersection);
         }
 
-        public Point IntersectWith(Ray other)
+        public Point? IntersectWith(Ray other)
         {
-            Point P = other.IntersectWith(BaseLine);
-            return PointIfContainsElseNull(P);
+            Point? intersection = other.IntersectWith(BaseLine);
+            return PointIfContainsElseNull(intersection);
         }
 
-        public double DistanceTo(Point P)
+        public double DistanceTo(Point p)
         {
-            if ((P - From).DotProduct(Direction).GreaterThanOrEqualTo(0))
-                return BaseLine.DistanceTo(P);
-            return From.DistanceTo(P);
+            if ((p - From).DotProduct(Direction).ApproxGreaterOrEqualTo(0))
+                return BaseLine.DistanceTo(p);
+            return From.DistanceTo(p);
         }
 
-        protected bool Equals(Ray other)
+        public bool Equals(Ray other)
         {
             return From.Equals(other.From) && Direction.HasSameDirectionAs(other.Direction);
         }
@@ -64,9 +57,26 @@ namespace Geometry
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((Ray)obj);
+            return obj is Ray && Equals((Ray)obj);
+        }
+
+        /// <summary>
+        /// Current GetHashCode implementation not consistent with Equals method (because of 
+        /// <see cref="Point"/>.<see cref="Point.GetHashCode()"/> 
+        /// implementation).
+        /// <para>Use it only where it really needed and with caution.</para>
+        /// </summary>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (From.GetHashCode() * 397) ^ To.GetHashCode();
+            }
+        }
+
+        public override string ToString()
+        {
+            return $"Ray({From}, {To})";
         }
     }
 }

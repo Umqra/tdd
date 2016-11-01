@@ -1,81 +1,91 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-// ReSharper disable InconsistentNaming
-#pragma warning disable 659
 
 namespace Geometry
 {
-    public class Segment
+    public struct Segment
     {
-        public Point A { get; set; }
-        public Point B { get; set; }
+        public readonly Point A;
+        public readonly Point B;
 
         public Line BaseLine => new Line(A, B);
 
-        public Segment(Point A, Point B)
+        public Segment(Point a, Point b)
         {
-            if (A.Equals(B))
+            if (a.Equals(b))
                 throw new ArgumentException("Segments endpoints can't coincide");
-            this.A = A;
-            this.B = B;
+            A = a;
+            B = b;
         }
 
-        public bool Contains(Point P)
+        public bool Contains(Point p)
         {
-            return BaseLine.Contains(P) &&
-                   (B - A).HasSameDirectionAs(P - A) &&
-                   (A - B).HasSameDirectionAs(P - B);
+            return BaseLine.Contains(p) &&
+                   (B - A).HasSameDirectionAs(p - A) &&
+                   (A - B).HasSameDirectionAs(p - B);
         }
 
-        private Point PointIfContainsElseNull(Point P)
+        private Point? PointIfContainsElseNull(Point? p)
         {
-            if (P != null && Contains(P))
-                return P;
+            if (p != null && Contains(p.Value))
+                return p;
             return null;
         }
 
-        public Point IntersectWith(Line line)
+        public Point? IntersectWith(Line line)
         {
-            Point P = line.IntersectWith(BaseLine);
-            return PointIfContainsElseNull(P);
+            Point? intersection = line.IntersectWith(BaseLine);
+            return PointIfContainsElseNull(intersection);
         }
 
-        public Point IntersectWith(Ray ray)
+        public Point? IntersectWith(Ray ray)
         {
-            Point P = ray.IntersectWith(BaseLine);
-            return PointIfContainsElseNull(P);
+            Point? intersection = ray.IntersectWith(BaseLine);
+            return PointIfContainsElseNull(intersection);
         }
 
-        public Point IntersectWith(Segment other)
+        public Point? IntersectWith(Segment other)
         {
-            Point P = other.IntersectWith(BaseLine);
-            return PointIfContainsElseNull(P);
+            Point? intersection = other.IntersectWith(BaseLine);
+            return PointIfContainsElseNull(intersection);
         }
 
-        public double DistanceTo(Point P)
+        public double DistanceTo(Point p)
         {
-            if ((P - A).DotProduct(B - A).GreaterThanOrEqualTo(0) &&
-                (P - B).DotProduct(A - B).GreaterThanOrEqualTo(0))
-                return BaseLine.DistanceTo(P);
-            return Math.Min(P.DistanceTo(A), P.DistanceTo(B));
+            if ((p - A).DotProduct(B - A).ApproxGreaterOrEqualTo(0) &&
+                (p - B).DotProduct(A - B).ApproxGreaterOrEqualTo(0))
+                return BaseLine.DistanceTo(p);
+            return Math.Min(p.DistanceTo(A), p.DistanceTo(B));
         }
 
-        protected bool Equals(Segment other)
+        public bool Equals(Segment other)
         {
-            return (Equals(A, other.A) && Equals(B, other.B)) ||
-                   (Equals(A, other.B) && Equals(B, other.A));
+            return (A.Equals(other.A) && B.Equals(other.B)) ||
+                   (A.Equals(other.B) && B.Equals(other.A));
         }
 
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((Segment)obj);
+            return obj is Segment && Equals((Segment)obj);
         }
-        
+
+        /// <summary>
+        /// Current GetHashCode implementation not consistent with Equals method (because of 
+        /// <see cref="Point"/>.<see cref="Point.GetHashCode()"/> 
+        /// implementation).
+        /// <para>Use it only where it really needed and with caution.</para>
+        /// </summary>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (A.GetHashCode() * 397) ^ B.GetHashCode();
+            }
+        }
+
+        public override string ToString()
+        {
+            return $"Segment({A}, {B})";
+        }
     }
 }

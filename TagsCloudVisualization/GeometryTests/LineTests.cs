@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FluentAssertions;
 using Geometry;
 using NUnit.Framework;
-// ReSharper disable InconsistentNaming
 
 namespace GeometryTests
 {
@@ -16,9 +11,11 @@ namespace GeometryTests
         [Test]
         public void TestFailsWhenPivotPointsCoincide()
         {
-            Point A = new Point(1, 2);
-            Point B = new Point(1, 2);
-            Action act = () => new Line(A, B);
+            Point a = new Point(1, 2);
+            Point b = new Point(1, 2);
+
+            Action act = () => new Line(a, b);
+
             act.ShouldThrow<ArgumentException>();
         }
 
@@ -46,9 +43,9 @@ namespace GeometryTests
             new TestCaseData(new Line(new Point(0, 0), new Point(1, 1)), new Point(0, 0)).Returns(true),
         };
         [TestCaseSource(nameof(ContainsCases))]
-        public bool TestContains(Line line, Point P)
+        public bool TestContains(Line line, Point p)
         {
-            return line.Contains(P);
+            return line.Contains(p);
         }
 
         public static TestCaseData[] NonParallelIntersectionCases =
@@ -67,7 +64,7 @@ namespace GeometryTests
                 .Returns(new Point(2, 1)), 
         };
         [TestCaseSource(nameof(NonParallelIntersectionCases))]
-        public Point TestIntersectNonParallerlLines(Line first, Line second)
+        public Point? TestIntersectNonParallerlLines(Line first, Line second)
         {
             return first.IntersectWith(second);
         }
@@ -75,21 +72,23 @@ namespace GeometryTests
         [Test]
         public void TestIntersectCoincideLines()
         {
-            Point A = new Point(0, 0);
-            Point B = new Point(1, 0);
-            Point C = new Point(-2, 0);
-            Point D = new Point(4, 0);
-            new Line(A, B).IntersectWith(new Line(C, D)).Should().BeNull();
+            Point a = new Point(0, 0);
+            Point b = new Point(1, 0);
+            Point c = new Point(-2, 0);
+            Point d = new Point(4, 0);
+            
+            new Line(a, b).IntersectWith(new Line(c, d)).Should().BeNull();
         }
 
         [Test]
         public void TestIntersectParallelLines()
         {
-            Point A = new Point(0, 0);
-            Point B = new Point(1, 0);
-            Point C = new Point(-2, 1);
-            Point D = new Point(4, 1);
-            new Line(A, B).IntersectWith(new Line(C, D)).Should().BeNull();
+            Point a = new Point(0, 0);
+            Point b = new Point(1, 0);
+            Point c = new Point(-2, 1);
+            Point d = new Point(4, 1);
+
+            new Line(a, b).IntersectWith(new Line(c, d)).Should().BeNull();
         }
 
         public static TestCaseData[] EqualsCases =
@@ -116,9 +115,9 @@ namespace GeometryTests
             new TestCaseData(new Line(new Point(0, 0), new Point(1, 1)), new Point(0, 1), Math.Sqrt(2) / 2),
         };
         [TestCaseSource(nameof(DistanceCases))]
-        public void TestDistance(Line line, Point P, double expected)
+        public void TestDistance(Line line, Point p, double expected)
         {
-            line.DistanceTo(P).Should().BeApproximately(expected, DoubleComparer.DefaultEpsilon);
+            line.DistanceTo(p).Should().BeApproximately(expected, DoubleComparer.DefaultEpsilon);
         }
 
         public static TestCaseData[] PerpendicularCases =
@@ -128,9 +127,9 @@ namespace GeometryTests
             new TestCaseData(new Line(new Point(0, 0), new Point(1, 1)), new Point(0, 1)).Returns(new Point(0.5, 0.5))
         };
         [TestCaseSource(nameof(PerpendicularCases))]
-        public Point TestPerpendicular(Line line, Point P)
+        public Point TestPerpendicular(Line line, Point p)
         {
-            return line.PerpendicularFrom(P);
+            return line.PerpendicularFrom(p);
         }
     }
 }

@@ -1,36 +1,30 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-// ReSharper disable InconsistentNaming
-#pragma warning disable 659
 
 namespace Geometry
 {
-    public class Point
+    public struct Point
     {
-        // ReSharper disable InconsistentNaming
-        public readonly double x;
-        public readonly double y;
-        // ReSharper restore InconsistentNaming
+        public static readonly Point Zero = new Point(0, 0);
 
-        public Point Orthogonal => new Point(-y, x);
-        public double Length => Math.Sqrt(x * x + y * y);
+        public readonly double X;
+        public readonly double Y;
+
+        public Point Orthogonal => new Point(-Y, X);
+        public double Length => Math.Sqrt(X * X + Y * Y);
 
         public int Quater
         {
             get
             {
-                if (this.Equals(new Point(0, 0)))
+                if (Equals(Zero))
                     return 0;
-                if (x > 0 && y >= 0)
+                if (X > 0 && Y >= 0)
                     return 1;
-                if (x <= 0 && y > 0)
+                if (X <= 0 && Y > 0)
                     return 2;
-                if (x < 0 && y <= 0)
+                if (X < 0 && Y <= 0)
                     return 3;
-                if (x >= 0 && y < 0)
+                if (X >= 0 && Y < 0)
                     return 4;
                 throw new ArgumentException();
             }
@@ -38,60 +32,60 @@ namespace Geometry
 
         public Point(double x, double y)
         {
-            this.x = x;
-            this.y = y;
+            X = x;
+            Y = y;
         }
         
-        public static Point operator + (Point A, Point B)
+        public static Point operator +(Point a, Point b)
         {
-            return new Point(A.x + B.x, A.y + B.y);
+            return new Point(a.X + b.X, a.Y + b.Y);
         }
 
-        public static Point operator -(Point A, Point B)
+        public static Point operator -(Point a, Point b)
         {
-            return new Point(A.x - B.x, A.y - B.y);
+            return new Point(a.X - b.X, a.Y - b.Y);
         }
 
-        public static Point operator *(Point A, double k)
+        public static Point operator *(Point p, double k)
         {
-            return new Point(A.x * k, A.y * k);
+            return new Point(p.X * k, p.Y * k);
         }
 
-        public static Point operator *(double k, Point A)
+        public static Point operator *(double k, Point p)
         {
-            return new Point(A.x * k, A.y * k);
+            return new Point(p.X * k, p.Y * k);
         }
 
-        public static Point operator /(Point A, double k)
+        public static Point operator /(Point p, double k)
         {
-            return new Point(A.x / k, A.y / k);
+            return new Point(p.X / k, p.Y / k);
         }
 
         public double DotProduct(Point other)
         {
-            return x * other.x + y * other.y;
+            return X * other.X + Y * other.Y;
         }
 
         public double CrossProduct(Point other)
         {
-            return x * other.y - y * other.x;
+            return X * other.Y - Y * other.X;
         }
 
         public bool CollinearTo(Point other)
         {
-            return this.CrossProduct(other).EqualTo(0);
+            return CrossProduct(other).ApproxEqualTo(0);
         }
 
         public bool HasSameDirectionAs(Point other)
         {
-            return this.CollinearTo(other) && this.DotProduct(other).GreaterThanOrEqualTo(0);
+            return CollinearTo(other) && DotProduct(other).ApproxGreaterOrEqualTo(0);
         }
 
         public Point Rotate(double angleInRadians)
         {
             double cosAngle = Math.Cos(angleInRadians);
             double sinAngle = Math.Sin(angleInRadians);
-            return new Point(x * cosAngle - y * sinAngle, x * sinAngle + y * cosAngle);
+            return new Point(X * cosAngle - Y * sinAngle, X * sinAngle + Y * cosAngle);
         }
 
         public double DistanceTo(Point other)
@@ -99,52 +93,62 @@ namespace Geometry
             return (this - other).Length;
         }
 
-        protected bool Equals(Point other)
+        public bool Equals(Point other)
         {
-            return x.EqualTo(other.x) && y.EqualTo(other.y);
+            return X.ApproxEqualTo(other.X) && Y.ApproxEqualTo(other.Y);
         }
 
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((Point)obj);
+            return obj is Point && Equals((Point)obj);
+        }
+
+        /// <summary>
+        /// Current GetHashCode implementation not consistent with Equals method.
+        /// <para>Use it only where it really needed and with caution.</para>
+        /// </summary>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (X.GetHashCode() * 397) ^ Y.GetHashCode();
+            }
         }
 
         public override string ToString()
         {
-            return $"({x}, {y})";
+            return $"({X}, {Y})";
         }
         
-        public static explicit operator System.Drawing.PointF(Point P)
+        public static explicit operator System.Drawing.PointF(Point p)
         {
-            return new System.Drawing.PointF((float)P.x, (float)P.y);
+            return new System.Drawing.PointF((float)p.X, (float)p.Y);
         }
 
-        public static explicit operator System.Drawing.Point(Point P)
+        public static explicit operator System.Drawing.Point(Point p)
         {
-            return new System.Drawing.Point((int)Math.Round(P.x), (int)Math.Round(P.y));
+            return new System.Drawing.Point((int)Math.Round(p.X), (int)Math.Round(p.Y));
         }
 
-        public static explicit operator Point(System.Drawing.PointF P)
+        public static explicit operator Point(System.Drawing.PointF p)
         {
-            return new Point(P.X, P.Y);
+            return new Point(p.X, p.Y);
         }
 
-        public static explicit operator Point(System.Drawing.Point P)
+        public static explicit operator Point(System.Drawing.Point p)
         {
-            return new Point(P.X, P.Y);
+            return new Point(p.X, p.Y);
         }
 
-        public static Point operator -(Point P)
+        public static Point operator -(Point p)
         {
-            return new Point(-P.x, -P.y);
+            return new Point(-p.X, -p.Y);
         }
 
         public double AngleTo(Point direction)
         {
-            if (this.Equals(new Point(0, 0)) || direction.Equals(new Point(0, 0)))
+            if (Equals(Zero) || direction.Equals(Zero))
                 return 0;
             return Math.Atan2(CrossProduct(direction), DotProduct(direction));
         }

@@ -1,21 +1,20 @@
 ﻿using System.Collections.Generic;
-using System.Drawing;
 using System.Windows.Forms;
-using TagsCloudCore;
+using TagsCloudCore.Visualization;
 
-namespace TagsCloudGenerator
+namespace TagsCloudCli
 {
-    sealed class CloudDisplayForm : Form
+    sealed class TagsCloudDisplayForm : Form
     {
-        public TagsCloudVisualizator Visualizator { get; set; }
+        public ITagsCloudVisualizator Visualizator { get; set; }
         public List<string> Tags { get; set; }
-        public CloudDisplayForm(TagsCloudVisualizator visualizator, List<string> tags, int width, int height, Color backgroundColor)
+
+        public TagsCloudDisplayForm(ITagsCloudVisualizator visualizator, List<string> tags, int width, int height)
         {
             Visualizator = visualizator;
             Tags = tags;
             Width = width;
             Height = height;
-            BackColor = backgroundColor;
         }
 
         protected override void OnPaint(PaintEventArgs e)

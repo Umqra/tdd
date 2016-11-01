@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Geometry;
 using NUnit.Framework;
 using FluentAssertions;
-
-// ReSharper disable InconsistentNaming
 
 namespace GeometryTests
 {
@@ -17,72 +11,81 @@ namespace GeometryTests
         [Test]
         public void TestEqualsPoints()
         {
-            var A = new Point(0, 2);
-            var B = new Point(-5e-10, 2 + 1e-10);
-            A.Should().Be(B);
+            var a = new Point(0, 2);
+            var b = new Point(-5e-10, 2 + 1e-10);
+
+            a.Should().Be(b);
         }
 
         [Test]
         public void TestAddition()
         {
-            var A = new Point(1, 2);
-            var B = new Point(3, -1);
-            (A + B).Should().Be(new Point(4, 1));
+            var a = new Point(1, 2);
+            var b = new Point(3, -1);
+
+            (a + b).Should().Be(new Point(4, 1));
         }
 
         [Test]
         public void TestSubtraction()
         {
-            var A = new Point(1, 2);
-            var B = new Point(3, -1);
-            (A - B).Should().Be(new Point(-2, 3));
+            var a = new Point(1, 2);
+            var b = new Point(3, -1);
+
+            (a - b).Should().Be(new Point(-2, 3));
         }
 
         [Test]
         public void TestLength()
         {
-            var A = new Point(1, 2);
-            A.Length.Should().BeApproximately(Math.Sqrt(5), 1e-9);
+            var a = new Point(1, 2);
+
+            a.Length.Should().BeApproximately(Math.Sqrt(5), 1e-9);
         }
 
         [Test]
         public void TestDotProduct()
         {
-            var A = new Point(1, 2);
-            var B = new Point(3, -1);
-            A.DotProduct(B).Should().Be(1);
+            var a = new Point(1, 2);
+            var b = new Point(3, -1);
+
+            a.DotProduct(b).Should().Be(1);
         }
 
         [Test]
         public void TestCrossProduct()
         {
-            var A = new Point(1, 2);
-            var B = new Point(3, -1);
-            A.CrossProduct(B).Should().Be(-7);
+            var a = new Point(1, 2);
+            var b = new Point(3, -1);
+
+            a.CrossProduct(b).Should().Be(-7);
         }
 
         [Test]
         public void TestMultiplying()
         {
-            var A = new Point(3, -1);
+            var a = new Point(3, -1);
             var k = -2;
-            (A * k).Should().Be(new Point(-6, 2));
+
+            (a * k).Should().Be(new Point(-6, 2));
         }
 
         [Test]
         public void TestMultiplyingCommutativity()
         {
-            var A = new Point(3, -1);
+            var a = new Point(3, -1);
             var k = -2;
-            (A * k).Should().Be(k * A);
+
+            (a * k).Should().Be(k * a);
         }
 
         [Test]
         public void TestDivision()
         {
-            var A = new Point(3, -1);
+            var a = new Point(3, -1);
             var k = -2;
-            (A / k).Should().Be(new Point(-1.5, 0.5));
+
+            (a / k).Should().Be(new Point(-1.5, 0.5));
         }
 
         public static TestCaseData[] CollinearCases =
@@ -135,11 +138,11 @@ namespace GeometryTests
         [Test]
         public void TestDistanceTo()
         {
-            Point A = new Point(1, 2);
-            Point B = new Point(4, 5);
-            A.DistanceTo(B).Should().BeApproximately(3 * Math.Sqrt(2), DoubleComparer.DefaultEpsilon);
-        }
+            Point a = new Point(1, 2);
+            Point b = new Point(4, 5);
 
+            a.DistanceTo(b).Should().BeApproximately(3 * Math.Sqrt(2), DoubleComparer.DefaultEpsilon);
+        }
 
         public static TestCaseData[] QuarterCases =
         {
@@ -155,9 +158,9 @@ namespace GeometryTests
             new TestCaseData(new Point(1, -1)).Returns(4),
         };
         [TestCaseSource(nameof(QuarterCases))]
-        public int TestQuarter(Point P)
+        public int TestQuarter(Point p)
         {
-            return P.Quater;
+            return p.Quater;
         }
 
         public static TestCaseData[] AngleCases =
