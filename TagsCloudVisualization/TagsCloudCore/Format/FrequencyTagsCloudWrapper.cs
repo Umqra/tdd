@@ -36,7 +36,9 @@ namespace TagsCloudCore.Format
 
         public Font GetTagFont(string tag)
         {
-            double frequencyRatio = (double)GetFrequency(tag) / MaxFrequency;
+            double frequencyRatio = ((double)GetFrequency(tag) + 1) / (MaxFrequency + 1);
+            // +1 for unknown tags, now it's size negligible, but not zero
+
             var fontSize = MaxFontSizeInEm * Math.Pow(frequencyRatio, FontSizeTuner);
             return new Font(FontFamily, (float)fontSize);
         }

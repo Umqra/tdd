@@ -7,7 +7,7 @@ namespace TagsCloudCore
 {
     public class TagsExtractor
     {
-        private static readonly string[] StopWords =
+        private static readonly string[] stopWords =
         {
             "the",
             "and",
@@ -36,7 +36,7 @@ namespace TagsCloudCore
                 Regex.Split(text, @"\b")
                     .Where(tag => tag.All(char.IsLetter) && tag.Length > 2)
                     .Select(tag => tag.ToLower())
-                    .Where(tag => !StopWords.Contains(tag));
+                    .Where(tag => !stopWords.Contains(tag));
         }
     }
 }
