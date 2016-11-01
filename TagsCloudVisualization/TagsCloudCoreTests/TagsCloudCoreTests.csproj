@@ -57,12 +57,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TagsCloudLayouterTests.cs" />
+    <Compile Include="FormatTests\FadedColorTagsDecoratorTests.cs" />
+    <Compile Include="FormatTests\SolidColorTagsDecoratorTests.cs" />
+    <Compile Include="LayoutTests\TagsCloudLayouterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="DenseRandomTagsCloudLayouterTests.cs" />
-    <Compile Include="SparseRandomTagsCloudLayouterTests.cs" />
-    <Compile Include="FrequencyTagsCloudWrapperTests.cs" />
-    <Compile Include="TagsDecoratorsCombinatorTests.cs" />
+    <Compile Include="LayoutTests\DenseRandomTagsCloudLayouterTests.cs" />
+    <Compile Include="LayoutTests\SparseRandomTagsCloudLayouterTests.cs" />
+    <Compile Include="FormatTests\FrequencyTagsCloudWrapperTests.cs" />
+    <Compile Include="FormatTests\TagsDecoratorsCombinatorTests.cs" />
+    <Compile Include="FormatTests\TagsDecoratorTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

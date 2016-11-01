@@ -13,7 +13,7 @@ namespace TagsCloudCoreTests
     [TestFixture]
     class FrequencyTagsCloudWrapperTests
     {
-        public const float DefaultFontSize = 40;
+        public const float DefaultFontSize = 20;
         public static readonly FontFamily DefaultFontFamily = FontFamily.GenericSerif;
         public ITagsWrapper FrequencyTagsWrapper { get; set; }
 
