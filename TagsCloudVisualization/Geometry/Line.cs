@@ -42,7 +42,7 @@ namespace Geometry
 
         public Point PerpendicularFrom(Point p)
         {
-            return A + Direction * (p - A).DotProduct(Direction) / (Direction.DotProduct(Direction));
+            return A + Direction * (p - A).DotProduct(Direction) / Direction.DotProduct(Direction);
         }
 
         public bool Equals(Line other)

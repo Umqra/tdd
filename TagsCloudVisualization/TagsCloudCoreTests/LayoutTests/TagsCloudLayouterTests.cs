@@ -10,7 +10,7 @@ using TagsCloudCore.Layout;
 using Rectangle = Geometry.Rectangle;
 using Size = Geometry.Size;
 
-namespace TagsCloudCoreTests
+namespace TagsCloudCoreTests.LayoutTests
 {
     internal abstract class TagsCloudLayouterTests
     {
@@ -25,7 +25,7 @@ namespace TagsCloudCoreTests
 
         public static TestCaseData[] RectanglesSizeCases =
         {
-            new TestCaseData((object)new [] {new Size(2, 2), new Size(2, 2)}).SetName("Two squares"),
+            new TestCaseData((object)new [] {new Size(2, 2), new Size(2, 2)}).SetName("Two equal squares"),
             new TestCaseData((object)new [] {new Size(1, 2), new Size(2, 1)}).SetName("Wide and long rectangles"),
             new TestCaseData((object)new [] {new Size(2, 5), new Size(3, 4)}).SetName("Two random rectangles"),
             new TestCaseData((object)new [] {new Size(3, 1), new Size(3, 1), new Size(3, 1)}).SetName("Equal rectangles"),
@@ -51,7 +51,11 @@ namespace TagsCloudCoreTests
 
             for (int i = 0; i < rectangles.Count; i++)
             {
-                rectangles.Where((other, s) => i != s && rectangles[i].Touches(other)).Any().Should().BeTrue();
+                rectangles
+                    .Where((other, s) => i != s && rectangles[i].Touches(other))
+                    .Any()
+                    .Should()
+                    .BeTrue();
             }
         }
         

@@ -4,7 +4,7 @@ using Geometry;
 
 namespace TagsCloudCore.Layout
 {
-    public class SparseRandomTagsCloudLayouter : DenseRandomTagsCloudLayouter
+    public class SparseRandomTagsCloudLayouter : BaseRandomTagsCloudLayouter
     {
         public SparseRandomTagsCloudLayouter(Point center) : base(center)
         {

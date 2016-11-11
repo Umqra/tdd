@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using Geometry;
 using NUnit.Framework;
 using TagsCloudCore.Layout;
 
-namespace TagsCloudCoreTests
+namespace TagsCloudCoreTests.LayoutTests
 {
     [TestFixture]
     internal class SparseRandomTagsCloudLayouterTests : TagsCloudLayouterTests

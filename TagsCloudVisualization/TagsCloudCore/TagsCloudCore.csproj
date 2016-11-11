@@ -48,6 +48,7 @@
     <Compile Include="Format\ShadedBackgroundTagsDecorator.cs" />
     <Compile Include="Format\SolidColorTagsDecorator.cs" />
     <Compile Include="Format\TagsDecoratorCombinator.cs" />
+    <Compile Include="Layout\BaseRandomTagsCloudLayouter.cs" />
     <Compile Include="Layout\DenseRandomTagsCloudLayouter.cs" />
     <Compile Include="Format\FrequencyTagsCloudWrapper.cs" />
     <Compile Include="Format\TagsDecoratorExtensions.cs" />

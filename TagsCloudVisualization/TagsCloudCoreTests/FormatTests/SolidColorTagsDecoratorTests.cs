@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 using FluentAssertions;
 using NUnit.Framework;
 using TagsCloudCore.Format;
 using Point = Geometry.Point;
 using Rectangle = Geometry.Rectangle;
 
-namespace TagsCloudCoreTests
+namespace TagsCloudCoreTests.FormatTests
 {
     [TestFixture]
     class SolidColorTagsDecoratorTests : TagsDecoratorTests
@@ -20,7 +15,7 @@ namespace TagsCloudCoreTests
         public override void SetUp()
         {
             base.SetUp();
-            Decorator = new SolidColorTagsDecorator(defaultColor);
+            Decorator = new SolidColorTagsDecorator(DefaultColor);
         }
 
         [Test]

@@ -46,8 +46,6 @@ namespace TagsCloudCli
              MethodName = nameof(InitializeLayouter),
              BackingFieldName = nameof(Layouter)
          )]
-
-
         public string LayouterName { get; set; }
         
         public Color BackgroundColor { get; private set; }

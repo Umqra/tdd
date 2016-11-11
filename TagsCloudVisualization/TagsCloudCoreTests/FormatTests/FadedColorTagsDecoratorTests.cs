@@ -2,15 +2,13 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FluentAssertions;
 using NUnit.Framework;
 using TagsCloudCore.Format;
 using Point = Geometry.Point;
 using Rectangle = Geometry.Rectangle;
 
-namespace TagsCloudCoreTests
+namespace TagsCloudCoreTests.FormatTests
 {
     class FadedColorTagsDecoratorTests : TagsDecoratorTests
     {
@@ -19,7 +17,7 @@ namespace TagsCloudCoreTests
         public override void SetUp()
         {
             base.SetUp();
-            Decorator = new FadedColorTagsDecorator(defaultColor, fadedColor);
+            Decorator = new FadedColorTagsDecorator(DefaultColor, fadedColor);
         }
 
         private IEnumerable<Color> EnumerateColorsFromLines(Bitmap image, IEnumerable<int> lineIds)
