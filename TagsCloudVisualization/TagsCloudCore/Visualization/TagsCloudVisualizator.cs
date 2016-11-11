@@ -30,9 +30,9 @@ namespace TagsCloudCore.Visualization
 
             foreach (var tag in tags)
             {
-                var tagBoundingBox = wrapper.MeasureTag(tag, graphics);
+                var tagSize = wrapper.MeasureTag(tag, graphics);
                 var tagFont = wrapper.GetTagFont(tag);
-                var tagPlace = layouter.PutNextRectangle(tagBoundingBox);
+                var tagPlace = layouter.PutNextRectangle(tagSize);
                 decorator.DecorateTag(tag, tagFont, tagPlace, graphics);
             }
         }
