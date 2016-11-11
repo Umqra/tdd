@@ -10,7 +10,7 @@ using TagsCloudCore.Layout;
 using Rectangle = Geometry.Rectangle;
 using Size = Geometry.Size;
 
-namespace TagsCloudCoreTests
+namespace TagsCloudCoreTests.LayoutTests
 {
     internal abstract class TagsCloudLayouterTests
     {
