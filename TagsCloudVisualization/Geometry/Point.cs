@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 
 namespace Geometry
 {
@@ -35,7 +36,7 @@ namespace Geometry
             X = x;
             Y = y;
         }
-        
+
         public static Point operator +(Point a, Point b)
         {
             return new Point(a.X + b.X, a.Y + b.Y);
@@ -120,10 +121,10 @@ namespace Geometry
         {
             return $"({X}, {Y})";
         }
-        
-        public static explicit operator System.Drawing.PointF(Point p)
+
+        public static explicit operator PointF(Point p)
         {
-            return new System.Drawing.PointF((float)p.X, (float)p.Y);
+            return new PointF((float)p.X, (float)p.Y);
         }
 
         public static explicit operator System.Drawing.Point(Point p)
@@ -131,7 +132,7 @@ namespace Geometry
             return new System.Drawing.Point((int)Math.Round(p.X), (int)Math.Round(p.Y));
         }
 
-        public static explicit operator Point(System.Drawing.PointF p)
+        public static explicit operator Point(PointF p)
         {
             return new Point(p.X, p.Y);
         }

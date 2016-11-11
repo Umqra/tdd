@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 
 namespace Geometry
@@ -28,11 +29,6 @@ namespace Geometry
             TopRight = bottomLeft + new Point(size.Width, size.Height);
         }
 
-        public Rectangle(Point bottomLeft, double width, double height)
-            : this(bottomLeft, new Size(width, height))
-        {
-        }
-
         public Rectangle(Point corner, Point oppositeCorner)
         {
             BottomLeft = new Point(Math.Min(corner.X, oppositeCorner.X), Math.Min(corner.Y, oppositeCorner.Y));
@@ -43,8 +39,8 @@ namespace Geometry
         {
             double newLeft = Math.Max(Left, otherRectangle.Left);
             double newRight = Math.Min(Right, otherRectangle.Right);
-            double newTop = Math.Min(Top, otherRectangle.Top);
             double newBottom = Math.Max(Bottom, otherRectangle.Bottom);
+            double newTop = Math.Min(Top, otherRectangle.Top);
             if (newLeft.ApproxGreater(newRight) || newBottom.ApproxGreater(newTop))
                 return null;
             return new Rectangle(new Point(newLeft, newBottom), new Point(newRight, newTop));
@@ -56,11 +52,11 @@ namespace Geometry
                 yield return new Segment(a, b);
         }
 
-        public IEnumerable<Segment> Sides => 
+        public IEnumerable<Segment> Sides =>
             MayBeSegment(BottomRight, TopRight)
-            .Concat(MayBeSegment(TopRight, TopLeft))
-            .Concat(MayBeSegment(TopLeft, BottomLeft))
-            .Concat(MayBeSegment(BottomLeft, BottomRight));
+                .Concat(MayBeSegment(TopRight, TopLeft))
+                .Concat(MayBeSegment(TopLeft, BottomLeft))
+                .Concat(MayBeSegment(BottomLeft, BottomRight));
 
         public IEnumerable<Point> Corners
         {
@@ -73,14 +69,15 @@ namespace Geometry
             }
         }
 
-        public static explicit operator System.Drawing.RectangleF(Rectangle rectangle)
+        public static explicit operator RectangleF(Rectangle rectangle)
         {
-            return new System.Drawing.RectangleF((System.Drawing.PointF)rectangle.BottomLeft, (System.Drawing.SizeF)rectangle.Size);
+            return new RectangleF((PointF)rectangle.BottomLeft, (SizeF)rectangle.Size);
         }
 
         public static explicit operator System.Drawing.Rectangle(Rectangle rectangle)
         {
-            return new System.Drawing.Rectangle((System.Drawing.Point)rectangle.BottomLeft, (System.Drawing.Size)rectangle.Size);
+            return new System.Drawing.Rectangle((System.Drawing.Point)rectangle.BottomLeft,
+                (System.Drawing.Size)rectangle.Size);
         }
 
         public static explicit operator Rectangle(System.Drawing.Rectangle rectangle)
@@ -88,7 +85,7 @@ namespace Geometry
             return new Rectangle(new Point(rectangle.Left, rectangle.Top), new Point(rectangle.Right, rectangle.Bottom));
         }
 
-        public static explicit operator Rectangle(System.Drawing.RectangleF rectangle)
+        public static explicit operator Rectangle(RectangleF rectangle)
         {
             return new Rectangle(new Point(rectangle.Left, rectangle.Top), new Point(rectangle.Right, rectangle.Bottom));
         }
@@ -135,7 +132,8 @@ namespace Geometry
             if (intersectionOrNull == null)
                 return false;
             var intersection = intersectionOrNull.Value;
-            return intersection.Left.ApproxEqualTo(intersection.Right) || intersection.Bottom.ApproxEqualTo(intersection.Top);
+            return intersection.Left.ApproxEqualTo(intersection.Right) ||
+                   intersection.Bottom.ApproxEqualTo(intersection.Top);
         }
 
         public static Rectangle? BoundingBoxOf(IEnumerable<Point> allCorners)
