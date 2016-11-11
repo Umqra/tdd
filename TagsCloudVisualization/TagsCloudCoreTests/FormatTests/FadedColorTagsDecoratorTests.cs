@@ -17,7 +17,7 @@ namespace TagsCloudCoreTests.FormatTests
         public override void SetUp()
         {
             base.SetUp();
-            Decorator = new FadedColorTagsDecorator(defaultColor, fadedColor);
+            Decorator = new FadedColorTagsDecorator(DefaultColor, fadedColor);
         }
 
         private IEnumerable<Color> EnumerateColorsFromLines(Bitmap image, IEnumerable<int> lineIds)

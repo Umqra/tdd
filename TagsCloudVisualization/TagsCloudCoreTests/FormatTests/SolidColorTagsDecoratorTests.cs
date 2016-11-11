@@ -15,7 +15,7 @@ namespace TagsCloudCoreTests.FormatTests
         public override void SetUp()
         {
             base.SetUp();
-            Decorator = new SolidColorTagsDecorator(defaultColor);
+            Decorator = new SolidColorTagsDecorator(DefaultColor);
         }
 
         [Test]
