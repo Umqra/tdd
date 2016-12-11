@@ -64,7 +64,6 @@
     <Compile Include="LayoutTests\DenseRandomTagsCloudLayouterTests.cs" />
     <Compile Include="LayoutTests\SparseRandomTagsCloudLayouterTests.cs" />
     <Compile Include="FormatTests\FrequencyTagsCloudWrapperTests.cs" />
-    <Compile Include="FormatTests\TagsDecoratorsCombinatorTests.cs" />
     <Compile Include="FormatTests\TagsDecoratorTests.cs" />
   </ItemGroup>
   <ItemGroup>

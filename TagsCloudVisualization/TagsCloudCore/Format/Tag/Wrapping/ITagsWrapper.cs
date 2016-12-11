@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using Size = Geometry.Size;
 
-namespace TagsCloudCore.Format
+namespace TagsCloudCore.Format.Tag.Wrapping
 {
     public interface ITagsWrapper
     {

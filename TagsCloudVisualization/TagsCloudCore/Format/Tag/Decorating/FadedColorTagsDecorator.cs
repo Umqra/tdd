@@ -1,8 +1,7 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using Rectangle = Geometry.Rectangle;
 
-namespace TagsCloudCore.Format
+namespace TagsCloudCore.Format.Tag.Decorating
 {
     public class FadedColorTagsDecorator : ITagsDecorator
     {

@@ -42,16 +42,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Format\FadedColorTagsDecorator.cs" />
-    <Compile Include="Format\ITagsDecorator.cs" />
-    <Compile Include="Format\ITagsWrapper.cs" />
-    <Compile Include="Format\ShadedBackgroundTagsDecorator.cs" />
-    <Compile Include="Format\SolidColorTagsDecorator.cs" />
-    <Compile Include="Format\TagsDecoratorCombinator.cs" />
+    <Compile Include="Format\Tag\Decorating\FadedColorTagsDecorator.cs" />
+    <Compile Include="Format\Background\IBackgroundDecorator.cs" />
+    <Compile Include="Format\Tag\Decorating\ITagsDecorator.cs" />
+    <Compile Include="Format\Tag\Wrapping\ITagsWrapper.cs" />
+    <Compile Include="Format\Tag\Decorating\ShadedBackgroundTagsDecorator.cs" />
+    <Compile Include="Format\Background\SolidBackgroundDecorator.cs" />
+    <Compile Include="Format\Tag\Decorating\SolidColorTagsDecorator.cs" />
     <Compile Include="Layout\BaseRandomTagsCloudLayouter.cs" />
     <Compile Include="Layout\DenseRandomTagsCloudLayouter.cs" />
-    <Compile Include="Format\FrequencyTagsCloudWrapper.cs" />
-    <Compile Include="Format\TagsDecoratorExtensions.cs" />
+    <Compile Include="Format\Tag\Wrapping\FrequencyTagsCloudWrapper.cs" />
     <Compile Include="Layout\ITagsCloudLayouter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Layout\SparseRandomTagsCloudLayouter.cs" />

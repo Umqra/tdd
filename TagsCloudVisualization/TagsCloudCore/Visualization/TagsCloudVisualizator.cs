@@ -8,32 +8,29 @@ namespace TagsCloudCore.Visualization
     public class TagsCloudVisualizator : ITagsCloudVisualizator
     {
         public VisualizatorConfiguration Configuration { get; }
-        public Color BackgroundColor { get; }
-        public int? MaxTagsCount { get; set; }
 
-        public TagsCloudVisualizator(VisualizatorConfiguration configuration, Color backgroundColor, int? maxTagsCount)
+        public TagsCloudVisualizator(VisualizatorConfiguration configuration)
         {
             Configuration = configuration;
-            BackgroundColor = backgroundColor;
-            MaxTagsCount = maxTagsCount;
         }
 
         public void CreateTagsCloud(IEnumerable<string> tags, Graphics graphics)
         {
             graphics.TextRenderingHint = TextRenderingHint.AntiAlias;
-            graphics.Clear(BackgroundColor);
-            var layouter = Configuration.Layouter();
-            var wrapper = Configuration.Wrapper();
-            var decorator = Configuration.Decorator();
-            if (MaxTagsCount.HasValue)
-                tags = tags.Take(MaxTagsCount.Value);
+
+            foreach (var backgroundDecorator in Configuration.BackgroundDecorators)
+                backgroundDecorator.DecorateBackground(graphics);
+
+            if (Configuration.MaxTagsCount.HasValue)
+                tags = tags.Take(Configuration.MaxTagsCount.Value);
 
             foreach (var tag in tags)
             {
-                var tagSize = wrapper.MeasureTag(tag, graphics);
-                var tagFont = wrapper.GetTagFont(tag);
-                var tagPlace = layouter.PutNextRectangle(tagSize);
-                decorator.DecorateTag(tag, tagFont, tagPlace, graphics);
+                var tagSize = Configuration.Wrapper.MeasureTag(tag, graphics);
+                var tagFont = Configuration.Wrapper.GetTagFont(tag);
+                var tagPlace = Configuration.Layouter.PutNextRectangle(tagSize);
+                foreach (var decorator in Configuration.Decorators)
+                    decorator.DecorateTag(tag, tagFont, tagPlace, graphics);
             }
         }
     }

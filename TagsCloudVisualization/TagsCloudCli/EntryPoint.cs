@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using Fclp;
 using TagsCloudCore;
 using TagsCloudCore.Format;
+using TagsCloudCore.Format.Background;
+using TagsCloudCore.Format.Tag.Decorating;
+using TagsCloudCore.Format.Tag.Wrapping;
 using TagsCloudCore.Tags;
 using TagsCloudCore.Visualization;
 
@@ -47,8 +51,12 @@ namespace TagsCloudCli
                 throw new FormatException("Error occured while parsing CLI parameters", e);
             }
 
-            var lines = new LinesExtractor().ExtractFromFile(options.InputFilename);
-            var tags = new TagsPreparer().PrepareTags(lines).ToList();
+            List<string> tags;
+            using (var stream = new StreamReader(File.OpenRead(options.InputFilename)))
+            {
+                var lines = new LinesExtractor().Extract(stream);
+                tags = new TagsPreparer().PrepareTags(lines).ToList();
+            }
             var visualizator = ConfigureVisualizator(options, tags);
 
             if (options.OutputFilename != null)
@@ -57,7 +65,7 @@ namespace TagsCloudCli
                 ProcessWinFormsApplication(options, visualizator, tags);
         }
 
-        private static void ProcessWinFormsApplication(CliOptions options, ITagsCloudVisualizator visualizator, List<string> tags)
+        private static void ProcessWinFormsApplication(CliOptions options, ITagsCloudVisualizator visualizator, IEnumerable<string> tags)
         {
             Application.Run(
                 new TagsCloudDisplayForm(
@@ -66,7 +74,7 @@ namespace TagsCloudCli
             );
         }
 
-        private static void ProcessBitmapImage(CliOptions options, ITagsCloudVisualizator visualizator, List<string> tags)
+        private static void ProcessBitmapImage(CliOptions options, ITagsCloudVisualizator visualizator, IEnumerable<string> tags)
         {
             var image = new Bitmap(options.Width, options.Height);
             var graphics = Graphics.FromImage(image);
@@ -141,18 +149,16 @@ namespace TagsCloudCli
         private static ITagsCloudVisualizator ConfigureVisualizator(CliOptions options, IEnumerable<string> tags)
         {
             var layouter = options.Layouter;
-            var wrapper = new FrequencyTagsCloudWrapper(FontFamily.GenericSerif, options.MaximumFontSize, tags);
+            var wrapper = new FrequencyTagsCloudWrapper(size => new Font(FontFamily.GenericSerif, size), options.MaximumFontSize, tags);
             var decorator = new SolidColorTagsDecorator(options.ForegroundColor);
             return new TagsCloudVisualizator(
-                new VisualizatorConfiguration
-                {
-                    Layouter = () => layouter,
-                    Wrapper = () => wrapper,
-                    Decorator = () => decorator
-                },
-                options.BackgroundColor,
-                options.MaxTagsCount
-            );
+                new VisualizatorConfiguration(
+                    layouter,
+                    wrapper,
+                    new[] {decorator},
+                    new[] {new SolidBackgroundDecorator(options.BackgroundColor)}, 
+                    options.MaxTagsCount
+                ));
         }
     }
 }

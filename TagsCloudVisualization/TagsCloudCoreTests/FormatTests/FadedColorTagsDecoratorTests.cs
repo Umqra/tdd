@@ -5,6 +5,7 @@ using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using TagsCloudCore.Format;
+using TagsCloudCore.Format.Tag.Decorating;
 using Point = Geometry.Point;
 using Rectangle = Geometry.Rectangle;
 

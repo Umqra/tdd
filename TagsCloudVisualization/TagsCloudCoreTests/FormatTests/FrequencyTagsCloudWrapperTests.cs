@@ -5,6 +5,7 @@ using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using TagsCloudCore.Format;
+using TagsCloudCore.Format.Tag.Wrapping;
 
 namespace TagsCloudCoreTests.FormatTests
 {
@@ -17,7 +18,7 @@ namespace TagsCloudCoreTests.FormatTests
 
         private FrequencyTagsCloudWrapper InitializeWrapper(IEnumerable<string> tags)
         {
-            return new FrequencyTagsCloudWrapper(DefaultFontFamily, DefaultFontSize, tags);
+            return new FrequencyTagsCloudWrapper(size => new Font(DefaultFontFamily, size), DefaultFontSize, tags);
         }
 
         [Test]
