@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using Fclp;
 using TagsCloudCore;
 using TagsCloudCore.Format;
+using TagsCloudCore.Tags;
 using TagsCloudCore.Visualization;
 
 namespace TagsCloudCli
@@ -46,7 +47,8 @@ namespace TagsCloudCli
                 throw new FormatException("Error occured while parsing CLI parameters", e);
             }
 
-            var tags = new TagsExtractor().ExtractFromFile(options.InputFilename).ToList();
+            var lines = new LinesExtractor().ExtractFromFile(options.InputFilename);
+            var tags = new TagsPreparer().PrepareTags(lines).ToList();
             var visualizator = ConfigureVisualizator(options, tags);
 
             if (options.OutputFilename != null)

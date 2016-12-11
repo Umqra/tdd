@@ -56,9 +56,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Layout\SparseRandomTagsCloudLayouter.cs" />
     <Compile Include="RectangleLayoutExtensions.cs" />
+    <Compile Include="Tags\ILinesExtractor.cs" />
+    <Compile Include="Tags\ITagsPreparer.cs" />
+    <Compile Include="Tags\LinesExtractor.cs" />
+    <Compile Include="Tags\LinesExtractorExtensions.cs" />
+    <Compile Include="Tags\TagsPreparer.cs" />
     <Compile Include="Visualization\ITagsCloudVisualizator.cs" />
     <Compile Include="Visualization\TagsCloudVisualizator.cs" />
-    <Compile Include="TagsExtractor.cs" />
     <Compile Include="Visualization\VisualizatorConfiguration.cs" />
   </ItemGroup>
   <ItemGroup>
