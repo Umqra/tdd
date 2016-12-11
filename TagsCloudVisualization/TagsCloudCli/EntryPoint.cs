@@ -51,11 +51,18 @@ namespace TagsCloudCli
                 throw new FormatException("Error occured while parsing CLI parameters", e);
             }
 
-            List<string> tags;
+            var preparers = new List<ITagsPreparer> {new SimpleTagsFilter()};
+            if (options.MaxTagsCount.HasValue)
+                preparers.Add(new FirstTagsTaker(options.MaxTagsCount.Value));
+
+            List <string> tags;
             using (var stream = new StreamReader(File.OpenRead(options.InputFilename)))
             {
                 var lines = new LinesExtractor().Extract(stream);
-                tags = new TagsPreparer().PrepareTags(lines).ToList();
+                var rawTags = new TagsExtractor().ExtractTags(lines);    
+                tags = preparers
+                        .Aggregate(rawTags, (current, preparer) => preparer.PrepareTags(current))
+                        .ToList();
             }
             var visualizator = ConfigureVisualizator(options, tags);
 

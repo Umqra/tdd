@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace TagsCloudCore.Tags
 {
-    public class TagsPreparer : ITagsPreparer
+    public class SimpleTagsFilter : ITagsPreparer
     {
         //TODO: Stop words list in settings
         private static readonly string[] stopWords =
@@ -15,17 +14,12 @@ namespace TagsCloudCore.Tags
             "them", "from", "could", "were", "but", "with",
             "when", "have", "would", "its", "should", "who",
             "been", "be", "she", "her", "he", "don", "said",
-            "has", "can", "some", "one", "into", "just" 
+            "has", "can", "some", "one", "into", "just"
         };
 
-        private IEnumerable<string> SplitLineByTokens(string line)
+        public IEnumerable<string> PrepareTags(IEnumerable<string> tags)
         {
-            return Regex.Split(line, @"\b");
-        }
-
-        public IEnumerable<string> PrepareTags(IEnumerable<string> lines)
-        {
-            return lines.SelectMany(SplitLineByTokens)
+            return tags
                 .Where(tag => tag.All(char.IsLetter) && tag.Length > 2)
                 .Select(tag => tag.ToLower())
                 .Where(tag => !stopWords.Contains(tag));
