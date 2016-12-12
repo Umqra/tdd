@@ -1,15 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
 using Autofac;
 using Fclp;
-using TagsCloudCore.Format.Background;
-using TagsCloudCore.Format.Tag.Decorating;
-using TagsCloudCore.Format.Tag.Wrapping;
-using TagsCloudCore.Layout;
-using TagsCloudCore.Tags;
 using TagsCloudCore.Visualization;
 
 namespace TagsCloudCli
@@ -50,48 +43,14 @@ namespace TagsCloudCli
                 throw new FormatException("Error occured while parsing CLI parameters", e);
             }
 
-            var container = BuildDependencies(options);
-            
+            var container = new AppCompositionRoot().BuildDependencies(options);
+
             var visualizator = container.Resolve<ITagsCloudVisualizator>();
 
             if (options.OutputFilename != null)
                 ProcessBitmapImage(options, visualizator);
             else
                 ProcessWinFormsApplication(options, visualizator);
-        }
-
-        private static IContainer BuildDependencies(CliOptions options)
-        {
-            var builder = new ContainerBuilder();
-
-            builder.RegisterType<LinesExtractor>().As<ILinesExtractor>();
-            builder.RegisterType<TagsExtractor>().As<ITagsExtractor>();
-
-            builder.RegisterType<TagsCreator>();
-            //TODO: think about this two lines
-            builder.Register(context => context.Resolve<TagsCreator.Factory>()(options.InputFilename)).As<ITagsCreator>();
-            builder.Register(context => context.Resolve<ITagsCreator>().GetTags()).As<IEnumerable<string>>();
-            //TODO: autofac doesn't preserves order of enumeration
-
-            builder.RegisterType<SimpleTagsFilter>().As<ITagsPreparer>();
-            if (options.MaxTagsCount.HasValue)
-                builder.RegisterInstance(new FirstTagsTaker(options.MaxTagsCount.Value)).As<ITagsPreparer>();
-
-            //TODO: create interface for font getters?
-            builder.RegisterInstance<Func<float, Font>>(size => new Font(FontFamily.GenericSerif, size))
-                .As<Func<float, Font>>();
-            builder.RegisterInstance(options.Layouter).As<ITagsCloudLayouter>();
-            builder.RegisterInstance(new SolidColorTagsDecorator(options.ForegroundColor)).As<ITagsDecorator>();
-            builder.RegisterInstance(new SolidBackgroundDecorator(options.BackgroundColor)).As<IBackgroundDecorator>();
-
-            builder.RegisterType<FrequencyTagsCloudWrapper>();
-            //TODO: context? again?
-            builder.Register(context => context.Resolve<FrequencyTagsCloudWrapper.Factory>()(options.MaximumFontSize))
-                .As<ITagsWrapper>();
-            builder.RegisterType<VisualizatorConfiguration>().AsSelf();
-            builder.RegisterType<TagsCloudVisualizator>().As<ITagsCloudVisualizator>();
-
-            return builder.Build();
         }
 
         private static void ProcessWinFormsApplication(CliOptions options, ITagsCloudVisualizator visualizator)

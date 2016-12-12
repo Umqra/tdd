@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TagsCloudCore", "TagsCloudCore\TagsCloudCore.csproj", "{46D5CA67-42D6-4FDB-9B70-759F78F8E529}"
 EndProject
@@ -12,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeometryTests", "GeometryTests\GeometryTests.csproj", "{80B1AAE0-8441-417D-8B81-944A0882D0FC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TagsCloudCli", "TagsCloudCli\TagsCloudCli.csproj", "{0190B0DB-2E1A-4A4F-9EA6-91BCE6AC2EAF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TagsCloudBuildDep", "TagsCloudBuildDep\TagsCloudBuildDep.csproj", "{7F1FB34A-B70E-401E-A17C-BF7ED465FB55}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{0190B0DB-2E1A-4A4F-9EA6-91BCE6AC2EAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0190B0DB-2E1A-4A4F-9EA6-91BCE6AC2EAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0190B0DB-2E1A-4A4F-9EA6-91BCE6AC2EAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F1FB34A-B70E-401E-A17C-BF7ED465FB55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F1FB34A-B70E-401E-A17C-BF7ED465FB55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F1FB34A-B70E-401E-A17C-BF7ED465FB55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F1FB34A-B70E-401E-A17C-BF7ED465FB55}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
