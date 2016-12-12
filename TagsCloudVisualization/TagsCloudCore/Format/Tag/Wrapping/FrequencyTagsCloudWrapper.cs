@@ -7,8 +7,6 @@ namespace TagsCloudCore.Format.Tag.Wrapping
 {
     public class FrequencyTagsCloudWrapper : ITagsWrapper
     {
-        public delegate FrequencyTagsCloudWrapper Factory(float maxFontEmSize);
-
         private const double FontSizeTuner = 0.7;
         private readonly Dictionary<string, int> tagsFrequency;
 

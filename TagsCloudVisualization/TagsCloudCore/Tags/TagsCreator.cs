@@ -9,9 +9,6 @@ namespace TagsCloudCore.Tags
 {
     public class TagsCreator : ITagsCreator
     {
-        //TODO: should it be inside tags creator or somewhere outside?
-        public delegate TagsCreator Factory(string inputFilename);
-
         private string InputFilename { get; }
         private ILinesExtractor LinesExtractor { get; }
         private ITagsExtractor TagsExtractor { get; }

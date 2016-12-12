@@ -6,6 +6,8 @@ namespace TagsCloudBuildDep.Tags
 {
     public class TagsCreatorBuild : Module
     {
+        public delegate TagsCreator TagsCreatorFactory(string inputFilename);
+
         public string InputFilename { get; }
 
         public TagsCreatorBuild(string inputFilename)
@@ -20,7 +22,7 @@ namespace TagsCloudBuildDep.Tags
 
             builder.RegisterType<TagsCreator>();
             //TODO: think about this two lines
-            builder.Register(context => context.Resolve<TagsCreator.Factory>()(InputFilename)).As<ITagsCreator>();
+            builder.Register(context => context.Resolve<TagsCreatorFactory>()(InputFilename)).As<ITagsCreator>();
             builder.Register(context => context.Resolve<ITagsCreator>().GetTags()).As<IEnumerable<string>>();
         }
     }

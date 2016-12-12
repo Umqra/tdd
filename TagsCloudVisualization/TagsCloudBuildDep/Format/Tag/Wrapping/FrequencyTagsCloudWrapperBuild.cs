@@ -5,6 +5,7 @@ namespace TagsCloudBuildDep.Format.Tag.Wrapping
 {
     public class FrequencyTagsCloudWrapperBuild : Module
     {
+        public delegate FrequencyTagsCloudWrapper FrequencyTagsCloudWrapperFactory(float maxFontEmSize);
         public float MaximumFontSize { get; }
 
         public FrequencyTagsCloudWrapperBuild(float maximumFontSize)
@@ -16,7 +17,7 @@ namespace TagsCloudBuildDep.Format.Tag.Wrapping
         {
             builder.RegisterType<FrequencyTagsCloudWrapper>();
             //TODO: context? again?
-            builder.Register(context => context.Resolve<FrequencyTagsCloudWrapper.Factory>()(MaximumFontSize))
+            builder.Register(context => context.Resolve<FrequencyTagsCloudWrapperFactory>()(MaximumFontSize))
                 .As<ITagsWrapper>();
         }
     }
