@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
+using Autofac;
 using Fclp;
-using TagsCloudCore;
-using TagsCloudCore.Format;
 using TagsCloudCore.Visualization;
 
 namespace TagsCloudCli
@@ -46,29 +43,28 @@ namespace TagsCloudCli
                 throw new FormatException("Error occured while parsing CLI parameters", e);
             }
 
-            var tags = new TagsExtractor().ExtractFromFile(options.InputFilename).ToList();
-            var visualizator = ConfigureVisualizator(options, tags);
+            var container = new AppCompositionRoot().BuildDependencies(options);
+
+            var visualizator = container.Resolve<ITagsCloudVisualizator>();
 
             if (options.OutputFilename != null)
-                ProcessBitmapImage(options, visualizator, tags);
+                ProcessBitmapImage(options, visualizator);
             else
-                ProcessWinFormsApplication(options, visualizator, tags);
+                ProcessWinFormsApplication(options, visualizator);
         }
 
-        private static void ProcessWinFormsApplication(CliOptions options, ITagsCloudVisualizator visualizator, List<string> tags)
+        private static void ProcessWinFormsApplication(CliOptions options, ITagsCloudVisualizator visualizator)
         {
             Application.Run(
-                new TagsCloudDisplayForm(
-                    visualizator, tags.Distinct().ToList(),
-                    options.Width, options.Height)
+                new TagsCloudDisplayForm(visualizator, options.Width, options.Height)
             );
         }
 
-        private static void ProcessBitmapImage(CliOptions options, ITagsCloudVisualizator visualizator, List<string> tags)
+        private static void ProcessBitmapImage(CliOptions options, ITagsCloudVisualizator visualizator)
         {
             var image = new Bitmap(options.Width, options.Height);
             var graphics = Graphics.FromImage(image);
-            visualizator.CreateTagsCloud(tags.Distinct(), graphics);
+            visualizator.CreateTagsCloud(graphics);
             image.Save(options.OutputFilename);
         }
 
@@ -123,7 +119,8 @@ namespace TagsCloudCli
                 .SetDefault("black");
             parser.Setup(arg => arg.LayouterName)
                 .As('l', "layouter")
-                .WithDescription($"Choose implementation of layouter from list: {string.Join(",", CliOptions.LayouterNames.Keys)}.")
+                .WithDescription(
+                    $"Choose implementation of layouter from list: {string.Join(",", CliOptions.LayouterNames.Keys)}.")
                 .SetDefault("sparse");
             parser.Setup(arg => arg.MaxTagsCount)
                 .As('m', "max-tags")
@@ -134,23 +131,6 @@ namespace TagsCloudCli
                 .WithCustomFormatter(new CustomCommandLineOptionFormatter())
                 .Callback(text => Console.WriteLine(text));
             return parser;
-        }
-
-        private static ITagsCloudVisualizator ConfigureVisualizator(CliOptions options, IEnumerable<string> tags)
-        {
-            var layouter = options.Layouter;
-            var wrapper = new FrequencyTagsCloudWrapper(FontFamily.GenericSerif, options.MaximumFontSize, tags);
-            var decorator = new SolidColorTagsDecorator(options.ForegroundColor);
-            return new TagsCloudVisualizator(
-                new VisualizatorConfiguration
-                {
-                    Layouter = () => layouter,
-                    Wrapper = () => wrapper,
-                    Decorator = () => decorator
-                },
-                options.BackgroundColor,
-                options.MaxTagsCount
-            );
         }
     }
 }

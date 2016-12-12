@@ -2,17 +2,18 @@
 using System.IO;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
-using TagsCloudCore.Format;
+using TagsCloudCore.Format.Tag.Decorating;
+using TagsCloudCore.Format.Tag.Wrapping;
 using Size = Geometry.Size;
 
 namespace TagsCloudCoreTests.FormatTests
 {
     public abstract class TagsDecoratorTests
     {
-        protected readonly Color DefaultColor = Color.Blue;
         private const float DefaultFontSize = 20;
         private const int DefaultHeight = 200;
         private const int DefaultWidth = 200;
+        protected readonly Color DefaultColor = Color.Blue;
         protected Bitmap Actual { get; set; }
         protected Bitmap Expected { get; set; }
         protected ITagsDecorator Decorator { get; set; }
@@ -48,7 +49,7 @@ namespace TagsCloudCoreTests.FormatTests
         protected Size GetTagSize(string tag)
         {
             return new FrequencyTagsCloudWrapper(
-                FontFamily.GenericSerif, DefaultFontSize, new[] {tag}
+                size => new Font(FontFamily.GenericSerif, size), DefaultFontSize, new[] {tag}
             ).MeasureTag(tag, Graphics.FromImage(Actual));
         }
 
