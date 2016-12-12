@@ -37,7 +37,9 @@ namespace TagsCloudCli
 
         private IEnumerable<ITagsPreparer> GetPreparers(CliOptions options)
         {
-            yield return new SimpleTagsFilter();
+            yield return new NormalizeTagsTransformer();
+            yield return new LetterTagsFilter();
+            yield return new StopWordsFilter();
             if (options.MaxTagsCount.HasValue)
                 yield return new FirstTagsTaker(options.MaxTagsCount.Value);
         }

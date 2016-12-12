@@ -56,14 +56,16 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Layout\SparseRandomTagsCloudLayouter.cs" />
     <Compile Include="RectangleLayoutExtensions.cs" />
-    <Compile Include="Tags\FirstTagsTaker.cs" />
+    <Compile Include="Tags\Preparers\FirstTagsTaker.cs" />
     <Compile Include="Tags\ILinesExtractor.cs" />
     <Compile Include="Tags\ITagsCreator.cs" />
     <Compile Include="Tags\ITagsExtractor.cs" />
-    <Compile Include="Tags\ITagsPreparer.cs" />
+    <Compile Include="Tags\Preparers\ITagsPreparer.cs" />
     <Compile Include="Tags\LinesExtractor.cs" />
     <Compile Include="Tags\LinesExtractorExtensions.cs" />
-    <Compile Include="Tags\SimpleTagsFilter.cs" />
+    <Compile Include="Tags\Preparers\LetterTagsFilter.cs" />
+    <Compile Include="Tags\Preparers\NormalizeTagsTransformer.cs" />
+    <Compile Include="Tags\Preparers\StopWordsFilter.cs" />
     <Compile Include="Tags\TagsCreator.cs" />
     <Compile Include="Tags\TagsExtractor.cs" />
     <Compile Include="Visualization\ITagsCloudVisualizator.cs" />
@@ -76,6 +78,7 @@
       <Name>Geometry</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
