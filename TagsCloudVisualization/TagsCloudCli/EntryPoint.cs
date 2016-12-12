@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using Autofac;
 using Fclp;
-using TagsCloudCore;
-using TagsCloudCore.Format;
 using TagsCloudCore.Format.Background;
 using TagsCloudCore.Format.Tag.Decorating;
 using TagsCloudCore.Format.Tag.Wrapping;
+using TagsCloudCore.Layout;
 using TagsCloudCore.Tags;
 using TagsCloudCore.Visualization;
 
@@ -51,41 +50,62 @@ namespace TagsCloudCli
                 throw new FormatException("Error occured while parsing CLI parameters", e);
             }
 
-            var preparers = new List<ITagsPreparer> {new SimpleTagsFilter()};
-            if (options.MaxTagsCount.HasValue)
-                preparers.Add(new FirstTagsTaker(options.MaxTagsCount.Value));
-
-            List <string> tags;
-            using (var stream = new StreamReader(File.OpenRead(options.InputFilename)))
-            {
-                var lines = new LinesExtractor().Extract(stream);
-                var rawTags = new TagsExtractor().ExtractTags(lines);    
-                tags = preparers
-                        .Aggregate(rawTags, (current, preparer) => preparer.PrepareTags(current))
-                        .ToList();
-            }
-            var visualizator = ConfigureVisualizator(options, tags);
+            var container = BuildDependencies(options);
+            
+            var visualizator = container.Resolve<ITagsCloudVisualizator>();
 
             if (options.OutputFilename != null)
-                ProcessBitmapImage(options, visualizator, tags);
+                ProcessBitmapImage(options, visualizator);
             else
-                ProcessWinFormsApplication(options, visualizator, tags);
+                ProcessWinFormsApplication(options, visualizator);
         }
 
-        private static void ProcessWinFormsApplication(CliOptions options, ITagsCloudVisualizator visualizator, IEnumerable<string> tags)
+        private static IContainer BuildDependencies(CliOptions options)
+        {
+            var builder = new ContainerBuilder();
+
+            builder.RegisterType<LinesExtractor>().As<ILinesExtractor>();
+            builder.RegisterType<TagsExtractor>().As<ITagsExtractor>();
+
+            builder.RegisterType<TagsCreator>();
+            //TODO: think about this two lines
+            builder.Register(context => context.Resolve<TagsCreator.Factory>()(options.InputFilename)).As<ITagsCreator>();
+            builder.Register(context => context.Resolve<ITagsCreator>().GetTags()).As<IEnumerable<string>>();
+            //TODO: autofac doesn't preserves order of enumeration
+
+            builder.RegisterType<SimpleTagsFilter>().As<ITagsPreparer>();
+            if (options.MaxTagsCount.HasValue)
+                builder.RegisterInstance(new FirstTagsTaker(options.MaxTagsCount.Value)).As<ITagsPreparer>();
+
+            //TODO: create interface for font getters?
+            builder.RegisterInstance<Func<float, Font>>(size => new Font(FontFamily.GenericSerif, size))
+                .As<Func<float, Font>>();
+            builder.RegisterInstance(options.Layouter).As<ITagsCloudLayouter>();
+            builder.RegisterInstance(new SolidColorTagsDecorator(options.ForegroundColor)).As<ITagsDecorator>();
+            builder.RegisterInstance(new SolidBackgroundDecorator(options.BackgroundColor)).As<IBackgroundDecorator>();
+
+            builder.RegisterType<FrequencyTagsCloudWrapper>();
+            //TODO: context? again?
+            builder.Register(context => context.Resolve<FrequencyTagsCloudWrapper.Factory>()(options.MaximumFontSize))
+                .As<ITagsWrapper>();
+            builder.RegisterType<VisualizatorConfiguration>().AsSelf();
+            builder.RegisterType<TagsCloudVisualizator>().As<ITagsCloudVisualizator>();
+
+            return builder.Build();
+        }
+
+        private static void ProcessWinFormsApplication(CliOptions options, ITagsCloudVisualizator visualizator)
         {
             Application.Run(
-                new TagsCloudDisplayForm(
-                    visualizator, tags.Distinct().ToList(),
-                    options.Width, options.Height)
+                new TagsCloudDisplayForm(visualizator, options.Width, options.Height)
             );
         }
 
-        private static void ProcessBitmapImage(CliOptions options, ITagsCloudVisualizator visualizator, IEnumerable<string> tags)
+        private static void ProcessBitmapImage(CliOptions options, ITagsCloudVisualizator visualizator)
         {
             var image = new Bitmap(options.Width, options.Height);
             var graphics = Graphics.FromImage(image);
-            visualizator.CreateTagsCloud(tags.Distinct(), graphics);
+            visualizator.CreateTagsCloud(graphics);
             image.Save(options.OutputFilename);
         }
 
@@ -140,7 +160,8 @@ namespace TagsCloudCli
                 .SetDefault("black");
             parser.Setup(arg => arg.LayouterName)
                 .As('l', "layouter")
-                .WithDescription($"Choose implementation of layouter from list: {string.Join(",", CliOptions.LayouterNames.Keys)}.")
+                .WithDescription(
+                    $"Choose implementation of layouter from list: {string.Join(",", CliOptions.LayouterNames.Keys)}.")
                 .SetDefault("sparse");
             parser.Setup(arg => arg.MaxTagsCount)
                 .As('m', "max-tags")
@@ -151,21 +172,6 @@ namespace TagsCloudCli
                 .WithCustomFormatter(new CustomCommandLineOptionFormatter())
                 .Callback(text => Console.WriteLine(text));
             return parser;
-        }
-
-        private static ITagsCloudVisualizator ConfigureVisualizator(CliOptions options, IEnumerable<string> tags)
-        {
-            var layouter = options.Layouter;
-            var wrapper = new FrequencyTagsCloudWrapper(size => new Font(FontFamily.GenericSerif, size), options.MaximumFontSize, tags);
-            var decorator = new SolidColorTagsDecorator(options.ForegroundColor);
-            return new TagsCloudVisualizator(
-                new VisualizatorConfiguration(
-                    layouter,
-                    wrapper,
-                    new[] {decorator},
-                    new[] {new SolidBackgroundDecorator(options.BackgroundColor)}, 
-                    options.MaxTagsCount
-                ));
         }
     }
 }

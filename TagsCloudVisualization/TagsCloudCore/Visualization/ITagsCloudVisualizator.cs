@@ -5,6 +5,6 @@ namespace TagsCloudCore.Visualization
 {
     public interface ITagsCloudVisualizator
     {
-        void CreateTagsCloud(IEnumerable<string> tags, Graphics graphics);
+        void CreateTagsCloud(Graphics graphics);
     }
 }

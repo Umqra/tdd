@@ -9,7 +9,7 @@ namespace TagsCloudCore.Tags
         {
             using (var stream = new StreamReader(File.Open(filename, FileMode.Open)))
             {
-                return extractor.Extract(stream);
+                return extractor.ExtractLines(stream);
             }
         }
     }

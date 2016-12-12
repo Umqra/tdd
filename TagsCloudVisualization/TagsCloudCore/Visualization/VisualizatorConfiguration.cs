@@ -12,21 +12,18 @@ namespace TagsCloudCore.Visualization
         public ITagsWrapper Wrapper { get; set; }
         public IEnumerable<ITagsDecorator> Decorators { get; set; }
         public IEnumerable<IBackgroundDecorator> BackgroundDecorators { get; set; }
-        public int? MaxTagsCount { get; set; }
 
         public VisualizatorConfiguration(
             ITagsCloudLayouter layouter,
             ITagsWrapper wrapper,
             IEnumerable<ITagsDecorator> decorators,
-            IEnumerable<IBackgroundDecorator> backgroundDecorators,
-            int? maxTagsCount
+            IEnumerable<IBackgroundDecorator> backgroundDecorators
         )
         {
             Layouter = layouter;
             Wrapper = wrapper;
             Decorators = decorators;
             BackgroundDecorators = backgroundDecorators;
-            MaxTagsCount = maxTagsCount;
         }
     }
 }

@@ -7,19 +7,17 @@ namespace TagsCloudCli
     sealed class TagsCloudDisplayForm : Form
     {
         public ITagsCloudVisualizator Visualizator { get; set; }
-        public List<string> Tags { get; set; }
 
-        public TagsCloudDisplayForm(ITagsCloudVisualizator visualizator, List<string> tags, int width, int height)
+        public TagsCloudDisplayForm(ITagsCloudVisualizator visualizator, int width, int height)
         {
             Visualizator = visualizator;
-            Tags = tags;
             Width = width;
             Height = height;
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            Visualizator.CreateTagsCloud(Tags, e.Graphics);
+            Visualizator.CreateTagsCloud(e.Graphics);
         }
     }
 }

@@ -6,7 +6,7 @@ namespace TagsCloudCore.Tags
 {
     public class LinesExtractor : ILinesExtractor
     {
-        public IEnumerable<string> Extract(StreamReader stream)
+        public IEnumerable<string> ExtractLines(StreamReader stream)
         {
             while (!stream.EndOfStream)
             {
