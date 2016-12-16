@@ -2,7 +2,7 @@
 using System.IO;
 using System.Linq;
 
-namespace TagsCloudCore.Tags
+namespace TagsCloudCore.Tags.Preparers
 {
     public class StopWordsFilter : ITagsPreparer
     {

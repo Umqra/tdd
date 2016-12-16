@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace TagsCloudCore.Tags
+namespace TagsCloudCore.Tags.Preparers
 {
     public class NormalizeTagsTransformer : ITagsPreparer
     {
