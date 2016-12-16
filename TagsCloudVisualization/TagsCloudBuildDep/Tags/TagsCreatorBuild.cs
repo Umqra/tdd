@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Autofac;
 using TagsCloudCore.Tags;
 
@@ -23,7 +24,9 @@ namespace TagsCloudBuildDep.Tags
             builder.RegisterType<TagsCreator>();
             //TODO: think about this two lines
             builder.Register(context => context.Resolve<TagsCreatorFactory>()(InputFilename)).As<ITagsCreator>();
-            builder.Register(context => context.Resolve<ITagsCreator>().GetTags()).As<IEnumerable<string>>();
+            builder.Register(context => context.Resolve<ITagsCreator>().GetTags().ToList())
+                .As<IEnumerable<string>>()
+                .InstancePerLifetimeScope();
         }
     }
 }

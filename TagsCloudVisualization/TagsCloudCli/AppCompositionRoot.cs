@@ -8,7 +8,6 @@ using TagsCloudBuildDep.Tags;
 using TagsCloudCore.Format.Background;
 using TagsCloudCore.Format.Tag.Decorating;
 using TagsCloudCore.Layout;
-using TagsCloudCore.Tags;
 using TagsCloudCore.Tags.Preparers;
 
 namespace TagsCloudCli
@@ -40,6 +39,7 @@ namespace TagsCloudCli
         {
             yield return new NormalizeTagsTransformer();
             yield return new LetterTagsFilter();
+            yield return new StemTagTransform();
             yield return new StopWordsFilter();
             if (options.MaxTagsCount.HasValue)
                 yield return new FirstTagsTaker(options.MaxTagsCount.Value);

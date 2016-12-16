@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NHunspell, Version=1.2.5554.16953, Culture=neutral, PublicKeyToken=1ac793ea843b4366, processorArchitecture=MSIL">
+      <HintPath>..\packages\NHunspell.1.2.5554.16953\lib\net\NHunspell.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -55,6 +59,11 @@
     <Compile Include="Layout\ITagsCloudLayouter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Layout\SparseRandomTagsCloudLayouter.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="RectangleLayoutExtensions.cs" />
     <Compile Include="Tags\Preparers\FirstTagsTaker.cs" />
     <Compile Include="Tags\ILinesExtractor.cs" />
@@ -65,6 +74,7 @@
     <Compile Include="Tags\LinesExtractorExtensions.cs" />
     <Compile Include="Tags\Preparers\LetterTagsFilter.cs" />
     <Compile Include="Tags\Preparers\NormalizeTagsTransformer.cs" />
+    <Compile Include="Tags\Preparers\StemTagTransform.cs" />
     <Compile Include="Tags\Preparers\StopWordsFilter.cs" />
     <Compile Include="Tags\TagsCreator.cs" />
     <Compile Include="Tags\TagsExtractor.cs" />
@@ -78,7 +88,31 @@
       <Name>Geometry</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Hunspellx64.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Hunspellx86.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\en_us.aff" />
+    <None Include="Resources\en_us.dic" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\en_us_aff.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\en_us_dic.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

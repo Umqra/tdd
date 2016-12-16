@@ -13,7 +13,7 @@ namespace TagsCloudCore.Tags
 
         public IEnumerable<string> ExtractTags(IEnumerable<string> lines)
         {
-            return lines.SelectMany(SplitLineByTokens);
+            return lines.SelectMany(SplitLineByTokens).Where(s => s != "");
         }
     }
 }

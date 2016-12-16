@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using Autofac;
@@ -44,7 +45,6 @@ namespace TagsCloudCli
             }
 
             var container = new AppCompositionRoot().BuildDependencies(options);
-
             var visualizator = container.Resolve<ITagsCloudVisualizator>();
 
             if (options.OutputFilename != null)

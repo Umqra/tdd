@@ -24,7 +24,7 @@ namespace TagsCloudCore.Visualization
             foreach (var backgroundDecorator in Configuration.BackgroundDecorators)
                 backgroundDecorator.DecorateBackground(graphics);
 
-            foreach (var tag in TagsCreator.GetTags())
+            foreach (var tag in TagsCreator.GetTags().Distinct())
             {
                 var tagSize = Configuration.Wrapper.MeasureTag(tag, graphics);
                 var tagFont = Configuration.Wrapper.GetTagFont(tag);
