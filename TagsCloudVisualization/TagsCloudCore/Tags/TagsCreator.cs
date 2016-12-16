@@ -25,7 +25,7 @@ namespace TagsCloudCore.Tags
 
         public IEnumerable<string> GetTags()
         {
-            using (var stream = new StreamReader(File.OpenRead(InputFilename)))
+            using (var stream = File.OpenRead(InputFilename))
             {
                 var lines = LinesExtractor.ExtractLines(stream);
                 var rawTags = TagsExtractor.ExtractTags(lines);

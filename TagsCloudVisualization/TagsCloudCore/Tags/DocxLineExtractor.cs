@@ -10,9 +10,9 @@ namespace TagsCloudCore.Tags
 {
     public class DocxLineExtractor : ILinesExtractor
     {
-        public IEnumerable<string> ExtractLines(StreamReader stream)
+        public IEnumerable<string> ExtractLines(Stream stream)
         {
-            using (var document = WordprocessingDocument.Open(stream.BaseStream, false))
+            using (var document = WordprocessingDocument.Open(stream, false))
             {
                 return new [] {document.MainDocumentPart.Document.Body.InnerText};
             }

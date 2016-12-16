@@ -21,8 +21,7 @@ namespace TagsCloudCli
                 var currentException = exception;
                 while (currentException != null)
                 {
-                    // CR (krait): Практика показывает, что по мессаджу без стектрейса локализовать проблему нельзя почти никогда.
-                    Console.WriteLine(currentException.Message);
+                    Console.WriteLine(currentException);
                     currentException = currentException.InnerException;
                 }
             }

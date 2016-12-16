@@ -79,7 +79,6 @@
     <Compile Include="Tags\ITagsExtractor.cs" />
     <Compile Include="Tags\Preparers\ITagsPreparer.cs" />
     <Compile Include="Tags\TxtLinesExtractor.cs" />
-    <Compile Include="Tags\LinesExtractorExtensions.cs" />
     <Compile Include="Tags\Preparers\LetterTagsFilter.cs" />
     <Compile Include="Tags\Preparers\NormalizeTagsTransformer.cs" />
     <Compile Include="Tags\Preparers\StemTagTransform.cs" />
