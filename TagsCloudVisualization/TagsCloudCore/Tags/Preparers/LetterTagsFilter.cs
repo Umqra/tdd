@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 
-namespace TagsCloudCore.Tags
+namespace TagsCloudCore.Tags.Preparers
 {
     public class LetterTagsFilter : ITagsPreparer
     {

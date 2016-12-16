@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
+using System.Drawing;   
 using Autofac;
 using TagsCloudBuildDep;
 using TagsCloudBuildDep.Format.Tag.Wrapping;
@@ -9,6 +9,7 @@ using TagsCloudCore.Format.Background;
 using TagsCloudCore.Format.Tag.Decorating;
 using TagsCloudCore.Layout;
 using TagsCloudCore.Tags;
+using TagsCloudCore.Tags.Preparers;
 
 namespace TagsCloudCli
 {

@@ -3,6 +3,7 @@ using System.Linq;
 using Autofac;
 using Autofac.Features.Metadata;
 using TagsCloudCore.Tags;
+using TagsCloudCore.Tags.Preparers;
 
 namespace TagsCloudBuildDep.Tags
 {
