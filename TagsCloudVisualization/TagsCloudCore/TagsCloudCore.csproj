@@ -54,6 +54,8 @@
     <Compile Include="Format\Tag\Decorating\FadedColorTagsDecorator.cs" />
     <Compile Include="Format\Background\IBackgroundDecorator.cs" />
     <Compile Include="Format\Tag\Decorating\ITagsDecorator.cs" />
+    <Compile Include="Format\Tag\FixedFamilyFontProvider.cs" />
+    <Compile Include="Format\Tag\IFontProvider.cs" />
     <Compile Include="Format\Tag\Wrapping\ITagsWrapper.cs" />
     <Compile Include="Format\Tag\Decorating\ShadedBackgroundTagsDecorator.cs" />
     <Compile Include="Format\Background\SolidBackgroundDecorator.cs" />
