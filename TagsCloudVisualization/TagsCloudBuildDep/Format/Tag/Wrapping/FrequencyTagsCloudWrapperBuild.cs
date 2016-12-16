@@ -16,6 +16,8 @@ namespace TagsCloudBuildDep.Format.Tag.Wrapping
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<FrequencyTagsCloudWrapper>();
+            // CR (krait): Почему просто не зарегистрировать инстанс? Разве MaximumFontSize может поменяться в процессе работы приложения? 
+            // А если вдруг может, то надо срочно запретить: переконфигурация DI-контейнера в рантайме ведёт к отвратительным и неуловимым багам.
             //TODO: context? again?
             builder.Register(context => context.Resolve<FrequencyTagsCloudWrapperFactory>()(MaximumFontSize))
                 .As<ITagsWrapper>();

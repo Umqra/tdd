@@ -21,6 +21,7 @@ namespace TagsCloudCli
             builder.RegisterModule(new TagsCreatorBuild(options.InputFilename));
             builder.RegisterModule(new StrictOrderEnumerationBuild<ITagsPreparer>(GetPreparers(options)));
 
+            // CR (krait): Так делать нельзя. Что если будет какая-то другая фабрика с такой же сигнатурой? Надо обернуть в какой-нибудь IFontProvider.
             builder.RegisterInstance<Func<float, Font>>(size => new Font(FontFamily.GenericSerif, size))
                 .As<Func<float, Font>>();
             builder.RegisterInstance(options.Layouter).As<ITagsCloudLayouter>();

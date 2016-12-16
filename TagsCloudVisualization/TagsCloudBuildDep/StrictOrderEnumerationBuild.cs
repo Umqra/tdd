@@ -5,6 +5,7 @@ using Autofac.Features.Metadata;
 
 namespace TagsCloudBuildDep
 {
+    // CR (krait): Неужели autofac не позволяет решить эту задачу более изящно?
     public class StrictOrderEnumerationBuild<T> : Module where T : class
     {
         private const string OrderField = "order";
