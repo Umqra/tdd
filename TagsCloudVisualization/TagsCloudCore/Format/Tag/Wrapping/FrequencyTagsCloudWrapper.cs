@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using TagsCloudCore.Tags;
 using Size = Geometry.Size;
 
 namespace TagsCloudCore.Format.Tag.Wrapping
@@ -14,13 +15,13 @@ namespace TagsCloudCore.Format.Tag.Wrapping
         private float MaxFontEmSize { get; }
         private int MaxFrequency { get; }
 
-        public FrequencyTagsCloudWrapper(IFontProvider fontCreator, float maxFontEmSize, IEnumerable<string> tags)
+        public FrequencyTagsCloudWrapper(IFontProvider fontCreator, float maxFontEmSize, ITagsCreator tagsCreator)
         {
             FontCreator = fontCreator;
             MaxFontEmSize = maxFontEmSize;
 
             tagsFrequency = new Dictionary<string, int>();
-            foreach (var tag in tags)
+            foreach (var tag in tagsCreator.GetTags())
             {
                 if (!tagsFrequency.ContainsKey(tag))
                     tagsFrequency[tag] = 0;

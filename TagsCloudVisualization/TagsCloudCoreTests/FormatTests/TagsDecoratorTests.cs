@@ -50,10 +50,7 @@ namespace TagsCloudCoreTests.FormatTests
 
         protected Size GetTagSize(string tag)
         {
-            var fontProvider = Substitute.For<IFontProvider>();
-            fontProvider.GetFont(Arg.Any<float>()).ReturnsForAnyArgs(info => new Font(FontFamily.GenericSerif, info.Arg<float>()));
-            return new FrequencyTagsCloudWrapper(fontProvider, DefaultFontSize, new[] {tag})
-                .MeasureTag(tag, Graphics.FromImage(Actual));
+            return (Size)Graphics.FromImage(Actual).MeasureString(tag, DefaultFont);
         }
 
         protected bool BitmapsAreEqual(Bitmap a, Bitmap b)

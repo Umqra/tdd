@@ -27,24 +27,17 @@ namespace TagsCloudBuildDep.Tags
 
         protected override void Load(ContainerBuilder builder)
         {
-            // CR (krait): Разве не должны почти все классы здесь быть синглтонами?
             builder.RegisterInstance(GetLineExtractor()).As<ILinesExtractor>();
-            builder.RegisterType<TagsExtractor>().As<ITagsExtractor>();
+            builder.RegisterInstance(new TagsExtractor()).As<ITagsExtractor>();
 
             builder.RegisterType<TagsCreator>();
-            //TODO: think about this two lines
-            builder.Register(context => context.Resolve<TagsCreatorFactory>()(InputFilename)).As<ITagsCreator>();
-
-            // CR (krait): Зачем же так-то? Это не любой IEnumerable<string>, а список тегов. Надо в том конструкторе, куда ты это передаёшь, принимать сам ITagsCreator и из него выдергивать теги.
-            builder.Register(context => context.Resolve<ITagsCreator>().GetTags().ToList())
-                .As<IEnumerable<string>>()
-                .InstancePerLifetimeScope();
+            builder.Register(context => context.Resolve<TagsCreatorFactory>()(InputFilename))
+                .As<ITagsCreator>();
         }
 
         private ILinesExtractor GetLineExtractor()
         {
             var extension = Path.GetExtension(InputFilename);
-            Console.WriteLine(extension);
             var extractor = DefaultExtractor;
             if (extension != null && LineExtractorByExtension.ContainsKey(extension))
                 extractor = LineExtractorByExtension[extension];

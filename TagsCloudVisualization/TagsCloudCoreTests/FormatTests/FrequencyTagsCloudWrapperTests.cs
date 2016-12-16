@@ -7,6 +7,7 @@ using NSubstitute;
 using NUnit.Framework;
 using TagsCloudCore.Format.Tag;
 using TagsCloudCore.Format.Tag.Wrapping;
+using TagsCloudCore.Tags;
 
 namespace TagsCloudCoreTests.FormatTests
 {
@@ -22,7 +23,10 @@ namespace TagsCloudCoreTests.FormatTests
             var fontProvider = Substitute.For<IFontProvider>();
             fontProvider.GetFont(Arg.Any<float>())
                 .ReturnsForAnyArgs(info => new Font(DefaultFontFamily, info.Arg<float>()));
-            return new FrequencyTagsCloudWrapper(fontProvider, DefaultFontSize, tags);
+            var tagsCreator = Substitute.For<ITagsCreator>();
+            tagsCreator.GetTags().Returns(tags);
+
+            return new FrequencyTagsCloudWrapper(fontProvider, DefaultFontSize, tagsCreator);
         }
 
         [Test]
