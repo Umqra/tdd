@@ -26,7 +26,11 @@ namespace TagsCloudCoreTests.FormatTests
             var tagsCreator = Substitute.For<ITagsCreator>();
             tagsCreator.GetTags().Returns(tags);
 
-            return new FrequencyTagsCloudWrapper(fontProvider, DefaultFontSize, tagsCreator);
+            return new FrequencyTagsCloudWrapper(
+                fontProvider, 
+                new FrequencyWrapperSettings(DefaultFontSize), 
+                tagsCreator
+            );
         }
 
         [Test]
