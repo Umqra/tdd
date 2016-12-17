@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using TagsCloudCore.Tags;
 using Size = Geometry.Size;
 
 namespace TagsCloudCore.Format.Tag.Wrapping
@@ -10,17 +11,17 @@ namespace TagsCloudCore.Format.Tag.Wrapping
         private const double FontSizeTuner = 0.7;
         private readonly Dictionary<string, int> tagsFrequency;
 
-        private Func<float, Font> FontCreator { get; }
-        private float MaxFontEmSize { get; }
+        private IFontProvider FontCreator { get; }
+        private FrequencyWrapperSettings Settings { get; }
         private int MaxFrequency { get; }
 
-        public FrequencyTagsCloudWrapper(Func<float, Font> fontCreator, float maxFontEmSize, IEnumerable<string> tags)
+        public FrequencyTagsCloudWrapper(IFontProvider fontCreator, FrequencyWrapperSettings settings, ITagsCreator tagsCreator)
         {
             FontCreator = fontCreator;
-            MaxFontEmSize = maxFontEmSize;
+            Settings = settings;
 
             tagsFrequency = new Dictionary<string, int>();
-            foreach (var tag in tags)
+            foreach (var tag in tagsCreator.GetTags())
             {
                 if (!tagsFrequency.ContainsKey(tag))
                     tagsFrequency[tag] = 0;
@@ -34,8 +35,8 @@ namespace TagsCloudCore.Format.Tag.Wrapping
             double frequencyRatio = ((double)GetFrequency(tag) + 1) / (MaxFrequency + 1);
             // +1 for unknown tags, now it's size negligible, but not zero
 
-            var fontSize = MaxFontEmSize * Math.Pow(frequencyRatio, FontSizeTuner);
-            return FontCreator((float)fontSize);
+            var fontSize = Settings.MaxFontEmSize * Math.Pow(frequencyRatio, FontSizeTuner);
+            return FontCreator.GetFont((float)fontSize);
         }
 
         public Size MeasureTag(string tag, Graphics graphics)

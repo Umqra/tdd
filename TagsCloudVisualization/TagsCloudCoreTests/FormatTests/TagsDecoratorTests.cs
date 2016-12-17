@@ -1,7 +1,9 @@
 ﻿using System.Drawing;
 using System.IO;
+using NSubstitute;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
+using TagsCloudCore.Format.Tag;
 using TagsCloudCore.Format.Tag.Decorating;
 using TagsCloudCore.Format.Tag.Wrapping;
 using Size = Geometry.Size;
@@ -48,9 +50,7 @@ namespace TagsCloudCoreTests.FormatTests
 
         protected Size GetTagSize(string tag)
         {
-            return new FrequencyTagsCloudWrapper(
-                size => new Font(FontFamily.GenericSerif, size), DefaultFontSize, new[] {tag}
-            ).MeasureTag(tag, Graphics.FromImage(Actual));
+            return (Size)Graphics.FromImage(Actual).MeasureString(tag, DefaultFont);
         }
 
         protected bool BitmapsAreEqual(Bitmap a, Bitmap b)

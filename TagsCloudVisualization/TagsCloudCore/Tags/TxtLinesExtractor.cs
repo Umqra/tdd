@@ -6,11 +6,12 @@ namespace TagsCloudCore.Tags
 {
     public class TxtLinesExtractor : ILinesExtractor
     {
-        public IEnumerable<string> ExtractLines(StreamReader stream)
+        public IEnumerable<string> ExtractLines(Stream stream)
         {
-            while (!stream.EndOfStream)
+            var streamReader = new StreamReader(stream);
+            while (!streamReader.EndOfStream)
             {
-                yield return stream.ReadLine();
+                yield return streamReader.ReadLine();
             }
         }
     }

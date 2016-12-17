@@ -6,7 +6,9 @@ using TagsCloudBuildDep;
 using TagsCloudBuildDep.Format.Tag.Wrapping;
 using TagsCloudBuildDep.Tags;
 using TagsCloudCore.Format.Background;
+using TagsCloudCore.Format.Tag;
 using TagsCloudCore.Format.Tag.Decorating;
+using TagsCloudCore.Format.Tag.Wrapping;
 using TagsCloudCore.Layout;
 using TagsCloudCore.Tags.Preparers;
 
@@ -21,9 +23,8 @@ namespace TagsCloudCli
             builder.RegisterModule(new TagsCreatorBuild(options.InputFilename));
             builder.RegisterModule(new StrictOrderEnumerationBuild<ITagsPreparer>(GetPreparers(options)));
 
-            // CR (krait): Так делать нельзя. Что если будет какая-то другая фабрика с такой же сигнатурой? Надо обернуть в какой-нибудь IFontProvider.
-            builder.RegisterInstance<Func<float, Font>>(size => new Font(FontFamily.GenericSerif, size))
-                .As<Func<float, Font>>();
+            builder.RegisterInstance(new FixedFamilyFontProvider(FontFamily.GenericMonospace))
+                .As<IFontProvider>();
             builder.RegisterInstance(options.Layouter).As<ITagsCloudLayouter>();
 
             builder.RegisterModule(new StrictOrderEnumerationBuild<ITagsDecorator>(GetDecorators(options)));

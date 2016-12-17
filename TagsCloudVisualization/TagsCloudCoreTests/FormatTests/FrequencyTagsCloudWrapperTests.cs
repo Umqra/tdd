@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using FluentAssertions;
+using NSubstitute;
 using NUnit.Framework;
-using TagsCloudCore.Format;
+using TagsCloudCore.Format.Tag;
 using TagsCloudCore.Format.Tag.Wrapping;
+using TagsCloudCore.Tags;
 
 namespace TagsCloudCoreTests.FormatTests
 {
@@ -18,7 +20,17 @@ namespace TagsCloudCoreTests.FormatTests
 
         private FrequencyTagsCloudWrapper InitializeWrapper(IEnumerable<string> tags)
         {
-            return new FrequencyTagsCloudWrapper(size => new Font(DefaultFontFamily, size), DefaultFontSize, tags);
+            var fontProvider = Substitute.For<IFontProvider>();
+            fontProvider.GetFont(Arg.Any<float>())
+                .ReturnsForAnyArgs(info => new Font(DefaultFontFamily, info.Arg<float>()));
+            var tagsCreator = Substitute.For<ITagsCreator>();
+            tagsCreator.GetTags().Returns(tags);
+
+            return new FrequencyTagsCloudWrapper(
+                fontProvider, 
+                new FrequencyWrapperSettings(DefaultFontSize), 
+                tagsCreator
+            );
         }
 
         [Test]
