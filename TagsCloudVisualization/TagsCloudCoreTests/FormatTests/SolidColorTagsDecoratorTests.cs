@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using FluentAssertions;
+using NSubstitute;
 using NUnit.Framework;
 using TagsCloudCore.Format;
 using TagsCloudCore.Format.Tag.Decorating;
@@ -11,12 +12,18 @@ namespace TagsCloudCoreTests.FormatTests
     [TestFixture]
     class SolidColorTagsDecoratorTests : TagsDecoratorTests
     {
-        
+        private ISolidColorTagsDecoratorSettings GetSettings(Color defaultColor)
+        {
+            var settings = Substitute.For<ISolidColorTagsDecoratorSettings>();
+            settings.Color.Returns(defaultColor);
+            return settings;
+        }
+
         [SetUp]
         public override void SetUp()
         {
             base.SetUp();
-            Decorator = new SolidColorTagsDecorator(DefaultColor);
+            Decorator = new SolidColorTagsDecorator(GetSettings(DefaultColor));
         }
 
         [Test]

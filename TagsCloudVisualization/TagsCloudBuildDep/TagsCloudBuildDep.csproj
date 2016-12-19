@@ -44,8 +44,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Format\Tag\Wrapping\FrequencyTagsCloudWrapperBuild.cs" />
+    <Compile Include="IBuildSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SettingsBuild.cs" />
     <Compile Include="StrictOrderEnumerationBuild.cs" />
     <Compile Include="Visualization\TagsCloudVisualizatorBuild.cs" />
     <Compile Include="Tags\TagsCreatorBuild.cs" />
@@ -58,6 +59,9 @@
       <Project>{46d5ca67-42d6-4fdb-9b70-759f78f8e529}</Project>
       <Name>TagsCloudCore</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Format\Tag\Wrapping\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

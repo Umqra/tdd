@@ -18,6 +18,13 @@ namespace TagsCloudCoreTests.FormatTests
         public static readonly FontFamily DefaultFontFamily = FontFamily.GenericSerif;
         public ITagsWrapper FrequencyTagsWrapper { get; set; }
 
+        private IFrequencyTagsCloudWrapperSettings GetSettings(float fontSize)
+        {
+            var settings = Substitute.For<IFrequencyTagsCloudWrapperSettings>();
+            settings.MaxFontEmSize.Returns(fontSize);
+            return settings;
+        }
+
         private FrequencyTagsCloudWrapper InitializeWrapper(IEnumerable<string> tags)
         {
             var fontProvider = Substitute.For<IFontProvider>();
@@ -28,7 +35,7 @@ namespace TagsCloudCoreTests.FormatTests
 
             return new FrequencyTagsCloudWrapper(
                 fontProvider, 
-                new FrequencyWrapperSettings(DefaultFontSize), 
+                GetSettings(DefaultFontSize), 
                 tagsCreator
             );
         }

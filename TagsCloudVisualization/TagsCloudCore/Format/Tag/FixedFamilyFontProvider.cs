@@ -1,22 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 
 namespace TagsCloudCore.Format.Tag
 {
     public class FixedFamilyFontProvider : IFontProvider
     {
-        public FontFamily FontFamily;
-        public FixedFamilyFontProvider(FontFamily fontFamily)
+        private IFixedFamilyFontProviderSettings Settings { get; }
+
+        public FixedFamilyFontProvider(IFixedFamilyFontProviderSettings settings)
         {
-            FontFamily = fontFamily;
+            Settings = settings;
         }
+
         public Font GetFont(float fontEmSize)
         {
-            return new Font(FontFamily, fontEmSize);
+            return new Font(Settings.FontFamily, fontEmSize);
         }
     }
 }

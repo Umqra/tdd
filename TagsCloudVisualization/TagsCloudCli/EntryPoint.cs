@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using Autofac;
 using Fclp;
@@ -125,6 +126,15 @@ namespace TagsCloudCli
             parser.Setup(arg => arg.MaxTagsCount)
                 .As('m', "max-tags")
                 .WithDescription("This parameter limits amount of tags in the cloud");
+
+            parser.Setup(arg => arg.FontFamilyName)
+                .As("ff")
+                .WithDescription(
+                    "Font family name. For example: " +
+                    $"{string.Join(",", FontFamily.Families.Select(f => f.Name).Take(5))}. " + 
+                    "Full list of available font families depends on your system."
+                )
+                .SetDefault(FontFamily.GenericSerif.Name);
 
             parser.SetupHelp("help", "?")
                 .WithHeader("Help for 'Command line tags cloud generator application'")

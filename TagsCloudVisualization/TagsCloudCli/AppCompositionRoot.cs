@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;   
+﻿using System.Collections.Generic;
+using System.Drawing;
 using Autofac;
 using TagsCloudBuildDep;
-using TagsCloudBuildDep.Format.Tag.Wrapping;
 using TagsCloudBuildDep.Tags;
 using TagsCloudCore.Format.Background;
 using TagsCloudCore.Format.Tag;
@@ -20,41 +18,45 @@ namespace TagsCloudCli
         {
             var builder = new ContainerBuilder();
 
-            builder.RegisterModule(new TagsCreatorBuild(options.InputFilename));
-            builder.RegisterModule(new StrictOrderEnumerationBuild<ITagsPreparer>(GetPreparers(options)));
+            builder.RegisterModule(new SettingsBuild(options));
 
-            builder.RegisterInstance(new FixedFamilyFontProvider(FontFamily.GenericMonospace))
-                .As<IFontProvider>();
+            builder.RegisterModule(new TagsCreatorBuild(options.InputFilename));
+
+            builder.RegisterModule(ConfigurePreparers(new StrictOrderEnumerationBuild<ITagsPreparer>(), options));
+            builder.RegisterModule(ConfigureDecorators(new StrictOrderEnumerationBuild<ITagsDecorator>(), options));
+
+            builder.RegisterType<FixedFamilyFontProvider>().As<IFontProvider>();
             builder.RegisterInstance(options.Layouter).As<ITagsCloudLayouter>();
 
-            builder.RegisterModule(new StrictOrderEnumerationBuild<ITagsDecorator>(GetDecorators(options)));
-            builder.RegisterModule(
-                new StrictOrderEnumerationBuild<IBackgroundDecorator>(GetBackgroundDecorators(options)));
+            builder.RegisterModule(ConfigureBackgroundDecorators(new StrictOrderEnumerationBuild<IBackgroundDecorator>(), options));
 
-            builder.RegisterModule(new FrequencyTagsCloudWrapperBuild(options.MaximumFontSize));
+            builder.RegisterType<FrequencyTagsCloudWrapper>().As<ITagsWrapper>();
             builder.RegisterModule(new TagsCloudVisualizatorBuild());
 
             return builder.Build();
         }
 
-        private IEnumerable<ITagsPreparer> GetPreparers(CliOptions options)
+        private Module ConfigurePreparers(StrictOrderEnumerationBuild<ITagsPreparer> enumerationBuild, CliOptions options)
         {
-            yield return new NormalizeTagsTransformer();
-            yield return new LetterTagsFilter();
-            yield return new StemTagTransform();
-            yield return new StopWordsFilter();
+            enumerationBuild.Register<NormalizeTagsTransformer>();
+            enumerationBuild.Register<LetterTagsFilter>();
+            enumerationBuild.Register<StemTagTransform>();
+            enumerationBuild.Register<StopWordsFilter>();
             if (options.MaxTagsCount.HasValue)
-                yield return new FirstTagsTaker(options.MaxTagsCount.Value);
+                enumerationBuild.Register<FirstTagsTaker>();
+            return enumerationBuild;
         }
 
-        private IEnumerable<ITagsDecorator> GetDecorators(CliOptions options)
+        private StrictOrderEnumerationBuild<ITagsDecorator> ConfigureDecorators(
+            StrictOrderEnumerationBuild<ITagsDecorator> enumerationBuild, CliOptions options)
         {
-            yield return new SolidColorTagsDecorator(options.ForegroundColor);
+            return enumerationBuild.Register<SolidColorTagsDecorator>();
         }
 
-        private IEnumerable<IBackgroundDecorator> GetBackgroundDecorators(CliOptions options)
+        private StrictOrderEnumerationBuild<IBackgroundDecorator> ConfigureBackgroundDecorators(
+            StrictOrderEnumerationBuild<IBackgroundDecorator> enumerationBuild, CliOptions options)
         {
-            yield return new SolidBackgroundDecorator(options.BackgroundColor);
+            return enumerationBuild.Register<SolidBackgroundDecorator>();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Autofac;
 using Autofac.Features.Metadata;
@@ -10,20 +11,28 @@ namespace TagsCloudBuildDep
     {
         private const string OrderField = "order";
 
-        private IEnumerable<T> Enumeration { get; }
+        private List<Action<ContainerBuilder>> RegistrationActions { get; }
+        private int registrationId = 1;
 
-        public StrictOrderEnumerationBuild(IEnumerable<T> enumeration)
+        public StrictOrderEnumerationBuild()
         {
-            Enumeration = enumeration;
+            RegistrationActions = new List<Action<ContainerBuilder>>();
+        }
+
+        public StrictOrderEnumerationBuild<T> Register<TNew>() where TNew: T
+        {
+            int currentId = registrationId++;
+            RegistrationActions.Add(builder =>
+            {
+                builder.RegisterType<TNew>().As<T>().WithMetadata(OrderField, currentId);
+            });
+            return this;
         }
 
         protected override void Load(ContainerBuilder builder)
         {
-            var list = Enumeration.ToList();
-            for (int i = 0; i < list.Count; i++)
-            {
-                builder.RegisterInstance(list[i]).As<T>().WithMetadata(OrderField, i);
-            }
+            foreach (var action in RegistrationActions)
+                action(builder);
             builder.Register(c => c
                     .Resolve<IEnumerable<Meta<T>>>()
                     .OrderBy(i => i.Metadata[OrderField])

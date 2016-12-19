@@ -12,10 +12,10 @@ namespace TagsCloudCore.Format.Tag.Wrapping
         private readonly Dictionary<string, int> tagsFrequency;
 
         private IFontProvider FontCreator { get; }
-        private FrequencyWrapperSettings Settings { get; }
+        private IFrequencyTagsCloudWrapperSettings Settings { get; }
         private int MaxFrequency { get; }
 
-        public FrequencyTagsCloudWrapper(IFontProvider fontCreator, FrequencyWrapperSettings settings, ITagsCreator tagsCreator)
+        public FrequencyTagsCloudWrapper(IFontProvider fontCreator, IFrequencyTagsCloudWrapperSettings settings, ITagsCreator tagsCreator)
         {
             FontCreator = fontCreator;
             Settings = settings;

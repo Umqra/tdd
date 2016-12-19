@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using FluentAssertions;
+using NSubstitute;
 using NUnit.Framework;
 using TagsCloudCore.Format;
 using TagsCloudCore.Format.Tag.Decorating;
@@ -13,12 +14,21 @@ namespace TagsCloudCoreTests.FormatTests
 {
     class FadedColorTagsDecoratorTests : TagsDecoratorTests
     {
-        private readonly Color fadedColor = Color.LightGoldenrodYellow;
+        private Color FadeColor => Color.LightGoldenrodYellow;
+
+        private IFadedColorTagsDecoratorSettings GetSettings(Color brightColor, Color fadeColor)
+        {
+            var settings = Substitute.For<IFadedColorTagsDecoratorSettings>();
+            settings.BrightColor.Returns(brightColor);
+            settings.FadeColor.Returns(fadeColor);
+            return settings;
+        }
+
         [SetUp]
         public override void SetUp()
         {
             base.SetUp();
-            Decorator = new FadedColorTagsDecorator(DefaultColor, fadedColor);
+            Decorator = new FadedColorTagsDecorator(GetSettings(DefaultColor, FadeColor));
         }
 
         private IEnumerable<Color> EnumerateColorsFromLines(Bitmap image, IEnumerable<int> lineIds)
@@ -32,9 +42,9 @@ namespace TagsCloudCoreTests.FormatTests
 
         private bool ColorsAreFading(Color bright, Color faded)
         {
-            return Math.Abs(bright.R - fadedColor.R) + Epsilon >= Math.Abs(faded.R - fadedColor.R) &&
-                   Math.Abs(bright.G - fadedColor.G) + Epsilon >= Math.Abs(faded.G - fadedColor.G) &&
-                   Math.Abs(bright.B - fadedColor.B) + Epsilon >= Math.Abs(faded.B - fadedColor.B);
+            return Math.Abs(bright.R - FadeColor.R) + Epsilon >= Math.Abs(faded.R - FadeColor.R) &&
+                   Math.Abs(bright.G - FadeColor.G) + Epsilon >= Math.Abs(faded.G - FadeColor.G) &&
+                   Math.Abs(bright.B - FadeColor.B) + Epsilon >= Math.Abs(faded.B - FadeColor.B);
         }
 
         private bool ColorsAreFading(Tuple<Color, Color, Color> colors)
