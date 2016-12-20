@@ -16,7 +16,6 @@ namespace TagsCloudBuildDep.Tags
             [".txt"] = new TxtLinesExtractor(),
         };
         public ILinesExtractor DefaultExtractor = new TxtLinesExtractor();
-        public delegate TagsCreator TagsCreatorFactory(string inputFilename);
 
         public string InputFilename { get; }
 
@@ -30,9 +29,7 @@ namespace TagsCloudBuildDep.Tags
             builder.RegisterInstance(GetLineExtractor()).As<ILinesExtractor>();
             builder.RegisterInstance(new TagsExtractor()).As<ITagsExtractor>();
 
-            builder.RegisterType<TagsCreator>();
-            builder.Register(context => context.Resolve<TagsCreatorFactory>()(InputFilename))
-                .As<ITagsCreator>();
+            builder.RegisterType<TagsCreator>().As<ITagsCreator>();
         }
 
         private ILinesExtractor GetLineExtractor()
