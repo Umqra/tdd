@@ -5,13 +5,10 @@ namespace TagsCloudCore.Format.Tag.Decorating
 {
     public class FadedColorTagsDecorator : ITagsDecorator
     {
-        public Color BrightColor { get; set; }
-        public Color FadeColor { get; set; }
-
-        public FadedColorTagsDecorator(Color brightColor, Color fadeColor)
+        private IFadedColorTagsDecoratorSettings Settings { get; }
+        public FadedColorTagsDecorator(IFadedColorTagsDecoratorSettings settings)
         {
-            BrightColor = brightColor;
-            FadeColor = fadeColor;
+            Settings = settings;
         }
 
         private Geometry.Point GetImageCenter(Graphics graphics)
@@ -26,11 +23,13 @@ namespace TagsCloudCore.Format.Tag.Decorating
 
         private Color GetMixedColor(double k)
         {
+            var bright = Settings.BrightColor;
+            var fade = Settings.FadeColor;
             return Color.FromArgb(
-                (int)(BrightColor.A * (1 - k) + FadeColor.A * k),
-                (int)(BrightColor.R * (1 - k) + FadeColor.R * k),
-                (int)(BrightColor.G * (1 - k) + FadeColor.G * k),
-                (int)(BrightColor.B * (1 - k) + FadeColor.B * k)
+                (int)(bright.A * (1 - k) + fade.A * k),
+                (int)(bright.R * (1 - k) + fade.R * k),
+                (int)(bright.G * (1 - k) + fade.G * k),
+                (int)(bright.B * (1 - k) + fade.B * k)
             );
         }
 

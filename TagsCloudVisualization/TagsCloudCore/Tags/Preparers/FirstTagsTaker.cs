@@ -5,16 +5,16 @@ namespace TagsCloudCore.Tags.Preparers
 {
     public class FirstTagsTaker : ITagsPreparer
     {
-        public int TagsCount { get; set; }
+        private IFirstTagsTakerSettings Settings { get; }
 
-        public FirstTagsTaker(int tagsCount)
+        public FirstTagsTaker(IFirstTagsTakerSettings settings)
         {
-            TagsCount = tagsCount;
+            Settings = settings;
         }
 
         public IEnumerable<string> PrepareTags(IEnumerable<string> tags)
         {
-            return tags.Take(TagsCount);
+            return tags.Take(Settings.TagsCount);
         }
     }
 }

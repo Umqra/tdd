@@ -7,7 +7,7 @@ namespace TagsCloudBuildDep
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<VisualizatorConfiguration>().AsSelf();
+            builder.RegisterType<VisualizatorConfiguration>();
             builder.RegisterType<TagsCloudVisualizator>().As<ITagsCloudVisualizator>();
         }
     }

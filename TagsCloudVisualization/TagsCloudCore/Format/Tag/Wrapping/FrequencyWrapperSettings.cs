@@ -1,11 +1,7 @@
 ﻿namespace TagsCloudCore.Format.Tag.Wrapping
 {
-    public class FrequencyWrapperSettings
+    public interface IFrequencyTagsCloudWrapperSettings
     {
-        public float MaxFontEmSize { get; }
-        public FrequencyWrapperSettings(float maxFontEmSize)
-        {
-            MaxFontEmSize = maxFontEmSize;
-        }
+        float MaxFontEmSize { get; }
     }
 }

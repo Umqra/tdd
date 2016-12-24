@@ -5,14 +5,14 @@ namespace TagsCloudCore.Format.Tag.Decorating
 {
     public class SolidColorTagsDecorator : ITagsDecorator
     {
-        public Color Color { get; set; }
-        public SolidColorTagsDecorator(Color color)
+        private ISolidColorTagsDecoratorSettings Settings { get; }
+        public SolidColorTagsDecorator(ISolidColorTagsDecoratorSettings settings)
         {
-            Color = color;
+            Settings = settings;
         }
         public void DecorateTag(string tag, Font tagFont, Rectangle tagPlace, Graphics graphics)
         {
-            graphics.DrawString(tag, tagFont, new SolidBrush(Color), (RectangleF)tagPlace);
+            graphics.DrawString(tag, tagFont, new SolidBrush(Settings.Color), (RectangleF)tagPlace);
         }
     }
 }

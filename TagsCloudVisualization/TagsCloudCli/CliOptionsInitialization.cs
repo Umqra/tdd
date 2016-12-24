@@ -33,5 +33,16 @@ namespace TagsCloudCli
                     $"Unknown layouter name {layouterName}. You can use one from the list: {String.Join(", ", LayouterNames.Keys)}");
             return LayouterNames[layouterName](new Point(Width / 2, Height / 2));
         }
+
+        private FontFamily InitializeFontFamily(string fontFamilyName)
+        {
+            fontFamilyName = fontFamilyName.ToLower().Trim();
+            foreach (var font in FontFamily.Families)
+            {
+                if (font.Name.ToLower().Trim() == fontFamilyName)
+                    return font;
+            }
+            return FontFamily.GenericSerif;
+        }
     }
 }

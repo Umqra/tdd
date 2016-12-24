@@ -3,13 +3,16 @@ using Rectangle = Geometry.Rectangle;
 
 namespace TagsCloudCore.Format.Tag.Decorating
 {
+    public interface IShadedBackgroundTagsDecoratorSettings
+    {
+        Color ShadeColor { get; }
+    }
     public class ShadedBackgroundTagsDecorator : ITagsDecorator
     {
-        public Color ShadeColor { get; set; }
-
-        public ShadedBackgroundTagsDecorator(Color shadeColor)
+        private IShadedBackgroundTagsDecoratorSettings Settings { get; }
+        public ShadedBackgroundTagsDecorator(IShadedBackgroundTagsDecoratorSettings settings)
         {
-            ShadeColor = shadeColor;
+            Settings = settings;
         }
 
         private Geometry.Point GetImageCenter(Graphics graphics)
@@ -27,7 +30,8 @@ namespace TagsCloudCore.Format.Tag.Decorating
             double distanceToTag = GetImageCenter(graphics).DistanceTo(tagPlace.Center);
 
             int alphaChannel = (int)(distanceToTag / GetMaxDistanceFromCenter(graphics) * 255);
-            var brush = new SolidBrush(Color.FromArgb(alphaChannel, ShadeColor.R, ShadeColor.G, ShadeColor.B));
+            var color = Settings.ShadeColor;
+            var brush = new SolidBrush(Color.FromArgb(alphaChannel, color.R, color.G, color.B));
             graphics.FillRectangle(brush, (RectangleF)tagPlace);
         }
     }

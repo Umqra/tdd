@@ -51,10 +51,14 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Format\Background\ISolidBackgroundSettings.cs" />
     <Compile Include="Format\Tag\Decorating\FadedColorTagsDecorator.cs" />
     <Compile Include="Format\Background\IBackgroundDecorator.cs" />
+    <Compile Include="Format\Tag\Decorating\IFadedColorTagsDecoratorSettings.cs" />
+    <Compile Include="Format\Tag\Decorating\ISolidColorTagsDecoratorSettings.cs" />
     <Compile Include="Format\Tag\Decorating\ITagsDecorator.cs" />
     <Compile Include="Format\Tag\FixedFamilyFontProvider.cs" />
+    <Compile Include="Format\Tag\IFixedFamilyFontProviderSettings.cs" />
     <Compile Include="Format\Tag\IFontProvider.cs" />
     <Compile Include="Format\Tag\Wrapping\FrequencyWrapperSettings.cs" />
     <Compile Include="Format\Tag\Wrapping\ITagsWrapper.cs" />
@@ -74,10 +78,12 @@
     </Compile>
     <Compile Include="RectangleLayoutExtensions.cs" />
     <Compile Include="Tags\DocxLineExtractor.cs" />
+    <Compile Include="Tags\ITagsCreatorSettings.cs" />
     <Compile Include="Tags\Preparers\FirstTagsTaker.cs" />
     <Compile Include="Tags\ILinesExtractor.cs" />
     <Compile Include="Tags\ITagsCreator.cs" />
     <Compile Include="Tags\ITagsExtractor.cs" />
+    <Compile Include="Tags\Preparers\IFirstTagsTakerSettings.cs" />
     <Compile Include="Tags\Preparers\ITagsPreparer.cs" />
     <Compile Include="Tags\TxtLinesExtractor.cs" />
     <Compile Include="Tags\Preparers\LetterTagsFilter.cs" />
