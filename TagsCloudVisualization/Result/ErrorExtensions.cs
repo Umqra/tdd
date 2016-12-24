@@ -30,5 +30,10 @@ namespace ResultOf
             second.RootError().InnerError = first;
             return second;
         }
+
+        public static bool Is<T>(this IError error) where T:IError
+        {
+            return error.GetType() == typeof(T);
+        }
     }
 }

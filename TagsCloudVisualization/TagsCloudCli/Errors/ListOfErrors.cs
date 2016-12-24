@@ -49,4 +49,19 @@ namespace TagsCloudCli.Errors
         {
         }
     }
+
+    public class ConfigLoadError : CliError
+    {
+        public ConfigLoadError(string message, IError innerError = null) : base(message, innerError)
+        {
+        }
+    }
+
+    public class NullOptionError : CliError
+    {
+        public NullOptionError(string optionName, IError innerError = null) : 
+            base($"Option {optionName} has null value", innerError)
+        {
+        }
+    }
 }

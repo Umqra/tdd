@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows.Forms;
 using Autofac;
 using Fclp;
+using FluentAssertions;
 using ResultOf;
 using TagsCloudCore.Visualization;
 
@@ -47,13 +48,13 @@ namespace TagsCloudCli
         private static void ProcessWinFormsApplication(CliOptions options, ITagsCloudVisualizator visualizator)
         {
             Application.Run(
-                new TagsCloudDisplayForm(visualizator, options.Width, options.Height)
+                new TagsCloudDisplayForm(visualizator, options.Width.Value, options.Height.Value)
             );
         }
 
         private static void ProcessBitmapImage(CliOptions options, ITagsCloudVisualizator visualizator)
         {
-            var image = new Bitmap(options.Width, options.Height);
+            var image = new Bitmap(options.Width.Value, options.Height.Value);
             var graphics = Graphics.FromImage(image);
             visualizator.CreateTagsCloud(graphics);
             image.Save(options.OutputFilename);
@@ -78,8 +79,8 @@ namespace TagsCloudCli
             var parser = new FluentCommandLineParser<CliOptions>();
             parser.Setup(arg => arg.InputFilename)
                 .As('i', "input")
-                .WithDescription("Filename with input text. You can use texts from examples/ folder.")
-                .Required();
+                .WithDescription("Filename with input text. You can use texts from examples/ folder.");
+
             parser.Setup(arg => arg.OutputFilename)
                 .As('o', "output")
                 .WithDescription(
@@ -117,13 +118,18 @@ namespace TagsCloudCli
                 .As('m', "max-tags")
                 .WithDescription("This parameter limits amount of tags in the cloud");
 
+            parser.Setup(arg => arg.ConfigFilename)
+                .As("config")
+                .WithDescription("Path to config file in YAML format");
+
             parser.Setup(arg => arg.FontFamilyName)
                 .As("ff")
                 .WithDescription(
                     "Font family name. For example: " +
-                    $"{string.Join(",", FontFamily.Families.Select(f => f.Name).Take(5))}. " + 
+                    $"{string.Join(",", FontFamily.Families.Select(f => f.Name).Take(5))}. " +
                     "You can call CLI with --ff ? option and see full list of avaiable font families"
-                );
+                )
+                .SetDefault(FontFamily.GenericSerif.Name);
 
             parser.SetupHelp("help", "?")
                 .WithHeader("Help for 'Command line tags cloud generator application'")

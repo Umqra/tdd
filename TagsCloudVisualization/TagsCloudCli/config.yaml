@@ -1,0 +1,10 @@
+input: examples/sample1.txt
+# output: output.png
+max_font_size: 40
+layouter: random
+background_color: "#660000"
+foreground_color: "#259925"
+font_family: "Cambria Math"
+max_tags_count: 300
+width: 900
+height: 900

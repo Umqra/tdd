@@ -13,7 +13,7 @@ using Point = Geometry.Point;
 
 namespace TagsCloudCli
 {
-    public partial class CliOptions : IBuildSettings
+    public partial class CliOptions : ManagableCliOptions, IBuildSettings
     {
         public static readonly Dictionary<string, Func<Point, ITagsCloudLayouter>> LayouterNames =
             new Dictionary<string, Func<Point, ITagsCloudLayouter>>
@@ -21,32 +21,16 @@ namespace TagsCloudCli
                 {"random", center => new DenseRandomTagsCloudLayouter(center)},
                 {"sparse", center => new SparseRandomTagsCloudLayouter(center)}
             };
-
-        public string OutputFilename { get; set; }
-
-        public int Width { get; set; }
-        public int Height { get; set; }
-
-        public int MaximumFontSize { get; set; }
-        public int? MaxTagsCount { get; set; }
-
-        public string FontFamilyName { get; set; }
-
-        public string BackgroundColorName { get; set; }
-
-        public string ForegroundColorName { get; set; }
-
-        public string LayouterName { get; set; }
-
+        
         public Color ForegroundColor { get; private set; }
 
         public ITagsCloudLayouter Layouter { get; private set; }
 
         public FontFamily FontFamily { get; set; }
 
-        public string InputFilename { get; set; }
-
         public Color BackgroundColor { get; private set; }
+
+        public string ConfigFilename { get; set; }
 
         public Color BrightColor
         {
@@ -74,13 +58,21 @@ namespace TagsCloudCli
             }
         }
 
-        public float MaxFontEmSize => MaximumFontSize;
+        public float MaxFontEmSize => MaximumFontSize.Value;
 
         public Result<None> Initialize()
         {
+            var configInitialization =
+                InitializeNotNullOption(ConfigFilename, nameof(ConfigFilename))
+                    .Then(InitializeFileForReading)
+                    .Then(LoadConfig);
+            if (!configInitialization.IsSuccess && !configInitialization.Error.Is<NullOptionError>())
+                return configInitialization
+                    .RefineError(error => new ConfigLoadError($"Error while load config from file {ConfigFilename}", error));
+            
             return 
-                InitializeInputFile(InputFilename)
-                .PassErrorThrough(InitializeOutputFile(OutputFilename))
+                InitializeNotNullOption(InputFilename, nameof(InputFilename)).Then(InitializeFileForReading)
+                .PassErrorThrough(InitializeFileForWriting(OutputFilename))
                 .PassErrorThrough(InitializeColor(BackgroundColorName).Then(color => BackgroundColor = color))
                 .PassErrorThrough(InitializeColor(ForegroundColorName).Then(color => ForegroundColor = color))
                 .PassErrorThrough(InitializeFontFamily(FontFamilyName).Then(fontFamily => FontFamily = fontFamily))
