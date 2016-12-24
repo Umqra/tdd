@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Result
+namespace ResultOf
 {
     public struct Result<T>
     {

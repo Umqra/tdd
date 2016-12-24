@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DoubleComparer.cs" />
+    <Compile Include="GeometryErrors.cs" />
     <Compile Include="Line.cs" />
     <Compile Include="Point.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -49,6 +50,12 @@
     <Compile Include="Rectangle.cs" />
     <Compile Include="Segment.cs" />
     <Compile Include="Size.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Result\ResultOf.csproj">
+      <Project>{8DEAA999-0816-45A8-9C2C-5B1D83D89D15}</Project>
+      <Name>ResultOf</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

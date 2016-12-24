@@ -5,6 +5,7 @@ using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
+using ResultOf;
 using TagsCloudCore;
 using TagsCloudCore.Layout;
 using Rectangle = Geometry.Rectangle;
@@ -96,8 +97,10 @@ namespace TagsCloudCoreTests.LayoutTests
                 return;
             var image = Layouter.GetRectangles().CreateImage(ScaleFactor, new SolidBrush(Color.FromArgb(100, 100, 100, 255)));
             var imageDestination = Path.Combine(testContext.TestDirectory, testContext.Test.FullName + ".bmp");
-            image.Save(imageDestination);
-            TestContext.Out.Write("Generated layout written in {0}", imageDestination);
+            image
+                .Then(bitmap => bitmap.Save(imageDestination))
+                .Then(bitmap => TestContext.Out.Write($"Generated layout writted in {imageDestination}"))
+                .OnFail(error => TestContext.Out.Write($"Error occured: {string.Join("\n", error.GenerateTrace())}"));
         }
     }
 }

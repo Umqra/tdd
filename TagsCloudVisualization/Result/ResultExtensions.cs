@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Result
+namespace ResultOf
 {
     public static class Result
     {
@@ -12,6 +12,11 @@ namespace Result
         public static Result<T> Fail<T>(IError error)
         {
             return new Result<T>(error);
+        }
+
+        public static Result<T> AsResult<T>(this T value)
+        {
+            return Ok(value);
         }
 
         public static Result<T> ReplaceError<T>(this Result<T> result, IError newError)
@@ -28,16 +33,47 @@ namespace Result
             return Fail<T>(errorTransformer(result.Error));
         }
 
-        public static Result<TOut> Then<TIn, TOut>(this Result<TIn> first, Func<TIn, Result<TOut>> transform)
+        public static Result<TOut> Then<TIn, TOut>(this Result<TIn> result, Func<TIn, Result<TOut>> transform)
         {
-            return first.IsSuccess ? transform(first.Value) : Fail<TOut>(first.Error);
+            return result.IsSuccess ? transform(result.Value) : Fail<TOut>(result.Error);
         }
 
-        public static Result<TOut> SelectMany<TIn, TMid, TOut>(this Result<TIn> first, Func<TIn, Result<TMid>> selector,
+        public static Result<TOut> Then<TIn, TOut>(this Result<TIn> result, Func<TIn, TOut> transform)
+        {
+            return result.Then(value =>
+            {
+                try
+                {
+                    return transform(value).AsResult();
+                }
+                catch (Exception exception)
+                {
+                    return Fail<TOut>(new Error(exception.Message));
+                }
+            });
+        }
+
+        public static Result<T> Then<T>(this Result<T> result, Action<T> action)
+        {
+            return result.Then(value =>
+            {
+                action(value);
+                return value;
+            });
+        }
+
+        public static Result<T> OnFail<T>(this Result<T> result, Action<IError> failureAction)
+        {
+            if (!result.IsSuccess)
+                failureAction(result.Error);
+            return result;
+        }
+
+        public static Result<TOut> SelectMany<TIn, TMid, TOut>(this Result<TIn> result, Func<TIn, Result<TMid>> selector,
             Func<TIn, TMid, TOut> combiner)
         {
-            var value = first.Then(selector);
-            return value.IsSuccess ? Ok(combiner(first.Value, value.Value)) : Fail<TOut>(value.Error);
+            var value = result.Then(selector);
+            return value.IsSuccess ? Ok(combiner(result.Value, value.Value)) : Fail<TOut>(value.Error);
         }
 
         public static Result<TOut> Select<TIn, TOut>(this Result<TIn> result, Func<TIn, Result<TOut>> transform)

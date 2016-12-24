@@ -2,17 +2,20 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using ResultOf;
+using TagsCloudCore.Errors;
 
 namespace TagsCloudCore
 {
     public static class RectangleLayoutExtensions
     {
-        public static Bitmap CreateImage(this IEnumerable<Geometry.Rectangle> rectangles, int scaleFactor, Brush brush)
+        public static Result<Bitmap> CreateImage(this IEnumerable<Geometry.Rectangle> rectangles, int scaleFactor, Brush brush)
         {
             var enumeratedRectangles = rectangles.ToList();
             var boundingBoxOrNull = Geometry.Rectangle.BoundingBoxOf(enumeratedRectangles.SelectMany(rectangle => rectangle.Corners));
             if (!boundingBoxOrNull.HasValue)
-                throw new ArgumentException("Can't draw rectangles layout from empty sequence of rectangles", nameof(rectangles));
+                return Result.Fail<Bitmap>(
+                    new NoRectanglesError("Can't draw rectangles layout from empty sequence of rectangles"));
 
             var boundingBox = boundingBoxOrNull.Value;
             var image = new Bitmap(
@@ -28,7 +31,7 @@ namespace TagsCloudCore
                             rectangle.Size * scaleFactor))
                     .Select(rectangle => (RectangleF)rectangle)
                     .ToArray());
-            return image;
+            return image.AsResult();
         }
     }
 }
