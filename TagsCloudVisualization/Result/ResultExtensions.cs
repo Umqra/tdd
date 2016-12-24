@@ -24,6 +24,18 @@ namespace ResultOf
             return Ok(value);
         }
 
+        public static Result<T> FromFunction<T>(Func<T> producer)
+        {
+            try
+            {
+                return producer().AsResult();
+            }
+            catch (Exception exception)
+            {
+                return Fail<T>(new Error(exception.Message));
+            }
+        }
+
         public static Result<None> AsNoneResult<T>(this Result<T> result)
         {
             return new Result<None>(result.Error);
@@ -43,17 +55,7 @@ namespace ResultOf
 
         public static Result<TOut> Then<TIn, TOut>(this Result<TIn> result, Func<TIn, TOut> transform)
         {
-            return result.Then(value =>
-            {
-                try
-                {
-                    return transform(value).AsResult();
-                }
-                catch (Exception exception)
-                {
-                    return Fail<TOut>(new Error(exception.Message));
-                }
-            });
+            return result.Then(value => FromFunction(() => transform(value)));
         }
 
         public static Result<T> Then<T>(this Result<T> result, Action<T> action)

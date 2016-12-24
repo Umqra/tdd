@@ -1,38 +1,31 @@
 ﻿using System;
 using System.IO;
+using ResultOf;
 
 namespace TagsCloudCli.Extensions
 {
     public static class FileExtensions
     {
-        public static bool HaveReadAccess(string filename)
+        public static Result<string> HaveReadAccess(string filename)
         {
-            try
+            return Result.FromFunction(() =>
             {
                 using (File.OpenRead(filename))
                 {
                 }
-            }
-            catch (IOException)
-            {
-                return false;
-            }
-            return true;
+                return filename;
+            });
         }
 
-        public static bool HaveWriteAccess(string filename)
+        public static Result<string> HaveWriteAccess(string filename)
         {
-            try
+            return Result.FromFunction(() =>
             {
                 using (File.OpenWrite(filename))
-                {           
+                {
                 }
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-            return true;
+                return filename;
+            });
         }
     }
 }

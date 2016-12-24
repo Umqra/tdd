@@ -13,16 +13,16 @@ namespace TagsCloudCli
     {
         private Result<string> InitializeInputFile(string filename)
         {
-            if (!FileExtensions.HaveReadAccess(filename))
-                return Result.Fail<string>(new ReadInputFileError($"Can't read from input file {filename}"));
-            return filename.AsResult();
+            return FileExtensions.HaveReadAccess(filename)
+                .RefineError(error => new ReadInputFileError($"Can't read from input file {filename}", error));
         }
 
         private Result<string> InitializeOutputFile(string filename)
         {
-            if (filename != null && !FileExtensions.HaveWriteAccess(filename))
-                return Result.Fail<string>(new WriteOutputFileError($"Can't write to output file {filename}"));
-            return filename.AsResult();
+            if (filename == null)
+                return filename.AsResult();
+            return FileExtensions.HaveWriteAccess(filename).RefineError(error =>
+                    new WriteOutputFileError($"Can't write to output file {filename}", error));
         }
 
         private Result<Color> InitializeColor(string colorRepresentation)
