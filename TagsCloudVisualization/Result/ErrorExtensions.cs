@@ -11,13 +11,24 @@ namespace ResultOf
     {
         public static IEnumerable<string> GenerateTrace(this IError error)
         {
-            var messages = new List<string>();
             while (error != null)
             {
-                messages.Add(error.Message);
+                yield return error.Message;
                 error = error.InnerError;
             }
-            return Enumerable.Reverse(messages);
+        }
+
+        public static IError RootError(this IError error)
+        {
+            while (error.InnerError != null)
+                error = error.InnerError;
+            return error;
+        }
+
+        public static IError ConcatWithChain(this IError first, IError second)
+        {
+            second.RootError().InnerError = first;
+            return second;
         }
     }
 }

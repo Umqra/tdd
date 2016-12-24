@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows.Forms;
 using Autofac;
 using Fclp;
+using ResultOf;
 using TagsCloudCore.Visualization;
 
 namespace TagsCloudCli
@@ -13,38 +14,25 @@ namespace TagsCloudCli
     {
         internal static void Main(string[] args)
         {
-            try
+            var cliStatus = RunCli(args);
+            cliStatus.OnFail(error =>
             {
-                RunCli(args);
-            }
-            catch (Exception exception)
-            {
-                var currentException = exception;
-                while (currentException != null)
-                {
-                    Console.WriteLine(currentException);
-                    currentException = currentException.InnerException;
-                }
-            }
+                Console.WriteLine(string.Join("\n", error.GenerateTrace().Select(message => "- " + message)));
+            });
         }
 
-        private static void RunCli(string[] args)
+        private static Result<None> RunCli(string[] args)
         {
             var parser = ConfigureCommandParser();
             var parsingStatus = parser.Parse(args);
             if (ShouldTerminateCli(parsingStatus, parser))
-                return;
+                return Result.Ok();
 
             var options = parser.Object;
-            try
-            {
-                options.Initialize();
-            }
-            catch (Exception e)
-            {
-                throw new FormatException("Error occured while parsing CLI parameters", e);
-            }
-
+            var initializatingStatus = options.Initialize();
+            if (!initializatingStatus.IsSuccess)
+                return initializatingStatus;
+            
             var container = new AppCompositionRoot().BuildDependencies(options);
             var visualizator = container.Resolve<ITagsCloudVisualizator>();
 
@@ -52,6 +40,8 @@ namespace TagsCloudCli
                 ProcessBitmapImage(options, visualizator);
             else
                 ProcessWinFormsApplication(options, visualizator);
+
+            return Result.Ok();
         }
 
         private static void ProcessWinFormsApplication(CliOptions options, ITagsCloudVisualizator visualizator)

@@ -9,6 +9,11 @@ namespace ResultOf
             return new Result<T>(null, value);
         }
 
+        public static Result<None> Ok()
+        {
+            return new Result<None>(null);
+        }
+
         public static Result<T> Fail<T>(IError error)
         {
             return new Result<T>(error);
@@ -19,11 +24,9 @@ namespace ResultOf
             return Ok(value);
         }
 
-        public static Result<T> ReplaceError<T>(this Result<T> result, IError newError)
+        public static Result<None> AsNoneResult<T>(this Result<T> result)
         {
-            if (result.IsSuccess)
-                return result;
-            return Fail<T>(newError);
+            return new Result<None>(result.Error);
         }
 
         public static Result<T> RefineError<T>(this Result<T> result, Func<IError, IError> errorTransformer)
@@ -69,16 +72,13 @@ namespace ResultOf
             return result;
         }
 
-        public static Result<TOut> SelectMany<TIn, TMid, TOut>(this Result<TIn> result, Func<TIn, Result<TMid>> selector,
-            Func<TIn, TMid, TOut> combiner)
+        public static Result<TOut> PassErrorThrough<TIn, TOut>(this Result<TIn> first, Result<TOut> second)
         {
-            var value = result.Then(selector);
-            return value.IsSuccess ? Ok(combiner(result.Value, value.Value)) : Fail<TOut>(value.Error);
-        }
-
-        public static Result<TOut> Select<TIn, TOut>(this Result<TIn> result, Func<TIn, Result<TOut>> transform)
-        {
-            return result.Then(transform);
+            if (first.IsSuccess)
+                return second;
+            if (second.IsSuccess)
+                return Fail<TOut>(first.Error);
+            return Fail<TOut>(first.Error.ConcatWithChain(second.Error));
         }
     }
 }

@@ -2,15 +2,10 @@
 
 namespace TagsCloudCore.Errors
 {
-    public class NoRectanglesError : ITagsCloudCoreError
+    public class NoRectanglesError : TagsCloudCoreError
     {
-        public string Message { get; }
-        public IError InnerError { get; }
-
-        public NoRectanglesError(string message, IError innerError = null)
+        public NoRectanglesError(string message, IError error = null) : base(message, error)
         {
-            Message = message;
-            InnerError = innerError;
         }
     }
 }

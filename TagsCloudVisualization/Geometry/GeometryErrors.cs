@@ -10,7 +10,7 @@ namespace Geometry
     public class DegenerateError : IError
     {
         public string Message { get; }
-        public IError InnerError { get; }
+        public IError InnerError { get; set; }
 
         public DegenerateError(string message, IError error = null)
         {

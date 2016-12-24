@@ -4,7 +4,9 @@ using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
+using ResultOf;
 using TagsCloudBuildDep;
+using TagsCloudCli.Errors;
 using TagsCloudCore.Layout;
 using TagsCloudCore.Tags.Preparers;
 using Point = Geometry.Point;
@@ -20,7 +22,6 @@ namespace TagsCloudCli
                 {"sparse", center => new SparseRandomTagsCloudLayouter(center)}
             };
 
-        [Initialize(MethodName = nameof(InitializeOutputFile))]
         public string OutputFilename { get; set; }
 
         public int Width { get; set; }
@@ -29,28 +30,12 @@ namespace TagsCloudCli
         public int MaximumFontSize { get; set; }
         public int? MaxTagsCount { get; set; }
 
-        [Initialize(
-             MethodName = nameof(InitializeFontFamily),
-             BackingFieldName = nameof(FontFamily))
-        ]
         public string FontFamilyName { get; set; }
 
-        [Initialize(
-             MethodName = nameof(InitializeColor),
-             BackingFieldName = nameof(BackgroundColor)
-         )]
         public string BackgroundColorName { get; set; }
 
-        [Initialize(
-             MethodName = nameof(InitializeColor),
-             BackingFieldName = nameof(ForegroundColor)
-         )]
         public string ForegroundColorName { get; set; }
 
-        [Initialize(
-             MethodName = nameof(InitializeLayouter),
-             BackingFieldName = nameof(Layouter)
-         )]
         public string LayouterName { get; set; }
 
         public Color ForegroundColor { get; private set; }
@@ -59,7 +44,6 @@ namespace TagsCloudCli
 
         public FontFamily FontFamily { get; set; }
 
-        [Initialize(MethodName = nameof(InitializeInputFile))]
         public string InputFilename { get; set; }
 
         public Color BackgroundColor { get; private set; }
@@ -92,33 +76,17 @@ namespace TagsCloudCli
 
         public float MaxFontEmSize => MaximumFontSize;
 
-        public void Initialize()
+        public Result<None> Initialize()
         {
-            try
-            {
-                foreach (var field in typeof(CliOptions).GetProperties())
-                {
-                    var initializeAttribute =
-                        (InitializeAttribute)
-                        field.GetCustomAttributes(typeof(InitializeAttribute), true).FirstOrDefault();
-
-                    if (initializeAttribute == null)
-                        continue;
-                    var initializeMethod = typeof(CliOptions).GetMethod(initializeAttribute.MethodName,
-                        BindingFlags.NonPublic | BindingFlags.Instance);
-                    var propertyValue = field.GetValue(this);
-                    var initializedValue = initializeMethod.Invoke(this, new[] {propertyValue});
-                    if (initializeAttribute.BackingFieldName != null)
-                    {
-                        var backingProperty = typeof(CliOptions).GetProperty(initializeAttribute.BackingFieldName);
-                        backingProperty.SetValue(this, initializedValue);
-                    }
-                }
-            }
-            catch (TargetInvocationException e)
-            {
-                ExceptionDispatchInfo.Capture(e.InnerException).Throw();
-            }
+            return 
+                InitializeInputFile(InputFilename)
+                .PassErrorThrough(InitializeOutputFile(OutputFilename))
+                .PassErrorThrough(InitializeColor(BackgroundColorName).Then(color => BackgroundColor = color))
+                .PassErrorThrough(InitializeColor(ForegroundColorName).Then(color => ForegroundColor = color))
+                .PassErrorThrough(InitializeFontFamily(FontFamilyName).Then(fontFamily => FontFamily = fontFamily))
+                .PassErrorThrough(InitializeLayouter(LayouterName).Then(layouter => Layouter = layouter))
+                .RefineError(error => new Error("Fail while initialization CLI options", error))
+                .AsNoneResult();
         }
     }
 }

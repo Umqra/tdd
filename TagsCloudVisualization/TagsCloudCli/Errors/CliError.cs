@@ -1,11 +1,13 @@
-namespace ResultOf
+﻿using ResultOf;
+
+namespace TagsCloudCli.Errors
 {
-    public class Error : IError
+    public abstract class CliError : IError
     {
         public string Message { get; }
         public IError InnerError { get; set; }
 
-        public Error(string message, IError innerError = null)
+        protected CliError(string message, IError innerError = null)
         {
             Message = message;
             InnerError = innerError;
