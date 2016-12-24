@@ -7,6 +7,7 @@ using Autofac;
 using Fclp;
 using FluentAssertions;
 using ResultOf;
+using TagsCloudCli.Extensions;
 using TagsCloudCore.Visualization;
 
 namespace TagsCloudCli
@@ -95,38 +96,39 @@ namespace TagsCloudCli
                 .WithDescription("Height of generated image in pixels.")
                 .SetDefault(800);
             parser.Setup(arg => arg.MaximumFontSize)
-                .As('f', "font")
+                .As('f', "max-font-size")
                 .WithDescription("Maximum font size in em units.")
                 .SetDefault(40);
 
             parser.Setup(arg => arg.BackgroundColorName)
-                .As("bc")
+                .As("background-color")
                 .WithDescription(
                     "Background image color\nYou can use common names for colors or hex codes. For example: --fc orange, --fc #abc123.")
                 .SetDefault("white");
             parser.Setup(arg => arg.ForegroundColorName)
-                .As("fc")
+                .As("foreground-color")
                 .WithDescription(
                     "Text color\nYou can use common names for colors or hex codes. For example: --fc orange, --fc #abc123.")
                 .SetDefault("black");
             parser.Setup(arg => arg.LayouterName)
                 .As('l', "layouter")
                 .WithDescription(
-                    $"Choose implementation of layouter from list: {string.Join(",", CliOptions.LayouterNames.Keys)}.")
+                    $"Choose implementation of layouter from list: {string.Join(", ", CliOptions.LayouterNames.Keys)}.")
                 .SetDefault("sparse");
             parser.Setup(arg => arg.MaxTagsCount)
-                .As('m', "max-tags")
+                .As('m', "max-tags-count")
                 .WithDescription("This parameter limits amount of tags in the cloud");
 
             parser.Setup(arg => arg.ConfigFilename)
                 .As("config")
-                .WithDescription("Path to config file in YAML format");
+                .WithDescription($"Path to config file in YAML format. List of available options: " +
+                                 $"{string.Join(", ", YamlExtensions.EnumerateYamlMembers<ManagableCliOptions>().Select(t => t.Item1))}");
 
             parser.Setup(arg => arg.FontFamilyName)
-                .As("ff")
+                .As("font-family")
                 .WithDescription(
                     "Font family name. For example: " +
-                    $"{string.Join(",", FontFamily.Families.Select(f => f.Name).Take(5))}. " +
+                    $"{string.Join(", ", FontFamily.Families.Select(f => f.Name).Take(5))}. " +
                     "You can call CLI with --ff ? option and see full list of avaiable font families"
                 )
                 .SetDefault(FontFamily.GenericSerif.Name);

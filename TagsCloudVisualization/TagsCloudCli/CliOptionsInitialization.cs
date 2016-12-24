@@ -27,7 +27,7 @@ namespace TagsCloudCli
         private Result<None> LoadConfig(string configFilename)
         {
             var deserializer = new DeserializerBuilder()
-                    .WithNamingConvention(new UnderscoredNamingConvention()).Build();
+                    .WithNamingConvention(new HyphenatedNamingConvention()).Build();
 
             return Result.FromFunction(() =>
                 {

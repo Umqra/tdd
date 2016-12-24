@@ -12,17 +12,17 @@ namespace TagsCloudCli
         [YamlMember(Alias = "height")]
         public int? Height { get; set; }
 
-        [YamlMember(Alias = "max_font_size")]
+        [YamlMember(Alias = "max-font-size")]
         public int? MaximumFontSize { get; set; }
-        [YamlMember(Alias = "max_tags_count")]
+        [YamlMember(Alias = "max-tags-count")]
         public int? MaxTagsCount { get; set; }
 
-        [YamlMember(Alias = "font_family")]
+        [YamlMember(Alias = "font-family")]
         public string FontFamilyName { get; set; }
 
-        [YamlMember(Alias = "background_color")]
+        [YamlMember(Alias = "background-color")]
         public string BackgroundColorName { get; set; }
-        [YamlMember(Alias = "foreground_color")]
+        [YamlMember(Alias = "foreground-color")]
         public string ForegroundColorName { get; set; }
 
         [YamlMember(Alias = "layouter")]

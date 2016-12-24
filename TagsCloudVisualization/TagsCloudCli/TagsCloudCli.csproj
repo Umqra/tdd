@@ -76,6 +76,7 @@
     <Compile Include="Extensions\ColorExtensions.cs" />
     <Compile Include="CustomCommandLineOptionFormatter.cs" />
     <Compile Include="Extensions\FileExtensions.cs" />
+    <Compile Include="Extensions\YamlExtensions.cs" />
     <Compile Include="Form.cs">
       <SubType>Form</SubType>
     </Compile>
