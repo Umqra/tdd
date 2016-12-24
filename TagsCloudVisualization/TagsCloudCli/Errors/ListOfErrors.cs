@@ -42,4 +42,11 @@ namespace TagsCloudCli.Errors
         {
         }
     }
+
+    public class UnknownFontError : CliError
+    {
+        public UnknownFontError(string message, IError innerError = null) : base(message, innerError)
+        {
+        }
+    }
 }

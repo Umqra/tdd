@@ -122,9 +122,8 @@ namespace TagsCloudCli
                 .WithDescription(
                     "Font family name. For example: " +
                     $"{string.Join(",", FontFamily.Families.Select(f => f.Name).Take(5))}. " + 
-                    "Full list of available font families depends on your system."
-                )
-                .SetDefault(FontFamily.GenericSerif.Name);
+                    "You can call CLI with --ff ? option and see full list of avaiable font families"
+                );
 
             parser.SetupHelp("help", "?")
                 .WithHeader("Help for 'Command line tags cloud generator application'")

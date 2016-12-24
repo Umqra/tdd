@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using ResultOf;
 using TagsCloudCli.Errors;
 using TagsCloudCli.Extensions;
@@ -42,13 +43,15 @@ namespace TagsCloudCli
 
         private Result<FontFamily> InitializeFontFamily(string fontFamilyName)
         {
-            fontFamilyName = fontFamilyName.ToLower().Trim();
+            var normalizedName = fontFamilyName.ToLower().Trim();
             foreach (var font in FontFamily.Families)
             {
-                if (font.Name.ToLower().Trim() == fontFamilyName)
+                if (font.Name.ToLower().Trim() == normalizedName)
                     return font.AsResult();
             }
-            return FontFamily.GenericSerif.AsResult();
+            return Result.Fail<FontFamily>(
+                new UnknownFontError($"Unknown font family {fontFamilyName}. " +
+                                     $"Use one font from next list: {string.Join(",", FontFamily.Families.Select(f => f.Name))}"));
         }
     }
 }
