@@ -16,11 +16,19 @@ namespace TagsCloudCli
     {
         internal static void Main(string[] args)
         {
-            var cliStatus = RunCli(args);
-            cliStatus.OnFail(error =>
+            try
             {
-                Console.WriteLine(string.Join("\n", error.GenerateTrace().Select(message => "- " + message)));
-            });
+                var cliStatus = RunCli(args);
+                cliStatus.OnFail(error =>
+                {
+                    Console.WriteLine(string.Join("\n", error.GenerateTrace().Select(message => "- " + message)));
+                });
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(@"- Critical error. Connect with developer via github: https://github.com/Umqra.");
+                Console.WriteLine(exception);
+            }
         }
 
         private static Result<None> RunCli(string[] args)
